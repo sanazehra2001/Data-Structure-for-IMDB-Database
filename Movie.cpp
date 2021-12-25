@@ -1,5 +1,8 @@
 #include <iostream>
 #include <string>
+#include "DirectorNode.cpp"
+#include "ActorNode.cpp"
+
 using namespace std;
 
 class Movie {
@@ -8,11 +11,10 @@ class Movie {
     //genre                             data structure to be decided    //1-M   //enums
     short int titleYear;
     float imdbScore;
-    string directorName;
-    int fbLikesForDirector;
+    DirectorNode* director;
     int numOfCriticReviews;
     int duration;
-    //actor name and facebook likes     data structure to be decided    //1-M
+    ActorNode* actor;                    // data structure to be decided    //1-M
     unsigned long int gross;
     unsigned int numOfVotes;
     int fbLikesForCast;

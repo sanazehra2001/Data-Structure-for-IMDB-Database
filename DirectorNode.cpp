@@ -1,8 +1,10 @@
 #include <iostream>
+#include <string>
 using namespace std;
 
 class DirectorNode{
-
+    string name;
+    int fbLikesForDirector;    
 
 public:
     DirectorNode(){}
