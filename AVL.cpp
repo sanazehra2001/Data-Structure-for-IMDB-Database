@@ -1,184 +1,184 @@
 #include <iostream>
 using namespace std;
 
-// An AVL tree node
-class Node
+// An AVL tree AVLNode
+template <class Type>
+class AVLNode
 {
-	public:
-	int key;
-	Node *left;
-	Node *right;
+public:
+	Type key;
+	AVLNode *left;
+	AVLNode *right;
 	int height;
 };
 
-// A utility function to get maximum
-// of two integers
-int max(int a, int b);
-
-// A utility function to get the
-// height of the tree
-int height(Node *N)
+template <class Type>
+class AVL
 {
-	if (N == NULL)
-		return 0;
-	return N->height;
-}
+public:
+	// A utility function to get maximum
+	// of two integers
+	// A utility function to get maximum
+	// of two elements
+	int max(Type a, Type b)
+	{
+		return (a > b) ? a : b;
+	}
 
-// A utility function to get maximum
-// of two integers
-int max(int a, int b)
-{
-	return (a > b)? a : b;
-}
+	// A utility function to get the
+	// height of the tree
+	int height(AVLNode<Type> *N)
+	{
+		if (N == NULL)
+			return 0;
+		return N->height;
+	}
 
-/* Helper function that allocates a
-new node with the given key and
+	/* Helper function that allocates a
+new AVLNode with the given key and
 NULL left and right pointers. */
-Node* newNode(int key)
-{
-	Node* node = new Node();
-	node->key = key;
-	node->left = NULL;
-	node->right = NULL;
-	node->height = 1; // new node is initially
-					// added at leaf
-	return(node);
-}
+	AVLNode<Type> *newAVLNode(Type key)
+	{
+		AVLNode<Type> *node = new AVLNode<Type>();
+		node->key = key;
+		node->left = NULL;
+		node->right = NULL;
+		node->height = 1; // new AVLNode is initially
+						  // added at leaf
+		return (node);
+	}
 
-// A utility function to right
-// rotate subtree rooted with y
-// See the diagram given above.
-Node *rightRotate(Node *y)
-{
-	Node *x = y->left;
-	Node *T2 = x->right;
+	// A utility function to right
+	// rotate subtree rooted with y
+	// See the diagram given above.
+	AVLNode<Type> *rightRotate(AVLNode<Type> *y)
+	{
+		AVLNode<Type> *x = y->left;
+		AVLNode<Type> *T2 = x->right;
 
-	// Perform rotation
-	x->right = y;
-	y->left = T2;
+		// Perform rotation
+		x->right = y;
+		y->left = T2;
 
-	// Update heights
-	y->height = max(height(y->left),
-					height(y->right)) + 1;
-	x->height = max(height(x->left),
-					height(x->right)) + 1;
+		// Update heights
+		y->height = max(height(y->left), height(y->right)) + 1;
+		x->height = max(height(x->left), height(x->right)) + 1;
 
-	// Return new root
-	return x;
-}
+		// Return new root
+		return x;
+	}
 
-// A utility function to left
-// rotate subtree rooted with x
-// See the diagram given above.
-Node *leftRotate(Node *x)
-{
-	Node *y = x->right;
-	Node *T2 = y->left;
+	// A utility function to left
+	// rotate subtree rooted with x
+	// See the diagram given above.
+	AVLNode<Type>* leftRotate(AVLNode<Type> *x)
+	{
+		AVLNode<Type>* y = x->right;
+		AVLNode<Type>* T2 = y->left;
 
-	// Perform rotation
-	y->left = x;
-	x->right = T2;
+		// Perform rotation
+		y->left = x;
+		x->right = T2;
 
-	// Update heights
-	x->height = max(height(x->left),
-					height(x->right)) + 1;
-	y->height = max(height(y->left),
-					height(y->right)) + 1;
+		// Update heights
+		x->height = max(height(x->left),height(x->right)) +1;
+		y->height = max(height(y->left),height(y->right)) +1;
 
-	// Return new root
-	return y;
-}
+		// Return new root
+		return y;
+	}
 
-// Get Balance factor of node N
-int getBalance(Node *N)
-{
-	if (N == NULL)
-		return 0;
-	return height(N->left) - height(N->right);
-}
+	// Get Balance factor of AVLNode N
+	int getBalance(AVLNode<Type> *N)
+	{
+		if (N == NULL)
+			return 0;
+		return height(N->left) - height(N->right);
+	}
 
-// Recursive function to insert a key
-// in the subtree rooted with node and
-// returns the new root of the subtree.
-Node* insert(Node* node, int key)
-{
-	/* 1. Perform the normal BST insertion */
-	if (node == NULL)
-		return(newNode(key));
+	// Recursive function to insert a key
+	// in the subtree rooted with AVLNode and
+	// returns the new root of the subtree.
+	AVLNode<Type>* insert(AVLNode<Type> *node, Type key)
+	{
+		/* 1. Perform the normal BST insertion */
+		if (node == NULL)
+			return (newAVLNode(key));
 
-	if (key < node->key)
-		node->left = insert(node->left, key);
-	else if (key > node->key)
-		node->right = insert(node->right, key);
-	else // Equal keys are not allowed in BST
-		return node;
+		if (key < node->key)
+			node->left = insert(node->left, key);
+		else if (key > node->key)
+			node->right = insert(node->right, key);
+		else // Equal keys are not allowed in BST
+			return node;
 
-	/* 2. Update height of this ancestor node */
-	node->height = 1 + max(height(node->left),
-						height(node->right));
+		/* 2. Update height of this ancestor AVLNode */
+		node->height = 1 + max(height(node->left),
+							   height(node->right));
 
-	/* 3. Get the balance factor of this ancestor
-		node to check whether this node became
+		/* 3. Get the balance factor of this ancestor
+		AVLNode to check whether this AVLNode became
 		unbalanced */
-	int balance = getBalance(node);
+		int balance = getBalance(node);
 
-	// If this node becomes unbalanced, then
-	// there are 4 cases
+		// If this AVLNode becomes unbalanced, then
+		// there are 4 cases
 
-	// Left Left Case
-	if (balance > 1 && key < node->left->key)
-		return rightRotate(node);
+		// Left Left Case
+		if (balance > 1 && key < node->left->key)
+			return rightRotate(node);
 
-	// Right Right Case
-	if (balance < -1 && key > node->right->key)
-		return leftRotate(node);
+		// Right Right Case
+		if (balance < -1 && key > node->right->key)
+			return leftRotate(node);
 
-	// Left Right Case
-	if (balance > 1 && key > node->left->key)
-	{
-		node->left = leftRotate(node->left);
-		return rightRotate(node);
+		// Left Right Case
+		if (balance > 1 && key > node->left->key)
+		{
+			node->left = leftRotate(node->left);
+			return rightRotate(node);
+		}
+
+		// Right Left Case
+		if (balance < -1 && key < node->right->key)
+		{
+			node->right = rightRotate(node->right);
+			return leftRotate(node);
+		}
+
+		/* return the (unchanged) AVLNode pointer */
+		return node;
 	}
 
-	// Right Left Case
-	if (balance < -1 && key < node->right->key)
+	// A utility function to print preorder
+	// traversal of the tree.
+	// The function also prints height
+	// of every AVLNode
+	void preOrder(AVLNode<Type> *root)
 	{
-		node->right = rightRotate(node->right);
-		return leftRotate(node);
+		if (root != NULL)
+		{
+			cout << root->key << " ";
+			preOrder(root->left);
+			preOrder(root->right);
+		}
 	}
-
-	/* return the (unchanged) node pointer */
-	return node;
-}
-
-// A utility function to print preorder
-// traversal of the tree.
-// The function also prints height
-// of every node
-void preOrder(Node *root)
-{
-	if(root != NULL)
-	{
-		cout << root->key << " ";
-		preOrder(root->left);
-		preOrder(root->right);
-	}
-}
+};
 
 // Driver Code
 int main()
 {
-	Node *root = NULL;
-	
+	AVLNode<int> *root = NULL;
+	AVL<int> avl;
 	/* Constructing tree given in
 	the above figure */
-	root = insert(root, 10);
-	root = insert(root, 20);
-	root = insert(root, 30);
-	root = insert(root, 40);
-	root = insert(root, 50);
-	root = insert(root, 25);
-	
+	root = avl.insert(root, 10);
+	root = avl.insert(root, 20);
+	root = avl.insert(root, 30);
+	root = avl.insert(root, 40);
+	root = avl.insert(root, 50);
+	root = avl.insert(root, 25);
+
 	/* The constructed AVL Tree would be
 				30
 			/ \
@@ -188,8 +188,8 @@ int main()
 	*/
 	cout << "Preorder traversal of the "
 			"constructed AVL tree is \n";
-	preOrder(root);
-	
+	avl.preOrder(root);
+
 	return 0;
 }
 
