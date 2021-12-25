@@ -2,7 +2,9 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <map>
 #include "Movie.cpp"
+
 
 using namespace std;
 
@@ -30,12 +32,14 @@ int main(){
     string colmVals[28];
     int index;
     ifstream file ("IMDB_Top5000-SEECS.csv");
+    
 
     if (file.is_open()){
         getline(file, line);        // gets the row of column headings
 
         //while(getline(file, line)){     // reads an entire row and stores it in line
             index = 0;
+            Movie m;
             getline(file, line);
             stringstream s (line);      // breaks the line into words
             
@@ -43,6 +47,8 @@ int main(){
                 colmVals[index++] = word;
             }
 
+            m.setTitle(colmVals[0]);
+            
             //cout << line << "\n";
         //}
         file.close();
