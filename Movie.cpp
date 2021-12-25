@@ -26,7 +26,7 @@ class Movie
     unsigned int numOfVotes;
     int fbLikesForCast;
     short int faceNumInPoster;
-    list<string> keywords; 
+    forward_list<string> plotKeywords;
     string imdbLink;
     int numOfReviews;
     string language;
@@ -44,12 +44,31 @@ class Movie
     
 
 public:
-    //return type of all of these methods have to be decided depending whether any of these functions
-    //has to be used by somewhere else
-    void searchMovie(string title) {} //not necessarily complete
-    void getMoviesOfYear(short int year) {}
-    void printMoviesChronologically(bool asc) {}
-    void getMoviesOfGenre(string genre) {}
-    void printMoviesByRating() {}
-    void printMoviesByRating(string genre) {}
+    // setters
+    void setTitle(string t){
+        title = t;
+    }
+
+    void setGenre(string g){
+        genre.emplace_front(g);        
+    }
+
+    void setTitleYear(short int year){
+        titleYear = year;
+    }
+
+    void setImdbScore(float score){
+        imdbScore = score;
+    }
+    
+
+
+
+    // methods
+    void searchMovie(string title){}    //not necessarily complete
+    void getMoviesOfYear(short int year){}
+    void printMoviesChronologically(bool asc){}
+    void getMoviesOfGenre(string genre){}
+    void printMoviesByRating(){}
+    void printMoviesByRating(string genre){}
 };
