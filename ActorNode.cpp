@@ -2,12 +2,16 @@
 #include <string>
 #include <forward_list>
 #include "MovieNode.cpp"
+#include <map>
+#include <string>
 
 using namespace std;
 
 class ActorNode{
     string name;
     int fbLikesForActor;
+    static map<string, AVL<ActorNode*>> allActors;
+
 
 public:
     ActorNode(string name){}
