@@ -1,0 +1,23 @@
+enum Genre
+{
+    Action,
+    Adventure,
+    Animation,
+    Biography,
+    Comedy,
+    Documentary,
+    Drama,
+    Fantasy,
+    Family,
+    History,
+    Horror,
+    Musical,
+    Mystery,
+    Romance,
+    Romance,
+    SciFi,
+    Sport,
+    Thriller,
+    Western,
+    War,
+};

@@ -2,38 +2,69 @@
 #include <string>
 #include "DirectorNode.cpp"
 #include "ActorNode.cpp"
+#include "Genre.cpp"
+#include <list>
+#include <string>
+#include "Color.cpp"
+#include "AVL.cpp"
+#include <map>
 
 using namespace std;
 
-class Movie {
+class Movie
+{
 
     string title;
-    //genre                             data structure to be decided    //1-M   //enums
+    Genre genre;
     short int titleYear;
     float imdbScore;
-    DirectorNode* director;
+    DirectorNode *director;
     int numOfCriticReviews;
     int duration;
-    ActorNode* actor;                    // data structure to be decided    //1-M
+    ActorNode *actor; // data structure to be decided    //1-M
     unsigned long int gross;
     unsigned int numOfVotes;
     int fbLikesForCast;
     short int faceNumInPoster;
-    //plot keywords                     data structure to be decided    //1-M   //enums
+    forward_list<string> plotKeywords;
     string imdbLink;
     int numOfReviews;
     string language;
     string country;
-    string contentRating;               //can be set as enum
+    string contentRating; 
     unsigned long int budget;
     float aspectRatio;
     int fbLikesForMovie;
-    string colour;                      //can be set as enum
+    MovieColor color;
 
+    // priority to be implemented
+    static map<string, AVL<Movie*>> moviesByTitle; 
+    static map<string, AVL<Movie*>> moviesByYear;
+    static map<Genre, AVL<Movie*>> moviesByGenre;
+    
 
 public:
-    //return type of all of these methods have to be decided depending whether any of these functions
-    //has to be used by somewhere else
+    // setters
+    void setTitle(string t){
+        title = t;
+    }
+
+    void setGenre(string g){
+        genre.emplace_front(g);        
+    }
+
+    void setTitleYear(short int year){
+        titleYear = year;
+    }
+
+    void setImdbScore(float score){
+        imdbScore = score;
+    }
+    
+
+
+
+    // methods
     void searchMovie(string title){}    //not necessarily complete
     void getMoviesOfYear(short int year){}
     void printMoviesChronologically(bool asc){}
