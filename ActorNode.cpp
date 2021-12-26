@@ -17,6 +17,10 @@ public:
     ActorNode(string name){}
     ActorNode(string name, int fbLikesForActor){}
 
+    void addActor(ActorNode* a){
+        //allActors.insert(a.name, a);
+    }
+
     void searchActor(string name){}                  // return type has to be decided
     void getCoActors(string name){}             // return type has to be decided
     void getUniqueCoActors(string name){}       // return type has to be decided

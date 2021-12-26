@@ -1,4 +1,0 @@
-enum MovieColor{
-    Color,
-    Black
-};

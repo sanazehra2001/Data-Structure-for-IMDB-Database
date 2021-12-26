@@ -10,9 +10,12 @@ class DirectorNode{
     static map<string, AVL<DirectorNode* >> allDirectors;
 
 public:
-    DirectorNode(){}
+    DirectorNode(string n, int likes){
+        name = n;
+        fbLikesForDirector = likes;
+    }
 
-    void searchDir(string name){}                  // return type has to be decided
-    void getDirectorOfGenre(string genre){}     // return type has to be decided
+    void searchDir(string name){}                  
+    void getDirectorOfGenre(string genre){}
 
 };
