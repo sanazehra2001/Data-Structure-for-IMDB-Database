@@ -10,7 +10,7 @@ using namespace std;
 class ActorNode{
     string name;
     int fbLikesForActor;
-    static map<string, AVL<ActorNode*>> allActors;
+    // static map<string, AVL<ActorNode*>> allActors;
 
 
 public:

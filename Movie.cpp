@@ -6,7 +6,7 @@
 #include <list>
 #include <string>
 #include "MovieColor.cpp"
-#include "AVL.cpp"
+// #include "AVL.cpp"
 #include <map>
 
 using namespace std;
@@ -37,19 +37,19 @@ class Movie
     MovieColor color;
 
     // priority to be implemented
-    static map<string, AVL<Movie *>> moviesByTitle;
-    static map<string, AVL<Movie *>> moviesByYear;
-    static map<Genre, AVL<Movie *>> moviesByGenre;
+    // static map<string, AVL<Movie *>> moviesByTitle;
+    // static map<string, AVL<Movie *>> moviesByYear;
+    // static map<Genre, AVL<Movie *>> moviesByGenre;
 
 public:
     // setters
     void setTitle(string t){
-        title = t;
+        this->title = t;
     }
 
-    void setGenre(string g){
-        genre.emplace_front(g);
-    }
+    // void setGenre(string g){
+    //     genre.emplace_front(g);
+    // }
 
     void setTitleYear(short int year){
         titleYear = year;
@@ -130,6 +130,20 @@ public:
     void setColor(string col){
         color = convert(col);
     }
+
+    string getTitle(){
+        return title;
+    }
+
+    short int getTitleYear(){
+        return titleYear;
+    };
+
+    string getContentRating(){
+        return contentRating;
+    }
+
+
 
     // methods
     void searchMovie(string title) {} //not necessarily complete

@@ -43,7 +43,9 @@
     "xtr1common": "cpp",
     "xutility": "cpp",
     "forward_list": "cpp",
-    "string": "cpp"
+    "string": "cpp",
+    "functional": "cpp",
+    "random": "cpp"
   },
   "C_Cpp_Runner.warnings": [
     "-Wall",

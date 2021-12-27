@@ -14,7 +14,6 @@ enum Genre
     Musical,
     Mystery,
     Romance,
-    Romance,
     SciFi,
     Sport,
     Thriller,

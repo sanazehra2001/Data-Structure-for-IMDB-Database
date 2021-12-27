@@ -7,7 +7,7 @@ class DirectorNode{
     string name;
     int fbLikesForDirector;    
 
-    static map<string, AVL<DirectorNode* >> allDirectors;
+    // static map<string, AVL<DirectorNode* >> allDirectors;
 
 public:
     DirectorNode(string n, int likes){
