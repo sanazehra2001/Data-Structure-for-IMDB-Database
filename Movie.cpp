@@ -39,7 +39,8 @@ class Movie
     // priority to be implemented
     static map<string, AVL<Movie *>> moviesByTitle;
     static map<string, AVL<Movie *>> moviesByYear;
-    static map<Genre, AVL<Movie *>> moviesByGenre;
+    
+    static map<Genre, AVL<Movie *>> moviesByGenre;      //linked list for movie 
 
 public:
     // setters

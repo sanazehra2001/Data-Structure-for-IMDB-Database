@@ -195,33 +195,3 @@ public:
 		}
 	}
 };
-
-// Driver Code
-int main()
-{
-	AVL<int> avl;
-	/* Constructing tree given in
-	the above figure */
-	avl.insert(10);
-	avl.insert(20);
-	avl.insert(30);
-	avl.insert(40);
-	avl.insert(50);
-	avl.insert(25);
-
-	/* The constructed AVL Tree would be
-			30
-			/ \
-		  20   40
-		 / \     \
-		10 25     50
-	*/
-	cout << "Preorder traversal of the constructed AVL tree is \n";
-	avl.preOrder();
-	cout << endl;
-	avl.inOrder();
-	cout << endl;
-	avl.postOrder();
-
-	return 0;
-}

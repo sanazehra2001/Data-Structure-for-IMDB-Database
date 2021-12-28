@@ -4,15 +4,12 @@
 #include <sstream>
 #include <map>
 #include "Movie.cpp"
+#include "DirectorNode.cpp"
 //#include "ActorNode.cpp"
 
 using namespace std;
 
-class MovieCollection
-{
-
-
-};
+class MovieCollection{};
 
 int main()
 {
@@ -51,6 +48,11 @@ int main()
             m.setImdbScore(stof(colmVals[3]));
 
             DirectorNode d(colmVals[4], stoi(colmVals[5]));
+            if(DirectorNode::searchDir(d.getName())){
+                
+            }
+            
+
             m.setDirectorNode(&d);
             m.setNumOfCriticReviews(stoi(colmVals[6]));
             m.setDuration(stoi(colmVals[7]));
