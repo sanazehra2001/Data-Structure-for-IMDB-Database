@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <forward_list>
-#include "MovieNode.cpp"
+#include "Movie.cpp"
 #include <map>
 #include <string>
 
@@ -13,8 +13,7 @@ class ActorNode{
 
     string name;
     int fbLikesForActor;
-    forward_list<Movie*> movieList; // convert it to map
-    
+    forward_list<Movie*> movieList;
 
 // count of list of movies
 

@@ -1,3 +1,7 @@
+#include <string>
+using namespace std;
+
+
 enum Genre
 {
     Action,
@@ -20,3 +24,7 @@ enum Genre
     Western,
     War,
 };
+
+Genre convert(string g){
+    //if 
+}

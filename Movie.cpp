@@ -20,12 +20,12 @@ class Movie
     DirectorNode *director;
     int numOfCriticReviews;
     int duration;
-    forward_list<ActorNode*> actor;
+    ActorNode* actors[3];
     unsigned long int gross;
     unsigned int numOfVotes;
     int fbLikesForCast;
     short int faceNumInPoster;
-    forward_list<string> plotKeywords;
+    forward_list plotKeywords;
     string imdbLink;
     int numOfReviews;
     string language;
@@ -34,7 +34,7 @@ class Movie
     unsigned long int budget;
     float aspectRatio;
     int fbLikesForMovie;
-    MovieColor color;
+    bool color;
 
     // priority to be implemented
     // static map<string, AVL<Movie *>> moviesByTitle;
@@ -47,9 +47,9 @@ public:
         this->title = t;
     }
 
-    // void setGenre(string g){
-    //     genre.emplace_front(g);
-    // }
+    void setGenre(string g){
+        genre.emplace_front(convert(g));
+    }
 
     void setTitleYear(short int year){
         titleYear = year;
@@ -127,8 +127,8 @@ public:
         fbLikesForMovie = likes;
     }
 
-    void setColor(string col){
-        color = convert(col);
+    void setColor(bool col){
+        color = col;
     }
 
     string getTitle(){

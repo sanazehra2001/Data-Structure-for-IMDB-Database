@@ -12,7 +12,7 @@ class DirectorNode{
     int fbLikesForDirector;
     forward_list<Movie*> movieList;
 
-    // static map<string, AVL<DirectorNode* >> allDirectors;
+    static map<string, DirectorNode*> allDirectors;
 
 public:
     DirectorNode(string n, int likes){
