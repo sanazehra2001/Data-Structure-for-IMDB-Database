@@ -1,17 +1,12 @@
 #include <iostream>
 #include <fstream>
-#include <string>
+
 #include <sstream>
-#include <map>
 #include "Movie.cpp"
-#include "DirectorNode.cpp"
-#include "ActorNode.cpp"
+#include "Director.cpp"
+#include "Actor.cpp"
 
 using namespace std;
-
-class Movie;
-class ActorNode;
-class DirectorNode;
 
 int main()
 {
@@ -47,30 +42,31 @@ int main()
             while (getline(stringstream(colmVals[1]), word, '|')) // add genres to the list
             {
                 m.setGenre(word);
+                cout << word<<endl;
             }
 
             m.setTitleYear(stoi(colmVals[2]));
             m.setImdbScore(stof(colmVals[3]));
 
-            DirectorNode d(colmVals[4], stoi(colmVals[5]));
-            if (DirectorNode::searchDir(d.getName()) == NULL)   // if the dir is not in the dir map
-            { 
-                //DirectorNode::allDirectors.insert({colmVals[4].at(0), &d});
+            Director d(colmVals[4], stoi(colmVals[5]));
+            if (Director::searchDir(d.getName()) == NULL)   // if the dir is not in the dir map
+            {
+                //Director::allDirectors.insert({colmVals[4].at(0), &d});
             }
-            m.setDirectorNode(&d);
+            m.setDirector(&d);
 
             m.setNumOfCriticReviews(stoi(colmVals[6]));
             m.setDuration(stoi(colmVals[7]));
 
-            ActorNode* actors[3];
+            Actor* actors[3];
             for (int i = 8; i < 14; i + 2) // add actors to the array
             {
                 int actorIndex = 0;
-                ActorNode a(colmVals[i], stoi(colmVals[i + 1]));
+                Actor a(colmVals[i], stoi(colmVals[i + 1]));
 
-                if (ActorNode::searchActor(a.getName(), false) == NULL)    // if the actor is not in the actor map
-                { 
-                    //ActorNode::allActors.insert({colmVals[i].at(0), &a});
+                if (Actor::searchActor(a.getName(), false) == NULL)    // if the actor is not in the actor map
+                {
+                    //Actor::allActors.insert({colmVals[i].at(0), &a});
                 }
                 actors[actorIndex] = &a;
             }
@@ -82,7 +78,7 @@ int main()
             m.setFaceNumInPoster(stoi(colmVals[17]));
 
             while (getline(stringstream(colmVals[18]), word, '|'))  // | separated keywords are added to the list
-            { 
+            {
                 m.setPlotKeywords(word);
             }
 
@@ -107,3 +103,18 @@ int main()
 
     return 0;
 }
+
+// int main()
+// {
+//     Actor a("Actor1");
+//     Director d;
+//     d.setName("Director");
+//     Movie m;
+//     m.setTitle("Movie1");
+
+//     cout<<m.getTitle();
+//     cout<<d.getName();
+//     cout<<a.getName();
+
+//     return 0;
+// }
