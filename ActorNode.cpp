@@ -28,7 +28,6 @@ public:
         return name;
     }
 
-    //for adding to avl tree
     void addActor(ActorNode* a){
         //allActors.insert(a.name, a);
     }
