@@ -14,69 +14,70 @@
 
 using namespace std;
 
-void addDirector(string name, int likes, Movie* m)
+// class Movie;
+// class Actor;
+// class Director;
+
+void addDirector(string name, int likes, Movie *m)
 {
     string key = name.substr(0, 2);
 
     if (Director::allDirectors.find(key) == Director::allDirectors.end())
     {
         //key is not present, create key-avl pair
-        Director dir(name, likes);      //create a new director
-        DirectorAVL avl;                //create an AVL for that key
-        Director::addDirector(&dir);    //add the director to the AVL
+        Director dir(name, likes); //create a new director
+        DirectorAVL avl;           //create an AVL for that key
+        avl.insert(&dir);          //add the director to the AVL
 
-        Director::allDirectors.insert({key, avl});  //finally add this newly created AVL to the map
+        Director::allDirectors.insert({key, avl}); //finally add this newly created AVL to the map
     }
     else
-    {   // the key already exists
+    { // the key already exists
 
-        Director* d = Director::searchDir(name);    // pointer to the found dir or NULL otherwise  
-       
-        if (d)  
-        {   // if director is found
+        Director *d = Director::searchDir(name); // pointer to the found dir or NULL otherwise
+
+        if (d)
+        { // if director is found
             d->addMovie(m);
         }
         else
-        {   //if no director with the provided name is found
+        { //if no director with the provided name is found
             Director dir(name, likes);
             Director::allDirectors.at(key).insert(&dir);
-            d->addMovie(m);
+            dir.addMovie(m);
         }
-        
     }
 }
 
-void addActor(string name, int likes, Movie* m)
+void addActor(string name, int likes, Movie *m)
 {
     string key = name.substr(0, 2);
 
     if (Actor::allActors.find(key) == Actor::allActors.end())
     {
         //key is not present, create key-avl pair
-        Actor actor(name, likes);       //create a new actor
-        ActorAVL avl;                   //create an AVL for that key
-        avl.insert(&actor);             //add the actor to the AVL
+        Actor actor(name, likes); //create a new actor
+        ActorAVL avl;             //create an AVL for that key
+        avl.insert(&actor);       //add the actor to the AVL
 
-        //Actor::addActor
-        //Actor::allActors.insert({key, avl});  //finally add this newly created AVL to the map
+        Actor::allActors.insert({key, avl});
     }
 
     else
-    {   // the key already exists
+    { // the key already exists
 
-        Director* d = Director::searchDir(name);    // pointer to the found dir or NULL otherwise  
-       
-        if (d)  
-        {   // if director is found
-            d->addMovie(m);
+        Actor *a = Actor::searchActor(name); // pointer to the found actor or NULL otherwise
+
+        if (a)
+        { // if actor is found
+            a->addMovie(m);
         }
         else
-        {   //if no director with the provided name is found
-            Director dir(name, likes);
-            Director::allDirectors.at(key).insert(&dir);
-            d->addMovie(m);
+        { //if no actor with the provided name is found
+            Actor actor(name, likes);
+            Actor::allActors.at(key).insert(&actor);
+            actor.addMovie(m);
         }
-        
     }
 }
 //
@@ -92,21 +93,6 @@ void addActor(string name, int likes, Movie* m)
 //     return 0;
 // }
 
-// int main()
-// {
-//     cout << "Im inside";
-//     Actor a("Actor1");
-//     Director d;
-//     d.setName("Director");
-//     Movie m;
-//     m.setTitle("Movie1");
-
-//     cout<<m.getTitle();
-//     cout<<d.getName();
-//     cout<<a.getName();
-
-//     return 0;
-// }
 
 int main()
 {
@@ -176,11 +162,14 @@ int main()
         m.setFbLikesForCast(stoi(colmVals[16]));
         m.setFaceNumInPoster(stoi(colmVals[17]));
 
-        stringstream keywords(colmVals[18]);
-        while (getline(keywords, word, '|')) // | separated keywords are added to the list
+        if (colmVals[18] != "")
         {
-            m.setPlotKeywords(word);
-            cout << word << endl;
+            stringstream keywords(colmVals[18]);
+            while (getline(keywords, word, '|')) // | separated keywords are added to the list
+            {
+                m.setPlotKeywords(word);
+                cout << word << endl;
+            }
         }
 
         m.setImdbLink(colmVals[19]);
@@ -191,7 +180,7 @@ int main()
         m.setBudget(stoi(colmVals[24]));
         m.setAspectRatio(stof(colmVals[25]));
         m.setFbLikesForMovie(stoi(colmVals[26]));
-        //m.setColor(colmVals[27]);
+        m.setColor(colmVals[27]);
     }
     return 0;
 }
