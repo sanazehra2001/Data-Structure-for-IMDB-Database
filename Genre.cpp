@@ -26,5 +26,16 @@ enum Genre
 };
 
 Genre convert(string g){
-    //if 
+    //if (g )
+    
+//     switch(g) {
+//   case "Action":
+//     // code block
+//     break;
+//   case y:
+//     // code block
+//     break;
+//   default:
+//     // code block
+} 
 }
