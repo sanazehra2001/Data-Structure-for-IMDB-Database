@@ -5,10 +5,13 @@
 #include <string>
 #include <forward_list>
 #include <map>
+#include <unordered_map>
 #include "Movie.h"
+#include "AVL.h"
 
 // forward declaration
 class Movie;
+class ActorAVL;
 
 using namespace std;
 class Actor
@@ -16,8 +19,9 @@ class Actor
 public:
     string name;
     int fbLikesForActor;
-    map<string, Movie *> movieList; // to be implemented using avl
-    static map<string, Actor *> allActors; // to be implemented using avl
+    map<string, forward_list<Movie *>> movieList; //sorted chronologically
+
+    static unordered_map<string, ActorAVL *> allActors; // avl sorted on actor name
 
     //constructor
     Actor();
@@ -32,7 +36,7 @@ public:
     //getters
     string getName();
     int getLikes();
-     map<string, Movie *> getMovie();
+    map<string, forward_list<Movie *>> getMovie();
 
     // add to main map
     void addActor(Actor *);
