@@ -1,4 +1,3 @@
-
 #ifndef AVL_H
 #define AVL_H
 
@@ -107,7 +106,7 @@ class MovieAVL
 public:
 	void insert(Movie *);
 	AVLNode<Movie *> *insertNode(AVLNode<Movie *> *, Movie *);
-
+	forward_list<Movie*> search(string);
 };
 
 class ActorAVL
@@ -117,7 +116,7 @@ class ActorAVL
 public:
 	void insert(Actor *);
 	AVLNode<Actor *> *insertNode(AVLNode<Actor *> *, Actor *);
-
+	Actor* search(string);
 };
 
 class DirectorAVL{
@@ -126,7 +125,7 @@ class DirectorAVL{
 public:
 	void insert(Director *);
 	AVLNode<Director *> *insertNode(AVLNode<Director *> *, Director *);
-
+	Director* search(string);
 };
 
 

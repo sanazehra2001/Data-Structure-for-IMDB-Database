@@ -56,6 +56,22 @@ AVLNode<Movie *> *MovieAVL::insertNode(AVLNode<Movie *> *node, Movie *key)
 	return node;
 }
 
+forward_list<Movie *> MovieAVL::search(string title)
+{
+	forward_list<Movie *> movies;
+	AVLNode<Movie *> *ptr = root;
+	while (ptr)
+	{
+		if (title > ptr->key->getTitle().substr(0, title.length()))
+			ptr = ptr->right;
+		else if (title < ptr->key->getTitle().substr(0, title.length()))
+			ptr = ptr->left;
+		else
+			movies.emplace_front(ptr->key);
+	}
+	return movies;
+}
+
 void ActorAVL::insert(Actor *key)
 {
 	root = insertNode(root, key);
@@ -108,6 +124,21 @@ AVLNode<Actor *> *ActorAVL::insertNode(AVLNode<Actor *> *node, Actor *key)
 	return node;
 }
 
+Actor *ActorAVL::search(string name)
+{
+	AVLNode<Actor *> *ptr = root;
+	while (ptr)
+	{
+		if (name > ptr->key->getName())
+			ptr = ptr->right;
+		else if (name < ptr->key->getName())
+			ptr = ptr->left;
+		else
+			return ptr->key;
+	}
+	return NULL;
+}
+
 void DirectorAVL::insert(Director *key)
 {
 	root = insertNode(root, key);
@@ -158,4 +189,19 @@ AVLNode<Director *> *DirectorAVL::insertNode(AVLNode<Director *> *node, Director
 
 	/* return the (unchanged) AVLNode pointer */
 	return node;
+}
+
+Director *DirectorAVL::search(string name)
+{
+	AVLNode<Director *> *ptr = root;
+	while (ptr)
+	{
+		if (name > ptr->key->getName())
+			ptr = ptr->right;
+		else if (name < ptr->key->getName())
+			ptr = ptr->left;
+		else
+			return ptr->key;
+	}
+	return NULL;
 }
