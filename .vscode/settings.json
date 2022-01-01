@@ -45,7 +45,8 @@
     "forward_list": "cpp",
     "string": "cpp",
     "functional": "cpp",
-    "random": "cpp"
+    "random": "cpp",
+    "*.tcc": "cpp"
   },
   "C_Cpp_Runner.warnings": [
     "-Wall",

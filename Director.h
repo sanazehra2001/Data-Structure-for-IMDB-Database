@@ -7,6 +7,7 @@
 #include <map>
 #include "Movie.h"
 
+// forward declaration
 class Movie;
 
 using namespace std;
@@ -21,18 +22,20 @@ public:
 
     // constructor
     Director();
+    Director(string);
     Director(string, int);
 
     // setters
     void setName(string);
     void setLikes(int);
-    void addToMovieMap(Movie *);
+    void addMovie(Movie *);
 
     // getters
     string getName();
     int getLikes();
-    forward_list<Movie> *getMovies();
+    forward_list<Movie*> getMovies();
 
+    // add to main map of directors
     void addDirector(Director*);
 
     // methods related to director
