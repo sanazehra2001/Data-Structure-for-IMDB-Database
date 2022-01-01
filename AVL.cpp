@@ -72,6 +72,27 @@ forward_list<Movie *> MovieAVL::search(string title)
 	return movies;
 }
 
+bool MovieAVL::isEmpty()
+{
+	return root == NULL;
+}
+
+// A utility function to print inorder traversal of the MovieAVL.
+void inOrderUtil(AVLNode<Movie *> *node)
+{
+	if (node)
+	{
+		inOrderUtil(node->left);
+		node->key->display() ;
+		inOrderUtil(node->right);
+	}
+}
+
+void MovieAVL::traverse()
+{
+	inOrderUtil(root);
+}
+
 void ActorAVL::insert(Actor *key)
 {
 	root = insertNode(root, key);

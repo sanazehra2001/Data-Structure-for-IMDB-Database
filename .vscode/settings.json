@@ -47,7 +47,19 @@
     "functional": "cpp",
     "random": "cpp",
     "*.tcc": "cpp",
-    "unordered_map": "cpp"
+    "unordered_map": "cpp",
+    "array": "cpp",
+    "cstdarg": "cpp",
+    "cwctype": "cpp",
+    "deque": "cpp",
+    "list": "cpp",
+    "vector": "cpp",
+    "algorithm": "cpp",
+    "map": "cpp",
+    "memory_resource": "cpp",
+    "numeric": "cpp",
+    "fstream": "cpp",
+    "sstream": "cpp"
   },
   "C_Cpp_Runner.warnings": [
     "-Wall",

@@ -40,10 +40,10 @@ class Movie
     int fbLikesForMovie;
     MovieColor color;
 
-    static unordered_map<string, MovieAVL> moviesByTitle; // avl sorted by title
-    static map<string, forward_list<Movie *>> moviesByYear; // keys sorted by year
-    static map<string, forward_list<Movie *>> moviesByRating; // keys sorted by rating
-    static unordered_map<Genre, map<string, forward_list<Movie*>>> moviesByGenre; // nested maps' keys sorted on rating 
+    static map<string, MovieAVL> moviesByTitle;                                                     // avl sorted by title
+    static map<short int, forward_list<Movie *>> moviesByYear;                                      // keys sorted by year
+    static map<string, forward_list<Movie *>, greater<string>> moviesByRating;                      // keys sorted by rating
+    static unordered_map<Genre, map<string, forward_list<Movie *>, greater<string>>> moviesByGenre; // nested maps' keys sorted on rating
 
 public:
     // setters
@@ -95,12 +95,12 @@ public:
     MovieColor getColor();
 
     // methods
+    void display();
     void searchMovie(string); //not necessarily complete
     void getMoviesOfYear(short int);
     void printMoviesChronologically(bool);
     void getMoviesOfGenre(string);
     void printMoviesByRating();
-    void printMoviesByRating(string);
 };
 
 #endif
