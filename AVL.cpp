@@ -1,6 +1,6 @@
 #include <iostream>
 #include "Movie.cpp"
-// #include "Actor.cpp"
+#include "ActorNode.cpp"
 // #include "Director.cpp"
 using namespace std;
 
@@ -31,7 +31,8 @@ int max(int a, int b)
 }
 
 // A utility function to get the height of the tree
-int height(AVLNode<Movie *> *N)
+template <class Type>
+int height(AVLNode<Type *> *N)
 {
 	if (N == NULL)
 		return 0;
@@ -39,17 +40,19 @@ int height(AVLNode<Movie *> *N)
 }
 
 /* Helper function that allocates a new AVLNode with the given key */
-AVLNode<Movie *> *newAVLNode(Movie *key)
+template <class Type>
+AVLNode<Type *> *newAVLNode(Type *key)
 {
-	AVLNode<Movie *> *node = new AVLNode<Movie *>(key);
+	AVLNode<Type *> *node = new AVLNode<Type *>(key);
 	return (node);
 }
 
 // A utility function to right rotate subtree rooted with y
-AVLNode<Movie *> *rightRotate(AVLNode<Movie *> *y)
+template <class Type>
+AVLNode<Type *> *rightRotate(AVLNode<Type *> *y)
 {
-	AVLNode<Movie *> *x = y->left;
-	AVLNode<Movie *> *T2 = x->right;
+	AVLNode<Type *> *x = y->left;
+	AVLNode<Type *> *T2 = x->right;
 
 	// Perform rotation
 	x->right = y;
@@ -64,10 +67,11 @@ AVLNode<Movie *> *rightRotate(AVLNode<Movie *> *y)
 }
 
 // A utility function to left rotate subtree rooted with x
-AVLNode<Movie *> *leftRotate(AVLNode<Movie *> *x)
+template <class Type>
+AVLNode<Type *> *leftRotate(AVLNode<Type *> *x)
 {
-	AVLNode<Movie *> *y = x->right;
-	AVLNode<Movie *> *T2 = y->left;
+	AVLNode<Type *> *y = x->right;
+	AVLNode<Type *> *T2 = y->left;
 
 	// Perform rotation
 	y->left = x;
@@ -82,7 +86,8 @@ AVLNode<Movie *> *leftRotate(AVLNode<Movie *> *x)
 }
 
 // Get Balance factor of AVLNode
-int getBalance(AVLNode<Movie *> *N)
+template <class Type>
+int getBalance(AVLNode<Type *> *N)
 {
 	if (N == NULL)
 		return 0;
@@ -90,7 +95,8 @@ int getBalance(AVLNode<Movie *> *N)
 }
 
 // A utility function to print preorder traversal of the tree.
-void preOrderUtil(AVLNode<Movie *> *node)
+template <class Type>
+void preOrderUtil(AVLNode<Type *> *node)
 {
 	if (node)
 	{
@@ -101,7 +107,8 @@ void preOrderUtil(AVLNode<Movie *> *node)
 }
 
 // A utility function to print inorder traversal of the tree.
-void inOrderUtil(AVLNode<Movie *> *node)
+template <class Type>
+void inOrderUtil(AVLNode<Type *> *node)
 {
 	if (node)
 	{
@@ -113,7 +120,8 @@ void inOrderUtil(AVLNode<Movie *> *node)
 }
 
 // A utility function to print postorder traversal of the tree.
-void postOrderUtil(AVLNode<Movie *> *node)
+template <class Type>
+void postOrderUtil(AVLNode<Type *> *node)
 {
 	if (node)
 	{
@@ -123,7 +131,7 @@ void postOrderUtil(AVLNode<Movie *> *node)
 	}
 }
 
-class AVLMovieByTitle
+class AVLMoviesByTitle
 {
 	AVLNode<Movie *> *root = NULL;
 
@@ -157,22 +165,22 @@ public:
 		// If this AVLNode becomes unbalanced, then there are 4 cases
 
 		// Left Left Case
-		if (balance > 1 && key < node->left->key)
+		if (balance > 1 && key->getTitle()  < node->left->key->getTitle() )
 			return rightRotate(node);
 
 		// Right Right Case
-		if (balance < -1 && key > node->right->key)
+		if (balance < -1 && key->getTitle()  > node->right->key->getTitle() )
 			return leftRotate(node);
 
 		// Left Right Case
-		if (balance > 1 && key > node->left->key)
+		if (balance > 1 && key->getTitle()  > node->left->key->getTitle() )
 		{
 			node->left = leftRotate(node->left);
 			return rightRotate(node);
 		}
 
 		// Right Left Case
-		if (balance < -1 && key < node->right->key)
+		if (balance < -1 && key->getTitle()  < node->right->key->getTitle() )
 		{
 			node->right = rightRotate(node->right);
 			return leftRotate(node);
@@ -196,7 +204,7 @@ public:
 	}
 };
 
-class AVLMovieByYear
+class AVLMoviesByRating
 {
 	AVLNode<Movie *> *root = NULL;
 
@@ -213,9 +221,9 @@ public:
 		/* 1. Perform the normal BST insertion */
 		if (node == NULL)
 			return (newAVLNode(key));
-		if (key->getTitleYear() < node->key->getTitleYear())
+		if (key->getContentRating().compare(node->key->getContentRating())<0)
 			node->left = insertNode(node->left, key);
-		else if (key->getTitleYear() > node->key->getTitleYear())
+		else if (key->getContentRating().compare( node->key->getContentRating())>0)
 			node->right = insertNode(node->right, key);
 		else // Equal keys are not allowed in BST
 			return node;
@@ -230,22 +238,22 @@ public:
 		// If this AVLNode becomes unbalanced, then there are 4 cases
 
 		// Left Left Case
-		if (balance > 1 && key < node->left->key)
+		if (balance > 1 && key->getContentRating()  < node->left->key->getContentRating() )
 			return rightRotate(node);
 
 		// Right Right Case
-		if (balance < -1 && key > node->right->key)
+		if (balance < -1 && key->getContentRating()  > node->right->key->getContentRating() )
 			return leftRotate(node);
 
 		// Left Right Case
-		if (balance > 1 && key > node->left->key)
+		if (balance > 1 && key->getContentRating()  > node->left->key->getContentRating() )
 		{
 			node->left = leftRotate(node->left);
 			return rightRotate(node);
 		}
 
 		// Right Left Case
-		if (balance < -1 && key < node->right->key)
+		if (balance < -1 && key->getContentRating()  < node->right->key->getContentRating() )
 		{
 			node->right = rightRotate(node->right);
 			return leftRotate(node);
@@ -269,45 +277,124 @@ public:
 	}
 };
 
+class AVLActors
+{
+	AVLNode<ActorNode *> *root = NULL;
+
+public:
+	void insert(ActorNode *key)
+	{
+		root = insertNode(root, key);
+	}
+
+	// Recursive function to insert a key in the subtree rooted with AVLNode and
+	// returns the new root of the subtree.
+	AVLNode<ActorNode *> *insertNode(AVLNode<ActorNode *> *node, ActorNode *key)
+	{
+		/* 1. Perform the normal BST insertion */
+		if (node == NULL)
+			return (newAVLNode(key));
+		if (key->getName().compare(node->key->getName())<0)
+			node->left = insertNode(node->left, key);
+		else if (key->getName().compare( node->key->getName())>0)
+			node->right = insertNode(node->right, key);
+		else // Equal keys are not allowed in BST
+			return node;
+
+		/* 2. Update height of this ancestor AVLNode */
+		node->height = 1 + max(height(node->left),
+							   height(node->right));
+
+		/* 3. Get the balance factor of this ancestor AVLNode to check whether this AVLNode became unbalanced */
+		int balance = getBalance(node);
+
+		// If this AVLNode becomes unbalanced, then there are 4 cases
+
+		// Left Left Case
+		if (balance > 1 && key->getName()  < node->left->key->getName() )
+			return rightRotate(node);
+
+		// Right Right Case
+		if (balance < -1 && key->getName()  > node->right->key->getName() )
+			return leftRotate(node);
+
+		// Left Right Case
+		if (balance > 1 && key->getName()  > node->left->key->getName() )
+		{
+			node->left = leftRotate(node->left);
+			return rightRotate(node);
+		}
+
+		// Right Left Case
+		if (balance < -1 && key->getName()  < node->right->key->getName() )
+		{
+			node->right = rightRotate(node->right);
+			return leftRotate(node);
+		}
+
+		/* return the (unchanged) AVLNode pointer */
+		return node;
+	}
+
+	void preOrder()
+	{
+
+		preOrderUtil(root);
+	}
+
+	void preOrderUtil(AVLNode<ActorNode*> *node){
+		if (node)
+	{
+		cout << node->key->getName() << " ";
+		preOrderUtil(node->left);
+		preOrderUtil(node->right);
+	}
+	}
+	
+};
+
+
+
 // Driver Code
 int main()
 {
-	// AVLMovieByTitle avl;
-	AVLMovieByYear avl;
+	// AVLMoviesByTitle avl;
+	AVLMoviesByRating avl;
+	AVLActors actors;
 	/* Constructing tree given in
 	the above figure */
 	Movie m;
 	m.setTitle("c");
 	m.setTitleYear(2020);
+	m.setContentRating("c");
 	Movie m1;
 	m1.setTitle("a");
-	m.setTitleYear(2022);
+	m1.setTitleYear(2022);
+	m1.setContentRating("a");
 	Movie m2;
 	m2.setTitle("b");
-	m.setTitleYear(2019);
+	m2.setTitleYear(2019);
+	m2.setContentRating("b");
 
 	avl.insert(&m);
 	avl.insert(&m1);
 	avl.insert(&m2);
-	// avl.insert(20);
-	// avl.insert(30);
-	// avl.insert(40);
-	// avl.insert(50);
-	// avl.insert(25);
 
-	/* The constructed AVL Tree would be
-			30
-			/ \
-		  20   40
-		 / \     \
-		10 25     50
-	*/
+	ActorNode a ("a");
+	actors.insert(&a);
+	actors.preOrder();
+
+
 	cout << "Preorder traversal of the constructed AVL tree is \n";
-	avl.preOrder();
-	cout << endl;
-	avl.inOrder();
-	cout << endl;
-	avl.postOrder();
+	// avl.preOrder();
+	// cout << endl;
+	// avl.inOrder();
+	// cout << endl;
+	// avl.postOrder();
+
+	// string a = "2020";
+	// string b= "2022";
+	// cout <<a>(b)<<endl;
 
 	return 0;
 }

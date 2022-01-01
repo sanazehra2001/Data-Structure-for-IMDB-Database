@@ -17,6 +17,10 @@ public:
     ActorNode(string name){}
     ActorNode(string name, int fbLikesForActor){}
 
+    string getName(){
+        return name;
+    }
+
     void addActor(ActorNode* a){
         //allActors.insert(a.name, a);
     }
