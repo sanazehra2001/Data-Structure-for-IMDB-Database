@@ -115,7 +115,10 @@ void Movie::setColor(string col)
 }
 
 //getters
-string getTitle();
+string Movie::getTitle(){
+    return title;
+}
+
 forward_list<Genre> Movie::getGenre()
 {
     return genre;
