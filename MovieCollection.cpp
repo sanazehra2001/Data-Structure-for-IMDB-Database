@@ -43,7 +43,7 @@ int main()
             while (getline(stringstream(colmVals[1]), word, '|')) // add genres to the list
             {
                 m.setGenre(word);
-                cout << word<<endl;
+                // cout << word<<endl;
             }
 
             m.setTitleYear(stoi(colmVals[2]));
