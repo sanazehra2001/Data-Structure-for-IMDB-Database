@@ -46,17 +46,32 @@ map<string, forward_list<Movie *>> Actor::getMovie()
     return movieList;
 }
 
+int Actor::getCountOfMovies()
+{
+    int count = 0;
+    map<string, forward_list<Movie *>>::iterator it;
+
+    for (it = movieList.begin(); it != movieList.end(); it++)
+    {
+        forward_list<Movie *> movies = it->second;
+        count += distance(movies.begin(), movies.end());
+    }
+    return count;
+}
+
 // add to main map
 void Actor::addActor(Actor *a)
 {
     //allActors.insert(a.name, a);
 }
 
+void Actor::display()
+{
+}
+
 // methods related to actors specified in document provided
 Actor *Actor::searchActor(string name, bool display)
 {
-    //return pointer if found
-    //return null if not
 }
 
 void Actor::displayActorProfile(Actor *a) {}
