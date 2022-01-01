@@ -38,7 +38,7 @@ public:
     forward_list<Movie*> getMovies();
 
     // add to main map of directors
-    void addDirector(Director*);
+    void static addDirector(Director*);
 
     // methods related to director
     static Director *searchDir(string );
