@@ -6,10 +6,12 @@
 #include <forward_list>
 #include <map>
 #include "Movie.h"
+#include <unordered_map>
+#include "AVL.h"
 
 // forward declaration
 class Movie;
-
+class DirectorAVL;
 using namespace std;
 class Director
 {
@@ -18,7 +20,7 @@ public:
     int fbLikesForDirector;
     forward_list<Movie *> movieList;
 
-    static map<string, Director *> allDirectors; //to be converted to AVL
+    static unordered_map<string, DirectorAVL> allDirectors;  //avl sorted on name
 
     // constructor
     Director();

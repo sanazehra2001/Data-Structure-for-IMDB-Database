@@ -113,7 +113,6 @@ void Movie::setColor(string col)
     // color = MovieColor.convert(col);
 }
 
-
 //getters
  string getTitle();
     forward_list<Genre> Movie::getGenre(){
