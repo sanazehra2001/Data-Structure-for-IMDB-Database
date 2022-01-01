@@ -5,12 +5,13 @@
 #include <map>
 #include "Movie.cpp"
 #include "DirectorNode.cpp"
-//#include "ActorNode.cpp"
+#include "ActorNode.cpp"
 
 using namespace std;
-class MovieCollection
-{
-};
+
+class Movie;
+class ActorNode;
+class DirectorNode;
 
 int main()
 {
@@ -21,6 +22,8 @@ int main()
     short int year;
     string colmVals[28];
     ifstream file("IMDB_Top5000-SEECS.csv");
+
+    cout << "File started";
 
     if (file.is_open())
     {
@@ -52,24 +55,26 @@ int main()
             DirectorNode d(colmVals[4], stoi(colmVals[5]));
             if (DirectorNode::searchDir(d.getName()) == NULL)   // if the dir is not in the dir map
             { 
-                DirectorNode::allDirectors.insert({colmVals[4].at(0), &d});
+                //DirectorNode::allDirectors.insert({colmVals[4].at(0), &d});
             }
             m.setDirectorNode(&d);
 
             m.setNumOfCriticReviews(stoi(colmVals[6]));
             m.setDuration(stoi(colmVals[7]));
 
+            ActorNode* actors[3];
             for (int i = 8; i < 14; i + 2) // add actors to the array
             {
+                int actorIndex = 0;
                 ActorNode a(colmVals[i], stoi(colmVals[i + 1]));
 
-                if (ActorNode::searchActor(a.getName()) == NULL)    // if the actor is not in the actor map
+                if (ActorNode::searchActor(a.getName(), false) == NULL)    // if the actor is not in the actor map
                 { 
-                    ActorNode::allActors.insert({colmVals[i].at(0), &a});
+                    //ActorNode::allActors.insert({colmVals[i].at(0), &a});
                 }
-
-                m.setActor(&a);
+                actors[actorIndex] = &a;
             }
+            m.setActor(actors);
 
             m.setGross(stoi(colmVals[14]));
             m.setNumOfVotes(stoi(colmVals[15]));
@@ -89,9 +94,11 @@ int main()
             m.setBudget(stoi(colmVals[24]));
             m.setAspectRatio(stof(colmVals[25]));
             m.setFbLikesForMovie(stoi(colmVals[26]));
-            m.setColor(colmVals[27]);
+            //m.setColor(colmVals[27]);
         }
         file.close();
+
+        cout << "The file has been closed. The doc has been parsed.";
     }
     else
     {

@@ -1,3 +1,6 @@
+#ifndef ActorNode_H
+#define ActorNode_H
+
 #include <iostream>
 #include <string>
 #include <forward_list>
@@ -7,19 +10,23 @@
 
 using namespace std;
 
-class ActorNode{
-    
-    static map<string, AVL<ActorNode*>> allActors;  //convert to avl
+class Movie;
 
+class ActorNode{
     string name;
     int fbLikesForActor;
     forward_list<Movie*> movieList;
 
-// count of list of movies
-
 public:
+
+    static map<string, ActorNode*> allActors;
+
     ActorNode(string name){}
     ActorNode(string name, int fbLikesForActor){}
+
+    string getName(){
+        return name;
+    }
 
     //for adding to avl tree
     void addActor(ActorNode* a){
@@ -48,3 +55,5 @@ public:
     void getCoActorsOfCoActors(string name){}   // return type has to be decided
     bool isCoActor(string nameA, string nameB){} 
 };
+
+#endif

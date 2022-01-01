@@ -1,31 +1,41 @@
+#ifndef DirectorNode_H
+#define DirectorNode_H
+
 #include <iostream>
 #include <string>
 #include <map>
 #include <forward_list>
-#include "AVL.cpp"
-#include "Movie.cpp"
+//#include "AVL.cpp"
+//#include "Movie.cpp"
 
 using namespace std;
 
-class DirectorNode{
+class Movie;
+
+class DirectorNode
+{
     string name;
     int fbLikesForDirector;
-    forward_list<Movie*> movieList;
+    forward_list<Movie *> movieList;
 
-    static map<string, DirectorNode*> allDirectors;
 
 public:
-    DirectorNode(string n, int likes){
+    static map<string, DirectorNode *> allDirectors;
+
+    DirectorNode(string n, int likes)
+    {
         name = n;
         fbLikesForDirector = likes;
     }
 
     //getters
-    string getName(){
+    string getName()
+    {
         return name;
     }
 
-    static DirectorNode* searchDir(string name){}                  
-    void getDirectorOfGenre(string genre){}
-
+    static DirectorNode *searchDir(string name) {}
+    void getDirectorOfGenre(string genre) {}
 };
+
+#endif

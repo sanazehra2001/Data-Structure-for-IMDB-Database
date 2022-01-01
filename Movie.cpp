@@ -1,15 +1,20 @@
+#ifndef Movie_H
+#define Movie_H
+
 #include <iostream>
 #include <string>
 #include "DirectorNode.cpp"
 #include "ActorNode.cpp"
 #include "Genre.cpp"
-#include <list>
+#include <forward_list>
 #include <string>
-#include "MovieColor.cpp"
 // #include "AVL.cpp"
 #include <map>
 
 using namespace std;
+
+class ActorNode;
+class DirectorNode;
 
 class Movie
 {
@@ -25,7 +30,7 @@ class Movie
     unsigned int numOfVotes;
     int fbLikesForCast;
     short int faceNumInPoster;
-    forward_list plotKeywords;
+    forward_list<string> plotKeywords;
     string imdbLink;
     int numOfReviews;
     string language;
@@ -71,8 +76,11 @@ public:
         duration = d;
     }
 
-    void setActor(ActorNode *a){
-        actor.emplace_front(a);
+    void setActor(ActorNode* a[3]){
+        for (int i = 0; i < 3; i++)
+        {
+            actors[i] = a[i];     
+        }
     }
 
     void setGross(unsigned long int g){
@@ -153,3 +161,5 @@ public:
     void printMoviesByRating() {}
     void printMoviesByRating(string genre) {}
 };
+
+#endif
