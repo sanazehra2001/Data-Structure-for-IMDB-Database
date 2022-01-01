@@ -111,7 +111,7 @@ void Movie::setFbLikesForMovie(int likes)
 
 void Movie::setColor(string col)
 {
-     color = convertColor(col);
+    color = convertColor(col);
 }
 
 //getters
@@ -209,6 +209,19 @@ void Movie::display()
 {
 }
 
+string getNextLetter(char letter)
+{
+    string nextChar = "";
+    if (letter == 'z')
+        nextChar += 'a';
+    else if (letter == 'Z')
+        nextChar += 'A';
+    else
+        nextChar = (char)(((int)letter) + 1);
+    nextChar += tolower(nextChar[0]);
+    return nextChar;
+}
+
 // search movie by title not necessarily complete
 void Movie::searchMovie(string title)
 {
@@ -253,19 +266,6 @@ void Movie::searchMovie(string title)
             }
         }
     }
-}
-
-string getNextLetter(char letter)
-{
-    string nextChar = "";
-    if (letter == 'z')
-        nextChar += 'a';
-    else if (letter == 'Z')
-        nextChar += 'A';
-    else
-        nextChar = (char)(((int)letter) + 1);
-    nextChar += tolower(nextChar[0]);
-    return nextChar;
 }
 
 void Movie::getMoviesOfYear(short int year)
