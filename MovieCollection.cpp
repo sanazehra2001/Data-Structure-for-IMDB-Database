@@ -6,11 +6,14 @@
 #include "Director.cpp"
 #include "Actor.cpp"
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
 
 using namespace std;
 
 =======
+=======
+>>>>>>> Stashed changes
 #include "AVL.cpp"
 
 #include "Movie.h"
@@ -207,6 +210,7 @@ int main()
     }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     return 0;
 }
 
@@ -225,6 +229,8 @@ int main()
 //     return 0;
 // }
 =======
+=======
+>>>>>>> Stashed changes
     while (getline(file, line)) // reads an entire row and stores it in line
     {
         index = 0;
@@ -297,4 +303,7 @@ int main()
     }
     return 0;
 }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
