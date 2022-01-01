@@ -7,6 +7,8 @@
 #include "Director.h"
 #include "Genre.cpp"
 #include "MovieColor.cpp"
+#include "AVL.h"
+#include <unordered_map>
 
 //forward declarations
 class Actor;
@@ -38,10 +40,10 @@ class Movie
     int fbLikesForMovie;
     MovieColor color;
 
-    // priority to be implemented
-    // static map<string, AVL<Movie *>> moviesByTitle;
-    // static map<string, AVL<Movie *>> moviesByYear;
-    // static map<Genre, AVL<Movie *>> moviesByGenre;
+    static unordered_map<string, MovieAVL> moviesByTitle; // avl sorted by title
+    static map<string, forward_list<Movie *>> moviesByYear; // keys sorted by year
+    static map<string, forward_list<Movie *>> moviesByRating; // keys sorted by rating
+    static unordered_map<Genre, map<string, forward_list<Movie*>>> moviesByGenre; // nested maps' keys sorted on rating 
 
 public:
     // setters

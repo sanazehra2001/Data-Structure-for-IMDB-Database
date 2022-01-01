@@ -41,7 +41,7 @@ int Actor::getLikes()
 {
     return fbLikesForActor;
 }
- map<string, Movie *> Actor::getMovie()
+map<string, forward_list<Movie *>> Actor::getMovie()
 {
     return movieList;
 }
@@ -51,7 +51,6 @@ void Actor::addActor(Actor *a)
 {
     //allActors.insert(a.name, a);
 }
-
 
 // methods related to actors specified in document provided
 Actor *Actor::searchActor(string name, bool display)

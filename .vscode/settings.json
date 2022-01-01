@@ -46,7 +46,8 @@
     "string": "cpp",
     "functional": "cpp",
     "random": "cpp",
-    "*.tcc": "cpp"
+    "*.tcc": "cpp",
+    "unordered_map": "cpp"
   },
   "C_Cpp_Runner.warnings": [
     "-Wall",
