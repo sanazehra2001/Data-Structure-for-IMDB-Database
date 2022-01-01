@@ -12,5 +12,4 @@ enum ContentRating{
     TV14,
     TVPG,
     Passed,
-
 };

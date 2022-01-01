@@ -4,15 +4,14 @@
 #include <sstream>
 #include <map>
 #include "Movie.cpp"
-//#include "ActorNode.cpp"
+#include "DirectorNode.cpp"
+#include "ActorNode.cpp"
 
 using namespace std;
 
-class MovieCollection
-{
-
-
-};
+class Movie;
+class ActorNode;
+class DirectorNode;
 
 int main()
 {
@@ -24,26 +23,29 @@ int main()
     string colmVals[28];
     ifstream file("IMDB_Top5000-SEECS.csv");
 
+    cout << "File started";
+
     if (file.is_open())
     {
         getline(file, line); // gets the row of column headings
 
-        while (getline(file, line))
-        { // reads an entire row and stores it in line
+        while (getline(file, line)) // reads an entire row and stores it in line
+        {
             index = 0;
-            Movie m;
             stringstream s(line); // breaks the line into words
 
-            while (getline(s, word, ','))
-            { // for every colm of a row, stores data in word and assigns it to an array index
+            Movie m; // create a new Movie node for each row
+
+            while (getline(s, word, ',')) // the comma separated values are stored at consecutive array index
+            {
                 colmVals[index++] = word;
             }
 
-            // set the attributes of Movie
+            // setting attributes of each Movie
             m.setTitle(colmVals[0]);
 
-            while (getline(stringstream(colmVals[1]), word, '|'))
-            { // add genres to the list
+            while (getline(stringstream(colmVals[1]), word, '|')) // add genres to the list
+            {
                 m.setGenre(word);
             }
 
@@ -51,23 +53,36 @@ int main()
             m.setImdbScore(stof(colmVals[3]));
 
             DirectorNode d(colmVals[4], stoi(colmVals[5]));
+            if (DirectorNode::searchDir(d.getName()) == NULL)   // if the dir is not in the dir map
+            { 
+                //DirectorNode::allDirectors.insert({colmVals[4].at(0), &d});
+            }
             m.setDirectorNode(&d);
+
             m.setNumOfCriticReviews(stoi(colmVals[6]));
             m.setDuration(stoi(colmVals[7]));
 
-            for (int i = 8; i < 14; i + 2)
-            { // add actors to the list
+            ActorNode* actors[3];
+            for (int i = 8; i < 14; i + 2) // add actors to the array
+            {
+                int actorIndex = 0;
                 ActorNode a(colmVals[i], stoi(colmVals[i + 1]));
-                m.setActor(&a);
+
+                if (ActorNode::searchActor(a.getName(), false) == NULL)    // if the actor is not in the actor map
+                { 
+                    //ActorNode::allActors.insert({colmVals[i].at(0), &a});
+                }
+                actors[actorIndex] = &a;
             }
+            m.setActor(actors);
 
             m.setGross(stoi(colmVals[14]));
             m.setNumOfVotes(stoi(colmVals[15]));
             m.setFbLikesForCast(stoi(colmVals[16]));
             m.setFaceNumInPoster(stoi(colmVals[17]));
 
-            while (getline(stringstream(colmVals[18]), word, '|'))
-            { // add keywords to the list
+            while (getline(stringstream(colmVals[18]), word, '|'))  // | separated keywords are added to the list
+            { 
                 m.setPlotKeywords(word);
             }
 
@@ -79,9 +94,11 @@ int main()
             m.setBudget(stoi(colmVals[24]));
             m.setAspectRatio(stof(colmVals[25]));
             m.setFbLikesForMovie(stoi(colmVals[26]));
-            m.setColor(colmVals[27]);
+            //m.setColor(colmVals[27]);
         }
         file.close();
+
+        cout << "The file has been closed. The doc has been parsed.";
     }
     else
     {

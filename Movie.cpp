@@ -1,15 +1,20 @@
+#ifndef Movie_H
+#define Movie_H
+
 #include <iostream>
 #include <string>
 #include "DirectorNode.cpp"
 #include "ActorNode.cpp"
 #include "Genre.cpp"
-#include <list>
+#include <forward_list>
 #include <string>
-#include "MovieColor.cpp"
 // #include "AVL.cpp"
 #include <map>
 
 using namespace std;
+
+class ActorNode;
+class DirectorNode;
 
 class Movie
 {
@@ -20,7 +25,7 @@ class Movie
     DirectorNode *director;
     int numOfCriticReviews;
     int duration;
-    forward_list<ActorNode*> actor;
+    ActorNode* actors[3];
     unsigned long int gross;
     unsigned int numOfVotes;
     int fbLikesForCast;
@@ -34,7 +39,7 @@ class Movie
     unsigned long int budget;
     float aspectRatio;
     int fbLikesForMovie;
-    MovieColor color;
+    bool color;
 
     // priority to be implemented
     // static map<string, AVL<Movie *>> moviesByTitle;
@@ -47,9 +52,9 @@ public:
         this->title = t;
     }
 
-    // void setGenre(string g){
-    //     genre.emplace_front(g);
-    // }
+    void setGenre(string g){
+        genre.emplace_front(convert(g));
+    }
 
     void setTitleYear(short int year){
         titleYear = year;
@@ -71,8 +76,11 @@ public:
         duration = d;
     }
 
-    void setActor(ActorNode *a){
-        actor.emplace_front(a);
+    void setActor(ActorNode* a[3]){
+        for (int i = 0; i < 3; i++)
+        {
+            actors[i] = a[i];     
+        }
     }
 
     void setGross(unsigned long int g){
@@ -127,8 +135,8 @@ public:
         fbLikesForMovie = likes;
     }
 
-    void setColor(string col){
-        color = convert(col);
+    void setColor(bool col){
+        color = col;
     }
 
     string getTitle(){
@@ -153,3 +161,5 @@ public:
     void printMoviesByRating() {}
     void printMoviesByRating(string genre) {}
 };
+
+#endif
