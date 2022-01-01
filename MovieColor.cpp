@@ -7,8 +7,8 @@ enum MovieColor{
     Unspecified
 };
 
-// MovieColor convert(string s){
-//     if (s == "Color") return Color;
-//     else if (s == "Black and White") return Black;
-//     else if (s == "") return Unspecified;
-// }
+MovieColor convertColor(string s){
+    if (s.compare("Color")) return Color;
+    else if (s.compare("Black and White")) return Black;
+    else if (s.compare("")) return Unspecified;
+}
