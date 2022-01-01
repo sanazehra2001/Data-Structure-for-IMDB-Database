@@ -36,7 +36,7 @@ public:
     void addDirector(Director*);
 
     // methods related to director
-    Director *searchDir(string );
+    static Director *searchDir(string );
     void getDirectorOfGenre(string );
 };
 

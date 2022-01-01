@@ -20,7 +20,7 @@ public:
 
     //constructor
     Actor(string);
-    Actor(string, int) ;
+    Actor(string, int);
 
     //setters
     void setName(string);
@@ -34,8 +34,8 @@ public:
     void addActor(Actor *);
 
     // methods related to actors specified in document provided
-    Actor *searchActor(string, bool);
-    void displayActorProfile(Actor *);
+    static Actor *searchActor(string, bool);
+    static void displayActorProfile(Actor *);
     void getCoActors(string);
     void getUniqueCoActors(string);
     void getCoActorsOfCoActors(string);
