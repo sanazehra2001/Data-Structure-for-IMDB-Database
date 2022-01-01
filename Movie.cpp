@@ -111,7 +111,7 @@ void Movie::setFbLikesForMovie(int likes)
 
 void Movie::setColor(string col)
 {
-    // color = MovieColor.convert(col);
+     color = convertColor(col);
 }
 
 //getters
