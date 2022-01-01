@@ -6,6 +6,7 @@
 #include "Actor.h"
 #include "Director.h"
 #include "Genre.cpp"
+#include "MovieColor.cpp"
 
 //forward declarations
 class Actor;
@@ -35,7 +36,7 @@ class Movie
     unsigned long int budget;
     float aspectRatio;
     int fbLikesForMovie;
-    bool color;
+    MovieColor color;
 
     // priority to be implemented
     // static map<string, AVL<Movie *>> moviesByTitle;
@@ -51,7 +52,7 @@ public:
     void setDirector(Director *);
     void setNumOfCriticReviews(int);
     void setDuration(int);
-    void setActor(Actor *[3]);
+    void setActor(Actor **);
     void setGross(unsigned long int);
     void setNumOfVotes(unsigned int);
     void setFbLikesForCast(int);
@@ -65,12 +66,31 @@ public:
     void setBudget(unsigned long int);
     void setAspectRatio(float);
     void setFbLikesForMovie(int);
-    void setColor(bool);
+    void setColor(string);
 
     //getters
     string getTitle();
+    forward_list<Genre> getGenre();
     short int getTitleYear();
+    float getImdbScore();
+    Director *getDirector();
+    int getNumOfCriticReviews();
+    int getDuration();
+    Actor **getActor();
+    unsigned long int getGross();
+    unsigned int getNumOfVotes();
+    int getFbLikesForCast();
+    short int getFaceNumInPoster();
+    forward_list<string> getPlotKeywords();
+    string getImdbLink();
+    int getNumOfReviews();
+    string getLanguage();
+    string getCountry();
     string getContentRating();
+    unsigned long int getBudget();
+    float getAspectRatio();
+    int getFbLikesForMovie();
+    MovieColor getColor();
 
     // methods
     void searchMovie(string); //not necessarily complete

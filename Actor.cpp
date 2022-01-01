@@ -1,5 +1,10 @@
 #include "Actor.h"
 
+// constructors
+Actor::Actor()
+{
+    Actor("", 0);
+}
 
 Actor::Actor(string n)
 {
@@ -12,19 +17,43 @@ Actor::Actor(string n, int fb)
     fbLikesForActor = fb;
 }
 
+//setters
+void Actor::setName(string n)
+{
+    name = n;
+}
+void Actor::setLikes(int likes)
+{
+    fbLikesForActor = likes;
+}
+void Actor::addMovie(Movie *m)
+{
+    //to be implemented
+}
+
+// getters
 string Actor::getName()
 {
     return name;
 }
 
+int Actor::getLikes()
+{
+    return fbLikesForActor;
+}
+ map<string, Movie *> Actor::getMovie()
+{
+    return movieList;
+}
+
+// add to main map
 void Actor::addActor(Actor *a)
 {
     //allActors.insert(a.name, a);
 }
 
-void Actor::addToMovieMap(Movie *m) {}
 
-//for first method in the list
+// methods related to actors specified in document provided
 Actor *Actor::searchActor(string name, bool display)
 {
     //return pointer if found
@@ -43,4 +72,3 @@ void Actor::getUniqueCoActors(string name)
 
 void Actor::getCoActorsOfCoActors(string name) {} // return type has to be decided
 bool Actor::isCoActor(string nameA, string nameB) {}
-

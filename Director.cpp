@@ -1,9 +1,13 @@
 #include "Director.h"
 
+// constructors
 Director::Director()
 {
-    name = "";
-    fbLikesForDirector = 0;
+    Director("", 0);
+}
+Director::Director(string n)
+{
+    Director(n, 0);
 }
 
 Director::Director(string n, int likes)
@@ -12,15 +16,39 @@ Director::Director(string n, int likes)
     fbLikesForDirector = likes;
 }
 
-//getters
+// setters
+void Director::setName(string n)
+{
+    name = n;
+}
+
+void Director::setLikes(int likes)
+{
+    fbLikesForDirector = likes;
+}
+
+void Director::addMovie(Movie *m)
+{
+    movieList.emplace_front(m);
+}
+
+// getters
 string Director::getName()
 {
     return name;
 }
-
-void Director::setName(string n)
+int Director::getLikes()
 {
-    name = n;
+    return fbLikesForDirector;
+}
+forward_list<Movie *> Director::getMovies()
+{
+    return movieList;
+}
+
+// add to main map of directors
+void Director::addDirector(Director *d)
+{
 }
 
 Director *Director::searchDir(string name) {}

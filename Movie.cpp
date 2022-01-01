@@ -108,25 +108,80 @@ void Movie::setFbLikesForMovie(int likes)
     fbLikesForMovie = likes;
 }
 
-void Movie::setColor(bool col)
+void Movie::setColor(string col)
 {
-    color = col;
+    // color = MovieColor.convert(col);
 }
 
-string Movie::getTitle()
-{
-    return title;
-}
 
-short int Movie::getTitleYear()
-{
-    return titleYear;
-};
+//getters
+ string getTitle();
+    forward_list<Genre> Movie::getGenre(){
+        return genre;
+    }
+    short int Movie::getTitleYear(){
+        return titleYear;
+    }
+    float Movie::getImdbScore(){
+        return imdbScore;
+    }
+    Director *Movie::getDirector(){
+        return director;
+    }
+    int Movie::getNumOfCriticReviews(){
+        return numOfCriticReviews;
+    }
+    int Movie::getDuration(){
+        return duration;
+    }
+    Actor **Movie::getActor(){
+        return actors;
+    }
+    unsigned long int Movie::getGross(){
+        return gross;
+    }
+    unsigned int Movie::getNumOfVotes(){
+        return numOfVotes;
+    }
+    int Movie::getFbLikesForCast(){
+        return fbLikesForCast;
+    }
 
-string Movie::getContentRating()
-{
-    return contentRating;
-}
+    short int Movie::getFaceNumInPoster(){
+        return faceNumInPoster;
+    }
+
+    forward_list<string> Movie::getPlotKeywords(){
+        return plotKeywords;
+    }
+    string Movie::getImdbLink(){
+        return imdbLink;
+    }
+    int Movie::getNumOfReviews(){
+        return numOfReviews;
+    }
+    string Movie::getLanguage(){
+        return language;
+    }
+    string Movie::getCountry(){
+        return country;
+    }
+    string Movie::getContentRating(){
+        return contentRating;
+    }
+    unsigned long int Movie::getBudget(){
+        return budget;
+    }
+    float Movie::getAspectRatio(){
+        return aspectRatio;
+    }
+    int Movie::getFbLikesForMovie(){
+        return fbLikesForMovie;
+    }
+    MovieColor Movie::getColor(){
+        return color;
+    }
+
 
 // methods
 void Movie::searchMovie(string title) {} //not necessarily complete
