@@ -51,5 +51,14 @@ void Director::addDirector(Director *d)
 {
 }
 
-Director *Director::searchDir(string name) {}
+Director *Director::searchDir(string name, unordered_map<string, DirectorAVL> allDirectors) {}
 void Director::getDirectorOfGenre(string genre) {}
+
+//utility methods
+void Director::displayDirector(){
+    // cout << "Name: " << name << endl;
+    // cout << "Fb Likes: " << fbLikesForDirector << endl;
+    // cout << "Movies Directed: \n";
+    // for (auto it = movieList.begin(); it != movieList.end(); ++it)
+    //     cout << ' ' << *it << endl;
+}

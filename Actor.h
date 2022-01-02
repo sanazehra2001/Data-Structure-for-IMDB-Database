@@ -21,7 +21,7 @@ public:
     int fbLikesForActor;
     map<string, forward_list<Movie *>> movieList; //sorted chronologically key is year
 
-    static unordered_map<string, ActorAVL> allActors; // avl sorted on actor name
+    // static unordered_map<string, ActorAVL> allActors; // avl sorted on actor name
 
     //constructor
     Actor();
@@ -48,11 +48,12 @@ public:
 
 
     // methods related to actors specified in document provided
-    static Actor *searchActor(string, bool = false);
-    forward_list<Actor *> getCoActors(string);
-    void getUniqueCoActors(string);
-    void getCoActorsOfCoActors(string);
-    bool isCoActor(string, string);
+    static Actor *searchActor(string, unordered_map<string, ActorAVL>, bool = false);
+    static void displayActorProfile(Actor *);
+    forward_list<Actor*> getCoActors(string, unordered_map<string, ActorAVL>);
+    void getUniqueCoActors(string, unordered_map<string, ActorAVL> );
+    void getCoActorsOfCoActors(string, unordered_map<string, ActorAVL>);
+    bool isCoActor(string, string, unordered_map<string, ActorAVL>);
 };
 
 #endif

@@ -95,7 +95,7 @@ void Actor::display()
 }
 
 // methods related to actors specified in document provided
-Actor *Actor::searchActor(string name, bool display)
+Actor *Actor::searchActor(string name, unordered_map<string, ActorAVL> allActors, bool display)
 {
     Actor *actor = NULL;
     // finding actor by frst two letters of name in map of allActors, returns an avl of pointers to Actor
@@ -116,10 +116,10 @@ Actor *Actor::searchActor(string name, bool display)
 }
 
 //second method of the list
-forward_list<Actor *> Actor::getCoActors(string name)
+forward_list<Actor*> Actor::getCoActors(string name, unordered_map<string, ActorAVL> allActors)
 {
-    Actor *actor = searchActor(name, false); // finding the actor in allActors map
-    forward_list<Actor *> coactorsList;      // list to store coactors
+    forward_list<Actor*> coactorsList;
+    Actor *actor = searchActor(name, allActors, false); // finding the actor in allActors map
 
     // actor not found
     if (!actor)
@@ -157,14 +157,14 @@ forward_list<Actor *> Actor::getCoActors(string name)
     return coactorsList;
 }
 
-void Actor::getUniqueCoActors(string name)
+void Actor::getUniqueCoActors(string name, unordered_map<string, ActorAVL> allActors)
 {
     // implementaton using unordered map of coactors having movies as value
     // 1. find coactors
     // 2. insert name of coactor in map as a key, if not present
     // 3. add movie to the forward_list of movies coresponding to this coactor (value of map)
 
-    Actor *actor = searchActor(name, false); // finding the actor in allActors map
+    Actor *actor = searchActor(name, allActors, false); // finding the actor in allActors map
 
     // actor not found
     if (!actor)
@@ -228,17 +228,17 @@ bool inCoactors(forward_list<Actor *> coactors, string name)
     return false;
 }
 
-void Actor::getCoActorsOfCoActors(string name)
+void Actor::getCoActorsOfCoActors(string name, unordered_map<string, ActorAVL> allActors)
 {
     // get coactors of actor
     // get coactors of coactors(subactors)
-    forward_list<Actor *> coactors = getCoActors(name);
+    forward_list<Actor *> coactors = getCoActors(name, allActors);
     ActorAVL allCoactor;
     if (!coactors.empty())
     {
         for (auto it1 = coactors.begin(); it1 != coactors.end(); ++it1) // traverse thorugh the forward_list of movies
         {
-            forward_list<Actor *> subCoactors = getCoActors((*it1)->name);
+            forward_list<Actor *> subCoactors = getCoActors((*it1)->name, allActors);
             for (auto it2 = subCoactors.begin(); it2 != subCoactors.end(); ++it2) // traverse thorugh the forward_list of movies
             {
                 Actor *subActor = *it2;
@@ -253,9 +253,9 @@ void Actor::getCoActorsOfCoActors(string name)
 
 }
 
-bool Actor::isCoActor(string nameA, string nameB)
+bool Actor::isCoActor(string nameA, string nameB, unordered_map<string, ActorAVL> allActors)
 {
-    forward_list<Actor *> coactors = getCoActors(nameA); //coactors of A
+    forward_list<Actor *> coactors = getCoActors(nameA, allActors); //coactors of A
     if (!coactors.empty())
     {
         // if b is present in coactors then A and B are coactors

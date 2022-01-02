@@ -21,7 +21,7 @@ public:
     int fbLikesForDirector;
     forward_list<Movie *> movieList;
 
-    static unordered_map<string, DirectorAVL> allDirectors;  //avl sorted on name
+    //static unordered_map<string, DirectorAVL> allDirectors;  //avl sorted on name
 
     // constructor
     Director();
@@ -42,8 +42,11 @@ public:
     void static addDirector(Director*);
 
     // methods related to director
-    static Director *searchDir(string );
+    static Director *searchDir(string, unordered_map<string, DirectorAVL>);
     void getDirectorOfGenre(string );
+
+    //utitlity methods
+    void displayDirector();
 };
 
 #endif

@@ -9,63 +9,75 @@
 
 using namespace std;
 
-Director *addDirector(string name, int likes, Movie* m)
+//maps of movies
+map<string, MovieAVL> moviesByTitle;                                                     // avl sorted by title
+map<short int, forward_list<Movie *>> moviesByYear;                                      // keys sorted by year
+map<string, forward_list<Movie *>, greater<string>> moviesByRating;                      // keys sorted by rating
+unordered_map<Genre, map<string, forward_list<Movie *>, greater<string>>> moviesByGenre; // nested maps' keys sorted on rating
+
+//map od director
+unordered_map<string, DirectorAVL> allDirectors; //avl sorted on name
+
+//map of actor
+unordered_map<string, ActorAVL> allActors; // avl sorted on actor name
+
+Director *addDirector(string name, int likes, Movie *m)
 {
     string key = name.substr(0, 2);
     Director *d;
 
-    if (Director::allDirectors.find(key) == Director::allDirectors.end())
+    if (allDirectors.find(key) == allDirectors.end())
     {
         //key is not present, create key-avl pair
-        Director dir(name, likes);                 //create a new director
-        DirectorAVL avl;                           //create an AVL for that key
-        avl.insert(&dir);                          //add the director to the AVL
-        Director::allDirectors.insert({key, avl}); //finally add this newly created AVL to the map
+        Director dir(name, likes);       //create a new director
+        DirectorAVL avl;                 //create an AVL for that key
+        avl.insert(&dir);                //add the director to the AVL
+        allDirectors.insert({key, avl}); //finally add this newly created AVL to the map
 
         d = &dir;
     }
     else
     { // the key already exists
 
-        Director *dir = Director::searchDir(name); // pointer to the found dir or NULL otherwise
+        Director *dir = Director::searchDir(name, allDirectors); // pointer to the found dir or NULL otherwise
         d = dir;
 
         if (dir == NULL)
         { // if director is found
             Director dir(name, likes);
-            Director::allDirectors.at(key).insert(&dir);
+            allDirectors.at(key).insert(&dir);
             d = &dir;
         }
-        d->addMovie(m);
-        return d;
     }
+    d->addMovie(m);
+    return d;
 }
 
-Actor *addActor(string name, int likes, Movie* m)
+Actor *addActor(string name, int likes, Movie *m)
 {
     string key = name.substr(0, 2);
     Actor *a;
 
-    if (Actor::allActors.find(key) == Actor::allActors.end())
+    if (allActors.find(key) == allActors.end())
     {
         //key is not present, create key-avl pair
         Actor actor(name, likes); //create a new actor
         ActorAVL avl;             //create an AVL for that key
         avl.insert(&actor);       //add the actor to the AVL
-        Actor::allActors.insert({key, avl});
+        allActors.insert({key, avl});
 
         a = &actor;
     }
 
     else
-    {                                            // the key already exists
-        Actor *actor = Actor::searchActor(name); // pointer to the found actor or NULL otherwise
+    {                                                       // the key already exists
+        Actor *actor = Actor::searchActor(name, allActors); // pointer to the found actor or NULL otherwise
         a = actor;
 
         if (actor == NULL)
         { // if actor is found
             Actor actor(name, likes);
-            Actor::allActors.at(key).insert(&actor);
+            allActors.at(key).insert(&actor);
             a = &actor;
         }
     }
@@ -111,26 +123,31 @@ int main()
             if (colmVals[3] != "")
                 m.setImdbScore(stof(colmVals[3]));
 
-            m.setDirector(addDirector(colmVals[4], stoi(colmVals[5]), &m));
+            if ((colmVals[4] != "") && (colmVals[5] != ""))
+                m.setDirector(addDirector(colmVals[4], stoi(colmVals[5]), &m));
 
             if (colmVals[6] != "")
+            {
                 m.setNumOfCriticReviews(stoi(colmVals[6]));
+            }
 
             if (colmVals[7] != "")
                 m.setDuration(stoi(colmVals[7]));
 
-            
             Actor *actors[3];
-            for (int i = 8; i < 14; i + 2) // add actors to the array
+            int actorIndex = 0;
+            for (int i = 8; i < 14; i += 2) // add actors to the array
             {
-                int actorIndex = 0;
-                actors[actorIndex++] = addActor(colmVals[i], stoi(colmVals[i + 1]), &m);
+                if (colmVals[i] != "")
+                {
+                    actors[actorIndex++] = addActor(colmVals[i], stoi(colmVals[i + 1]), &m);
+                }
             }
+
             m.setActor(actors);
 
-
             if (colmVals[14] != "")
-                m.setGross(stoi(colmVals[14]));
+                m.setGross(stoul(colmVals[14]));
 
             if (colmVals[15] != "")
                 m.setNumOfVotes(stoi(colmVals[15]));
@@ -151,6 +168,7 @@ int main()
             }
 
             m.setImdbLink(colmVals[19]);
+
             if (colmVals[20] != "")
                 m.setNumOfReviews(stoi(colmVals[20]));
 
@@ -160,8 +178,10 @@ int main()
 
             if (colmVals[24] != "")
                 m.setBudget(stoll(colmVals[24]));
+
             if (colmVals[25] != "")
                 m.setAspectRatio(stof(colmVals[25]));
+
             if (colmVals[26] != "")
                 m.setFbLikesForMovie(stoi(colmVals[26]));
 
