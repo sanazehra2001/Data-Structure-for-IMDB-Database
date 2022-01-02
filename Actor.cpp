@@ -70,7 +70,7 @@ void Actor::display()
 }
 
 // methods related to actors specified in document provided
-Actor *Actor::searchActor(string name, bool display)
+Actor *Actor::searchActor(string name, unordered_map<string, ActorAVL> allActors, bool display)
 {
 }
 

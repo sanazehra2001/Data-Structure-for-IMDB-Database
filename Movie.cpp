@@ -226,7 +226,7 @@ string getNextLetter(char letter)
 }
 
 // search movie by title not necessarily complete
-void Movie::searchMovie(string title)
+void Movie::searchMovie(string title, map<string, MovieAVL> moviesByTitle)
 {
     // case1: string is of length one
     if (title.length() == 1)
@@ -271,7 +271,7 @@ void Movie::searchMovie(string title)
     }
 }
 
-void Movie::getMoviesOfYear(short int year)
+void Movie::getMoviesOfYear(short int year, map<short int, forward_list<Movie *>> moviesByYear)
 {
     forward_list<Movie *> movies = moviesByYear[year];
     cout << "Following movies were released in " << year << ": " << endl;
@@ -279,7 +279,7 @@ void Movie::getMoviesOfYear(short int year)
         cout << (*it)->getTitle() << endl;
 }
 
-void Movie::printMoviesChronologically(bool desc)
+void Movie::printMoviesChronologically(bool desc, map<short int, forward_list<Movie *>> moviesByYear)
 {
     // priniting reverse chronological order
     if (desc)
@@ -311,7 +311,7 @@ void Movie::printMoviesChronologically(bool desc)
     }
 }
 
-void Movie::printMoviesByRating()
+void Movie::printMoviesByRating(map<string, forward_list<Movie *>, greater<string>> moviesByRating)
 {
     map<string, forward_list<Movie *>, greater<string>>::iterator it;
     for (it = moviesByRating.begin(); it != moviesByRating.end(); it++)
@@ -323,7 +323,7 @@ void Movie::printMoviesByRating()
     }
 }
 
-void Movie::getMoviesOfGenre(string g)
+void Movie::getMoviesOfGenre(string g, unordered_map<Genre, map<string, forward_list<Movie *>, greater<string>>> moviesByGenre)
 {
     Genre genre = convert(g);
     map<string, forward_list<Movie *>, greater<string>> moviesOfGen = moviesByGenre[genre];
