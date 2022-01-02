@@ -67,7 +67,8 @@ Actor *addActor(string name, int likes, Movie *m)
         allActors.insert({key, avl});
 
         a = &actor;
-        // ActorAVL av = allActors[key];
+        // ActorAVL av = allActors["Jo"];
+        // // av.traverse();
         // Actor *actor1 =av.search(name);
         // cout << actor1->getName()<<endl;
         // Actor *actor1 = Actor::searchActor(name, allActors);
@@ -77,17 +78,17 @@ Actor *addActor(string name, int likes, Movie *m)
     else
     {
         // cout << name; // the key already exists
-        cout << key;
+        // cout << key;
         ActorAVL av = allActors[key];
-        av.traverse();
+        // av.traverse();
         Actor *actor = Actor::searchActor(name, allActors); // pointer to the found actor or NULL otherwise
         a = actor;
 
         if (actor == NULL)
         { // if actor is found
-            Actor actor(name, likes);
-            allActors.at(key).insert(&actor);
-            a = &actor;
+            Actor act(name, likes);
+            allActors.at(key).insert(&act);
+            a = &act;
         }
     }
     a->addMovie(m);

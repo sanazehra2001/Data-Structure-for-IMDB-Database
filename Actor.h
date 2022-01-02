@@ -45,15 +45,16 @@ public:
     // helper functions
     void displayAllMovies();
     void display();
+    static void displayAllActors(unordered_map<string, ActorAVL>);
 
 
     // methods related to actors specified in document provided
     static Actor *searchActor(string, unordered_map<string, ActorAVL>, bool = false);
     static void displayActorProfile(Actor *);
-    static void getCoActors(string, unordered_map<string, ActorAVL>);
-    static void getUniqueCoActors(string);
-    static void getCoActorsOfCoActors(string);
-    static bool isCoActor(string, string);
+    static forward_list<Actor *> getCoActors(string, unordered_map<string, ActorAVL>);
+    static void getUniqueCoActors(string, unordered_map<string, ActorAVL>);
+    static void getCoActorsOfCoActors(string, unordered_map<string, ActorAVL>);
+    static bool isCoActor(string, string, unordered_map<string, ActorAVL>);
 };
 
 #endif
