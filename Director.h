@@ -13,6 +13,7 @@
 class Movie;
 class DirectorAVL;
 using namespace std;
+
 class Director
 {
 public:

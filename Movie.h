@@ -35,7 +35,7 @@ class Movie
     string language;
     string country;
     string contentRating;
-    unsigned long int budget;
+    unsigned long long int budget;
     float aspectRatio;
     int fbLikesForMovie;
     MovieColor color;
@@ -65,7 +65,7 @@ public:
     void setLanguage(string);
     void setCountry(string);
     void setContentRating(string);
-    void setBudget(unsigned long int);
+    void setBudget(unsigned long long int);
     void setAspectRatio(float);
     void setFbLikesForMovie(int);
     void setColor(string);
@@ -89,7 +89,7 @@ public:
     string getLanguage();
     string getCountry();
     string getContentRating();
-    unsigned long int getBudget();
+    unsigned long long int getBudget();
     float getAspectRatio();
     int getFbLikesForMovie();
     MovieColor getColor();
