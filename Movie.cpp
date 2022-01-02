@@ -189,7 +189,7 @@ string Movie::getContentRating()
 {
     return contentRating;
 }
-unsigned long int Movie::getBudget()
+unsigned long long int Movie::getBudget()
 {
     return budget;
 }
