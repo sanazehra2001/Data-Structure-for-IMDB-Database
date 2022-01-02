@@ -53,10 +53,10 @@ Director *addDirector(string name, int likes, Movie *m)
     return d;
 }
 
-Actor *addActor(string name, int likes, Movie *m)
+Actor addActor(string name, int likes, Movie *m)
 {
     string key = name.substr(0, 2);
-    Actor *a;
+    Actor a;
 
     if (allActors.find(key) == allActors.end())
     {
@@ -66,7 +66,7 @@ Actor *addActor(string name, int likes, Movie *m)
         avl.insert(&actor);       //add the actor to the AVL
         allActors.insert({key, avl});
 
-        a = &actor;
+        a = actor;
         // ActorAVL av = allActors["Jo"];
         // // av.traverse();
         // Actor *actor1 =av.search(name);
@@ -82,20 +82,48 @@ Actor *addActor(string name, int likes, Movie *m)
         ActorAVL av = allActors[key];
         // av.traverse();
         Actor *actor = Actor::searchActor(name, allActors); // pointer to the found actor or NULL otherwise
-        a = actor;
+        a = *actor;
 
         if (actor == NULL)
         { // if actor is found
             Actor act(name, likes);
             allActors.at(key).insert(&act);
-            a = &act;
+            a = act;
         }
     }
-    a->addMovie(m);
+    a.addMovie(m);
+    //a->addMovie(m);
+    a.display();
     return a;
 }
 
-void readFile()
+char displayMenu()
+{
+    cout << "----------------------------MAIN MENU----------------------------\n";
+    cout << " 1. Search profile of an actor\n";
+    cout << " 2. Search coactors of an actor\n";
+    cout << " 3. Search unique coactors\n";
+    cout << " 4. All coactors of the coactors of an actor\n";
+    cout << " 5. Check if A and B are coactors\n";
+    cout << " 6. Search director\n";
+    cout << " 7. Directors who have directed movies of a certain genre type\n";
+    cout << " 8. Search a movie\n";
+    cout << " 9. Search movies released in a given year\n";
+    cout << "10. Print movies year-wise\n";
+    cout << "11. Search movies based on genre\n";
+    cout << "12. Print movies rating-wise\n";
+    cout << "13. Print movies of a certain genre rating-wise\n";
+    cout << endl
+         << endl;
+    cout << "Select an option: ";
+    char choice;
+    cin >> choice;
+    cout << endl
+         << endl;
+    return choice;
+}
+
+int main()
 {
     int index;
     string line;
@@ -145,13 +173,48 @@ void readFile()
                 m.setDuration(stoi(colmVals[7]));
 
             Actor *actors[3];
+            //Actor actor[3];
+            string name;
+            int likes;
+
             int actorIndex = 0;
             for (int i = 8; i < 14; i += 2) // add actors to the array
             {
                 if (colmVals[i] != "")
                 {
-                    actors[actorIndex++] = addActor(colmVals[i], stoi(colmVals[i + 1]), &m);
-                }
+                    name = colmVals[i];
+                    likes = stoi(colmVals[i+1]);
+                    string key = colmVals[i].substr(0, 2);
+                    Actor actor(name, likes);
+                    actor.addMovie(&m);
+
+                    if (allActors.find(key) == allActors.end())
+                    {
+                        //key is not present, create key-avl pair
+                        ActorAVL avl;             //create an AVL for that key
+                        avl.insert(&actor);       //add the actor to the AVL
+                        allActors.insert({key, avl});
+                        actors[i] = &actor;
+                    }
+
+                    else
+                    {
+                        Actor* actorPtr = Actor::searchActor(name, allActors); // pointer to the found actor or NULL otherwise
+                        actors[i] = actorPtr;
+
+                        if (actorPtr != NULL)
+                        { // if actor is found
+                            allActors.at(key).insert(&actor);
+                            actors[i] = &actor;
+                        }
+                    }
+                }  
+            }
+
+            //actors[actorIndex++] = &(actor[i]);
+            for (int i = 0; i < 3; i++)
+            {
+                actors[i]->display();
             }
 
             m.setActor(actors);
@@ -196,6 +259,9 @@ void readFile()
                 m.setFbLikesForMovie(stoi(colmVals[26]));
 
             m.setColor(colmVals[27]);
+
+                        
+
         }
         file.close();
         cout << "insertion completed" << endl;
@@ -205,143 +271,112 @@ void readFile()
     {
         cout << "Unable to open file";
     }
-}
 
-char displayMenu()
-{
-    cout << "----------------------------MAIN MENU----------------------------\n";
-    cout << " 1. Search profile of an actor\n";
-    cout << " 2. Search coactors of an actor\n";
-    cout << " 3. Search unique coactors\n";
-    cout << " 4. All coactors of the coactors of an actor\n";
-    cout << " 5. Check if A and B are coactors\n";
-    cout << " 6. Search director\n";
-    cout << " 7. Directors who have directed movies of a certain genre type\n";
-    cout << " 8. Search a movie\n";
-    cout << " 9. Search movies released in a given year\n";
-    cout << "10. Print movies year-wise\n";
-    cout << "11. Search movies based on genre\n";
-    cout << "12. Print movies rating-wise\n";
-    cout << "13. Print movies of a certain genre rating-wise\n";
-    cout << endl
-         << endl;
-    cout << "Select an option: ";
-    char choice;
-    cin >> choice;
-    cout << endl
-         << endl;
-    return choice;
-}
+    // char choice;
+    // string name;
+    // string name2;
 
-int main()
-{
-    readFile();
+    // choice = displayMenu();
+    // switch (choice)
+    // {
+    //     // methods of Actor
+    // case 1:
+    //     cout << "Enter the name of the actor: ";
+    //     cin >> name;
+    //     Actor::searchActor(name, allActors, true);
+    //     break;
 
-    char choice;
-    string name;
-    string name2;
+    // case 2:
+    //     cout << "Enter the name of the actor: ";
+    //     cin >> name;
+    //     Actor::getCoActors(name, allActors);
+    //     break;
 
-    choice = displayMenu();
-    switch (choice)
-    {
-        // methods of Actor
-    case 1:
-        cout << "Enter the name of the actor: ";
-        cin >> name;
-        Actor::searchActor(name, allActors, true);
-        break;
+    // case 3:
+    //     cout << "Enter the name of the actor: ";
+    //     cin >> name;
+    //     Actor::getUniqueCoActors(name);
+    //     break;
 
-    case 2:
-        cout << "Enter the name of the actor: ";
-        cin >> name;
-        Actor::getCoActors(name, allActors);
-        break;
+    // case 4:
+    //     cout << "Enter the name of the actor: ";
+    //     cin >> name;
+    //     Actor::getCoActorsOfCoActors(name);
+    //     break;
 
-    case 3:
-        cout << "Enter the name of the actor: ";
-        cin >> name;
-        Actor::getUniqueCoActors(name);
-        break;
+    // case 5:
+    //     cout << "Enter the name of the actor A: ";
+    //     cin >> name;
+    //     cout << "\nEnter the name of the actor B: ";
+    //     cin >> name2;
+    //     Actor::isCoActor(name, name2);
+    //     break;
 
-    case 4:
-        cout << "Enter the name of the actor: ";
-        cin >> name;
-        Actor::getCoActorsOfCoActors(name);
-        break;
+    //     //methods of Director
+    // case 6:
+    //     cout << "Enter the name of the director: ";
+    //     cin >> name;
+    //     Director::searchDir(name, allDirectors);
+    //     break;
 
-    case 5:
-        cout << "Enter the name of the actor A: ";
-        cin >> name;
-        cout << "\nEnter the name of the actor B: ";
-        cin >> name2;
-        Actor::isCoActor(name, name2);
-        break;
+    // case 7:
+    //     cout << "Enter genre: ";
+    //     cin >> name;
+    //     Director::getDirectorOfGenre(name);
+    //     break;
 
-        //methods of Director
-    case 6:
-        cout << "Enter the name of the director: ";
-        cin >> name;
-        Director::searchDir(name, allDirectors);
-        break;
+    //     //Methods of Movie
+    // case 8:
+    //     cout << "Enter movie name: ";
+    //     cin >> name;
+    //     Movie::searchMovie(name, moviesByTitle);
+    //     break;
 
-    case 7:
-        cout << "Enter genre: ";
-        cin >> name;
-        Director::getDirectorOfGenre(name);
-        break;
+    // case 9:
+    //     cout << "Enter year: ";
+    //     cin >> name;
+    //     Movie::getMoviesOfYear(stoi(name), moviesByYear);
+    //     break;
 
-        //Methods of Movie
-    case 8:
-        cout << "Enter movie name: ";
-        cin >> name;
-        Movie::searchMovie(name, moviesByTitle);
-        break;
+    // case 10:
+    //     cout << "a. Ascending order\n";
+    //     cout << "b. Descending order\n";
+    //     cout << endl
+    //          << endl;
 
-    case 9:
-        cout << "Enter year: ";
-        cin >> name;
-        Movie::getMoviesOfYear(stoi(name), moviesByYear);
-        break;
+    //     char opt;
+    //     cin >> opt;
 
-    case 10:
-        cout << "a. Ascending order\n";
-        cout << "b. Descending order\n";
-        cout << endl
-             << endl;
+    //     if (opt == 'a')
+    //         Movie::printMoviesChronologically(false, moviesByYear);
+    //     else if (opt == 'b')
+    //         Movie::printMoviesChronologically(true, moviesByYear);
+    //     else
+    //     {
+    //         cout << "Invalid! Please select a correct option.";
+    //         choice = 10;
+    //     }
+    //     break;
 
-        char opt;
-        cin >> opt;
+    // case 11:
+    //     cout << "Enter genre: ";
+    //     cin >> name;
+    //     Movie::getMoviesOfGenre(name, moviesByGenre);
+    //     break;
 
-        if (opt == 'a')
-            Movie::printMoviesChronologically(false, moviesByYear);
-        else if (opt == 'b')
-            Movie::printMoviesChronologically(true, moviesByYear);
-        else
-        {
-            cout << "Invalid! Please select a correct option.";
-            choice = 10;
-        }
-        break;
+    // case 12:
+    //     Movie::printMoviesByRating(moviesByRating);
+    //     break;
 
-    case 11:
-        cout << "Enter genre: ";
-        cin >> name;
-        Movie::getMoviesOfGenre(name, moviesByGenre);
-        break;
+    // case 13:
+    //     cout << "Enter genre: ";
+    //     cin >> name;
+    //     Movie::getMoviesOfGenre(name, moviesByGenre);
+    //     break;
 
-    case 12:
-        Movie::printMoviesByRating(moviesByRating);
-        break;
+    // default:
+    //     cout << "Invalid! Please select a correct option.";
+    // }
 
-    case 13:
-        cout << "Enter genre: ";
-        cin >> name;
-        Movie::getMoviesOfGenre(name, moviesByGenre); 
-        break;
-
-    default:
-        cout << "Invalid! Please select a correct option."; 
-    }
-
-    return 0;
+    // return 0;
 }
