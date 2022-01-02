@@ -99,10 +99,12 @@ Actor *Actor::searchActor(string name, unordered_map<string, ActorAVL> allActors
 {
     Actor *actor = NULL;
     // finding actor by frst two letters of name in map of allActors, returns an avl of pointers to Actor
-    ActorAVL actorsOfKey = allActors[name.substr(0, 2)];
 
-    if (!actorsOfKey.isEmpty())           // if key exists, search for actor in ActorAVL
+    if (allActors.find(name.substr(0, 2)) != allActors.end()) // if key exists, search for actor in ActorAVL
+    {
+        ActorAVL actorsOfKey = allActors[name.substr(0, 2)];
         actor = actorsOfKey.search(name); // find actor in avl
+    }
 
     if (display)
     {
@@ -116,9 +118,9 @@ Actor *Actor::searchActor(string name, unordered_map<string, ActorAVL> allActors
 }
 
 //second method of the list
-forward_list<Actor*> Actor::getCoActors(string name, unordered_map<string, ActorAVL> allActors)
+forward_list<Actor *> Actor::getCoActors(string name, unordered_map<string, ActorAVL> allActors)
 {
-    forward_list<Actor*> coactorsList;
+    forward_list<Actor *> coactorsList;
     Actor *actor = searchActor(name, allActors, false); // finding the actor in allActors map
 
     // actor not found
@@ -194,7 +196,7 @@ void Actor::getUniqueCoActors(string name, unordered_map<string, ActorAVL> allAc
                 if (coAct->getName() != actor->getName()) // coActor is not the one we are searching coactors for
                 {
                     forward_list<Movie *> movies = coactorsMap[coAct->getName()]; // get key
-                    movies.emplace_front(m);                          // insert to movies
+                    movies.emplace_front(m);                                      // insert to movies
                     coactorsMap[coAct->getName()] = movies;                       // insert to map
                 }
             }
@@ -250,7 +252,6 @@ void Actor::getCoActorsOfCoActors(string name, unordered_map<string, ActorAVL> a
 
         allCoactor.traverse();
     }
-
 }
 
 bool Actor::isCoActor(string nameA, string nameB, unordered_map<string, ActorAVL> allActors)

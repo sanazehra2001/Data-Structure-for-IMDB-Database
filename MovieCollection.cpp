@@ -67,10 +67,19 @@ Actor *addActor(string name, int likes, Movie *m)
         allActors.insert({key, avl});
 
         a = &actor;
+        // ActorAVL av = allActors[key];
+        // Actor *actor1 =av.search(name);
+        // cout << actor1->getName()<<endl;
+        // Actor *actor1 = Actor::searchActor(name, allActors);
+        // cout <<actor1->getName()<<endl;
     }
 
     else
-    {                                                       // the key already exists
+    {
+        // cout << name; // the key already exists
+        cout << key;
+        ActorAVL av = allActors[key];
+        av.traverse();
         Actor *actor = Actor::searchActor(name, allActors); // pointer to the found actor or NULL otherwise
         a = actor;
 
@@ -188,6 +197,7 @@ void readFile()
             m.setColor(colmVals[27]);
         }
         file.close();
+        cout << "insertion completed" << endl;
     }
 
     else
