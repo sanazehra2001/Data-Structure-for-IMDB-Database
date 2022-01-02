@@ -94,7 +94,10 @@ public:
     int getFbLikesForMovie();
     MovieColor getColor();
 
-    // methods
+    //display functions
+    void displayKeywords();
+    void displayActors();
+    void displayGenre();
     void display();
     void searchMovie(string, map<string, MovieAVL>); //not necessarily complete
     void getMoviesOfYear(short int, map<short int, forward_list<Movie *>>);

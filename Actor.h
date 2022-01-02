@@ -19,7 +19,7 @@ class Actor
 public:
     string name;
     int fbLikesForActor;
-    map<string, forward_list<Movie *>> movieList; //sorted chronologically
+    map<string, forward_list<Movie *>> movieList; //sorted chronologically key is year
 
     // static unordered_map<string, ActorAVL> allActors; // avl sorted on actor name
 
@@ -41,7 +41,11 @@ public:
 
     // add to main map
     void addActor(Actor *);
+
+    // helper functions
+    void displayAllMovies();
     void display();
+
 
     // methods related to actors specified in document provided
     static Actor *searchActor(string, unordered_map<string, ActorAVL>, bool = false);
