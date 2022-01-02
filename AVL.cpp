@@ -160,6 +160,10 @@ Actor *ActorAVL::search(string name)
 	return NULL;
 }
 
+bool ActorAVL::isEmpty(){
+	return root == NULL;
+}
+
 void DirectorAVL::insert(Director *key)
 {
 	root = insertNode(root, key);
@@ -226,3 +230,8 @@ Director *DirectorAVL::search(string name)
 	}
 	return NULL;
 }
+
+bool DirectorAVL::isEmpty(){
+	return root == NULL;
+}
+
