@@ -94,8 +94,13 @@ public:
     int getFbLikesForMovie();
     MovieColor getColor();
 
-    // methods
+    //display functions
+    void displayKeywords();
+    void displayActors();
+    void displayGenre();
     void display();
+
+    // methods
     void searchMovie(string); //not necessarily complete
     void getMoviesOfYear(short int);
     void printMoviesChronologically(bool);

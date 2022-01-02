@@ -119,6 +119,7 @@ public:
 	void insert(Actor *);
 	AVLNode<Actor *> *insertNode(AVLNode<Actor *> *, Actor *);
 	Actor *search(string);
+	bool isEmpty();
 };
 
 class DirectorAVL
@@ -129,6 +130,7 @@ public:
 	void insert(Director *);
 	AVLNode<Director *> *insertNode(AVLNode<Director *> *, Director *);
 	Director *search(string);
+	bool isEmpty();
 };
 
 #endif

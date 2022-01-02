@@ -1,6 +1,8 @@
 #include "Movie.h"
 #include <cstring>
 
+
+// setters
 void Movie::setTitle(string t)
 {
     title = t;
@@ -206,11 +208,62 @@ MovieColor Movie::getColor()
     return color;
 }
 
-// methods
+// display methods
 // displays contents of movie
+
+void Movie::displayKeywords()
+{
+    cout << "Keywords: ";
+    for (auto it = getPlotKeywords().begin(); it != getPlotKeywords().end(); ++it)
+        cout << (*it) << ", ";
+}
+
+void Movie::displayActors()
+{
+    cout << "Actors: " ;
+    // finding actors
+    Actor **coActors = getActor();                // all actors of this movie
+    for (Actor **a = coActors; coActors + 3; ++a) //traversing through three actors of every movie
+    {
+        Actor *coAct = (*a);
+        cout << coAct->getName() << ", "; //display names of coactor
+    }
+}
+
+void Movie::displayGenre()
+{
+    cout << "Genre: ";
+    for (auto it = getGenre().begin(); it != getGenre().end(); ++it) // traversing through 
+        cout << (*it) << ", ";
+}
+
+
 void Movie::display()
 {
+    cout << getTitle() << endl;
+    displayGenre();
+    cout << "Year: " << getTitleYear() << endl;
+    cout << "IMDB Score: " << getImdbScore() << endl;
+    cout << "Director: " << getDirector()->name << endl;
+    cout << "Critic Reviews: " << getNumOfCriticReviews() << endl;
+    cout << "Duration: " << getDuration() << endl;
+    displayActors();
+    cout << "Gross: " << getGross() << endl;
+    cout << "Votes: " << getNumOfVotes() << endl;
+    cout << "FB Likes for cast: " << getFbLikesForCast() << endl;
+    cout << "Faces in poster: " << getFaceNumInPoster() << endl;
+    displayKeywords();
+    cout << "IMDB Link: " << getImdbLink() << endl;
+    cout << "Reviews: " << getNumOfReviews() << endl;
+    cout << "Language: " << getLanguage() << endl;
+    cout << "Country: " << getCountry() << endl;
+    cout << "Content Rating: " << getContentRating() << endl;
+    cout << "Budget: " << getBudget() << endl;
+    cout << "Aspect Ratio: " << getAspectRatio() << endl;
+    cout << "Movie FB Likes: " << getFbLikesForMovie() << endl;
+    cout << "Color: " << getColor() << endl;
 }
+
 
 string getNextLetter(char letter)
 {
@@ -232,21 +285,21 @@ void Movie::searchMovie(string title)
     if (title.length() == 1)
     {
         for (auto it = moviesByTitle.lower_bound(string(1, toupper(title[0])));
-             it != moviesByTitle.upper_bound(getNextLetter(title[0])); it++)
+             it != moviesByTitle.upper_bound(getNextLetter(title[0])); it++) //seaching for keys string with the given alphabet
         {
-            MovieAVL avl = it->second;
-            avl.traverse();
+            MovieAVL avl = it->second; // avl of key
+            avl.traverse(); // printing all movie title present in avl
         }
     }
 
     // case2: string of length two
     else if (title.length() == 2)
     {
-        MovieAVL avl = moviesByTitle[title];
-        if (avl.isEmpty())
+        MovieAVL avl = moviesByTitle[title]; // searching for key
+        if (avl.isEmpty()) // if avl is empty then no movie with this key exists
             cout << "No matching movie" << endl;
         else
-            avl.traverse();
+            avl.traverse(); // printing all movie title present in avl
     }
 
     // case3: string of length greater than 2
@@ -273,10 +326,10 @@ void Movie::searchMovie(string title)
 
 void Movie::getMoviesOfYear(short int year)
 {
-    forward_list<Movie *> movies = moviesByYear[year];
+    forward_list<Movie *> movies = moviesByYear[year]; // movies of this year
     cout << "Following movies were released in " << year << ": " << endl;
-    for (auto it = movies.begin(); it != movies.end(); ++it)
-        cout << (*it)->getTitle() << endl;
+    for (auto it = movies.begin(); it != movies.end(); ++it) // iterating over movies
+        cout << (*it)->getTitle() << endl; // title of movies
 }
 
 void Movie::printMoviesChronologically(bool desc)
@@ -289,52 +342,52 @@ void Movie::printMoviesChronologically(bool desc)
         // rbegin() returns to the last value of map
         for (it = moviesByYear.rbegin(); it != moviesByYear.rend(); it++)
         {
-            std::cout << "----------- " << it->first << " -----------"; // string (key)
-            forward_list<Movie *> movies = it->second;
-            for (auto it = movies.begin(); it != movies.end(); ++it)
-                cout << (*it)->getTitle() << endl;
+            std::cout << "----------- " << it->first << " -----------" << endl; // year
+            forward_list<Movie *> movies = it->second; // value is forward_list of Movie*
+            for (auto it = movies.begin(); it != movies.end(); ++it) // iterating over movies
+                cout << (*it)->getTitle() << endl; // printing title
         }
     }
 
     // priniting in chronological order
     else
     {
-        map<short int, forward_list<Movie *>>::iterator it;
+        map<short int, forward_list<Movie *>>::iterator it; // iterator
 
         for (it = moviesByYear.begin(); it != moviesByYear.end(); it++)
         {
-            std::cout << "----------- " << it->first << " -----------"; // string (key)
-            forward_list<Movie *> movies = it->second;
-            for (auto it = movies.begin(); it != movies.end(); ++it)
-                cout << (*it)->getTitle() << endl;
+            std::cout << "----------- " << it->first << " -----------" << endl; //year
+            forward_list<Movie *> movies = it->second; // value is foward_list of Movie*
+            for (auto it = movies.begin(); it != movies.end(); ++it) // iterating over movies
+                cout << (*it)->getTitle() << endl; // printing title
         }
     }
 }
 
 void Movie::printMoviesByRating()
 {
-    map<string, forward_list<Movie *>, greater<string>>::iterator it;
+    map<string, forward_list<Movie *>, greater<string>>::iterator it; // iterator
     for (it = moviesByRating.begin(); it != moviesByRating.end(); it++)
     {
-        std::cout << "----------- " << it->first << " -----------"; // string (key)
-        forward_list<Movie *> movies = it->second;
-        for (auto it = movies.begin(); it != movies.end(); ++it)
-            cout << (*it)->getTitle() << endl;
+        std::cout << "----------- " << it->first << " -----------" << endl; // rating
+        forward_list<Movie *> movies = it->second; // value is foward_list of Movie*
+        for (auto it = movies.begin(); it != movies.end(); ++it) // iterating over movies
+            cout << (*it)->getTitle() << endl; // printing title
     }
 }
 
 void Movie::getMoviesOfGenre(string g)
 {
     Genre genre = convert(g);
-    map<string, forward_list<Movie *>, greater<string>> moviesOfGen = moviesByGenre[genre];
+    map<string, forward_list<Movie *>, greater<string>> moviesOfGen = moviesByGenre[genre]; // finding genre
     cout << "----------- " << g << " -----------" << endl;
 
-    map<string, forward_list<Movie *>, greater<string>>::iterator it;
-    for (it = moviesOfGen.begin(); it != moviesOfGen.end(); it++)
+    map<string, forward_list<Movie *>, greater<string>>::iterator it; 
+    for (it = moviesOfGen.begin(); it != moviesOfGen.end(); it++) // iterating over nested map
     {
-        std::cout << "----------- " << it->first << " -----------"; // string (key)
+        std::cout << "----------- " << it->first << " -----------"; // Rating
         forward_list<Movie *> movies = it->second;
-        for (auto it = movies.begin(); it != movies.end(); ++it)
+        for (auto it = movies.begin(); it != movies.end(); ++it) // printing all movies of given genre
             cout << (*it)->getTitle() << endl;
     }
 }
