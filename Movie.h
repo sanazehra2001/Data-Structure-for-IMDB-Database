@@ -99,11 +99,11 @@ public:
     void displayActors();
     void displayGenre();
     void display();
-    void searchMovie(string, map<string, MovieAVL>); //not necessarily complete
-    void getMoviesOfYear(short int, map<short int, forward_list<Movie *>>);
-    void printMoviesChronologically(bool, map<short int, forward_list<Movie *>>);
-    void getMoviesOfGenre(string, unordered_map<Genre, map<string, forward_list<Movie *>, greater<string>>>);
-    void printMoviesByRating(map<string, forward_list<Movie *>, greater<string>>);
+    static void searchMovie(string, map<string, MovieAVL>); //not necessarily complete
+    static void getMoviesOfYear(short int, map<short int, forward_list<Movie *>>);
+    static void printMoviesChronologically(bool, map<short int, forward_list<Movie *>>);
+    static void getMoviesOfGenre(string, unordered_map<Genre, map<string, forward_list<Movie *>, greater<string>>>);
+    static void printMoviesByRating(map<string, forward_list<Movie *>, greater<string>>);
 };
 
 #endif
