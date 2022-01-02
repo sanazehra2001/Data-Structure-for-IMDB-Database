@@ -120,6 +120,7 @@ public:
 	AVLNode<Actor *> *insertNode(AVLNode<Actor *> *, Actor *);
 	Actor *search(string);
 	bool isEmpty();
+	void traverse();
 };
 
 class DirectorAVL
