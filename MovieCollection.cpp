@@ -67,7 +67,8 @@ Actor *addActor(string name, int likes, Movie *m)
         allActors.insert({key, avl});
 
         a = &actor;
-        // ActorAVL av = allActors[key];
+        // ActorAVL av = allActors["Jo"];
+        // // av.traverse();
         // Actor *actor1 =av.search(name);
         // cout << actor1->getName()<<endl;
         // Actor *actor1 = Actor::searchActor(name, allActors);
@@ -77,17 +78,17 @@ Actor *addActor(string name, int likes, Movie *m)
     else
     {
         // cout << name; // the key already exists
-        cout << key;
+        // cout << key;
         ActorAVL av = allActors[key];
-        av.traverse();
+        // av.traverse();
         Actor *actor = Actor::searchActor(name, allActors); // pointer to the found actor or NULL otherwise
         a = actor;
 
         if (actor == NULL)
         { // if actor is found
-            Actor actor(name, likes);
-            allActors.at(key).insert(&actor);
-            a = &actor;
+            Actor act(name, likes);
+            allActors.at(key).insert(&act);
+            a = &act;
         }
     }
     a->addMovie(m);
@@ -237,6 +238,7 @@ int main()
     char choice;
     string name;
     string name2;
+    readFile();
 
     choice = displayMenu();
     switch (choice)
@@ -257,13 +259,13 @@ int main()
     case 3:
         cout << "Enter the name of the actor: ";
         cin >> name;
-        Actor::getUniqueCoActors(name);
+        Actor::getUniqueCoActors(name, allActors);
         break;
 
     case 4:
         cout << "Enter the name of the actor: ";
         cin >> name;
-        Actor::getCoActorsOfCoActors(name);
+        Actor::getCoActorsOfCoActors(name, allActors);
         break;
 
     case 5:
@@ -271,7 +273,7 @@ int main()
         cin >> name;
         cout << "\nEnter the name of the actor B: ";
         cin >> name2;
-        Actor::isCoActor(name, name2);
+        Actor::isCoActor(name, name2, allActors);
         break;
 
         //methods of Director
