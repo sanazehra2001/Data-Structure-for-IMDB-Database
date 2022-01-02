@@ -116,9 +116,9 @@ Actor *Actor::searchActor(string name, unordered_map<string, ActorAVL> allActors
 }
 
 //second method of the list
-void Actor::getCoActors(string name)
+void Actor::getCoActors(string name, unordered_map<string, ActorAVL> allActors)
 {
-    Actor *actor = searchActor(name, false); // finding the actor in allActors map
+    Actor *actor = searchActor(name, allActors, false); // finding the actor in allActors map
 
     // actor not found
     if (!actor)
