@@ -67,6 +67,19 @@ void Actor::addActor(Actor *a)
     //allActors.insert(a.name, a);
 }
 
+
+void Actor::displayAllActors(unordered_map<string, ActorAVL> allActors){
+    unordered_map<string, ActorAVL>::iterator it; //iterator
+
+    for (it = allActors.begin(); it != allActors.end(); it++)
+    {
+        cout << "----------- " << it->first << " -----------" << endl; 
+        ActorAVL avl = it->second;                  
+        avl.traverse();
+    }
+
+}
+
 // helper functions
 void Actor::displayAllMovies()
 {

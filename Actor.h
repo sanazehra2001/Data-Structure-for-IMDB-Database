@@ -45,6 +45,7 @@ public:
     // helper functions
     void displayAllMovies();
     void display();
+    static void displayAllActors(unordered_map<string, ActorAVL>);
 
 
     // methods related to actors specified in document provided
