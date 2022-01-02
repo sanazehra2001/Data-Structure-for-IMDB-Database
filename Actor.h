@@ -37,9 +37,11 @@ public:
     string getName();
     int getLikes();
     map<string, forward_list<Movie *>> getMovie();
+    int getCountOfMovies();
 
     // add to main map
     void addActor(Actor *);
+    void display();
 
     // methods related to actors specified in document provided
     static Actor *searchActor(string, bool = false);

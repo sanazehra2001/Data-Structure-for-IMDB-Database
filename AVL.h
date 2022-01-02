@@ -106,7 +106,9 @@ class MovieAVL
 public:
 	void insert(Movie *);
 	AVLNode<Movie *> *insertNode(AVLNode<Movie *> *, Movie *);
-	forward_list<Movie*> search(string);
+	forward_list<Movie *> search(string);
+	bool isEmpty();
+	void traverse();
 };
 
 class ActorAVL
@@ -116,17 +118,17 @@ class ActorAVL
 public:
 	void insert(Actor *);
 	AVLNode<Actor *> *insertNode(AVLNode<Actor *> *, Actor *);
-	Actor* search(string);
+	Actor *search(string);
 };
 
-class DirectorAVL{
+class DirectorAVL
+{
 	AVLNode<Director *> *root = NULL;
 
 public:
 	void insert(Director *);
 	AVLNode<Director *> *insertNode(AVLNode<Director *> *, Director *);
-	Director* search(string);
+	Director *search(string);
 };
-
 
 #endif

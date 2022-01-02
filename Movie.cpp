@@ -1,4 +1,5 @@
 #include "Movie.h"
+#include <cstring>
 
 void Movie::setTitle(string t)
 {
@@ -188,7 +189,7 @@ string Movie::getContentRating()
 {
     return contentRating;
 }
-unsigned long long int Movie::getBudget()
+unsigned long int Movie::getBudget()
 {
     return budget;
 }
@@ -206,9 +207,134 @@ MovieColor Movie::getColor()
 }
 
 // methods
-void Movie::searchMovie(string title) {} //not necessarily complete
-void Movie::getMoviesOfYear(short int year) {}
-void Movie::printMoviesChronologically(bool asc) {}
-void Movie::getMoviesOfGenre(string genre) {}
-void Movie::printMoviesByRating() {}
-void Movie::printMoviesByRating(string genre) {}
+// displays contents of movie
+void Movie::display()
+{
+}
+
+string getNextLetter(char letter)
+{
+    string nextChar = "";
+    if (letter == 'z')
+        nextChar += 'a';
+    else if (letter == 'Z')
+        nextChar += 'A';
+    else
+        nextChar = (char)(((int)letter) + 1);
+    nextChar += tolower(nextChar[0]);
+    return nextChar;
+}
+
+// search movie by title not necessarily complete
+void Movie::searchMovie(string title)
+{
+    // case1: string is of length one
+    if (title.length() == 1)
+    {
+        for (auto it = moviesByTitle.lower_bound(string(1, toupper(title[0])));
+             it != moviesByTitle.upper_bound(getNextLetter(title[0])); it++)
+        {
+            MovieAVL avl = it->second;
+            avl.traverse();
+        }
+    }
+
+    // case2: string of length two
+    else if (title.length() == 2)
+    {
+        MovieAVL avl = moviesByTitle[title];
+        if (avl.isEmpty())
+            cout << "No matching movie" << endl;
+        else
+            avl.traverse();
+    }
+
+    // case3: string of length greater than 2
+    else
+    {
+        MovieAVL avl = moviesByTitle[title]; // get avl of key
+        if (avl.isEmpty())                   // if key is not present
+            cout << "No matching movie." << endl;
+        else
+        {
+            forward_list<Movie *> moviesOfKey = avl.search(title); // search movies that have title string in their title
+            if (moviesOfKey.empty())                               // if no such movie is found
+            {
+                cout << "No matching movie." << endl;
+            }
+            else
+            { // if movies are found, iterate over list of movies
+                for (auto it = moviesOfKey.begin(); it != moviesOfKey.end(); ++it)
+                    (*it)->display();
+            }
+        }
+    }
+}
+
+void Movie::getMoviesOfYear(short int year)
+{
+    forward_list<Movie *> movies = moviesByYear[year];
+    cout << "Following movies were released in " << year << ": " << endl;
+    for (auto it = movies.begin(); it != movies.end(); ++it)
+        cout << (*it)->getTitle() << endl;
+}
+
+void Movie::printMoviesChronologically(bool desc)
+{
+    // priniting reverse chronological order
+    if (desc)
+    {
+        map<short int, forward_list<Movie *>>::reverse_iterator it;
+
+        // rbegin() returns to the last value of map
+        for (it = moviesByYear.rbegin(); it != moviesByYear.rend(); it++)
+        {
+            std::cout << "----------- " << it->first << " -----------"; // string (key)
+            forward_list<Movie *> movies = it->second;
+            for (auto it = movies.begin(); it != movies.end(); ++it)
+                cout << (*it)->getTitle() << endl;
+        }
+    }
+
+    // priniting in chronological order
+    else
+    {
+        map<short int, forward_list<Movie *>>::iterator it;
+
+        for (it = moviesByYear.begin(); it != moviesByYear.end(); it++)
+        {
+            std::cout << "----------- " << it->first << " -----------"; // string (key)
+            forward_list<Movie *> movies = it->second;
+            for (auto it = movies.begin(); it != movies.end(); ++it)
+                cout << (*it)->getTitle() << endl;
+        }
+    }
+}
+
+void Movie::printMoviesByRating()
+{
+    map<string, forward_list<Movie *>, greater<string>>::iterator it;
+    for (it = moviesByRating.begin(); it != moviesByRating.end(); it++)
+    {
+        std::cout << "----------- " << it->first << " -----------"; // string (key)
+        forward_list<Movie *> movies = it->second;
+        for (auto it = movies.begin(); it != movies.end(); ++it)
+            cout << (*it)->getTitle() << endl;
+    }
+}
+
+void Movie::getMoviesOfGenre(string g)
+{
+    Genre genre = convert(g);
+    map<string, forward_list<Movie *>, greater<string>> moviesOfGen = moviesByGenre[genre];
+    cout << "----------- " << g << " -----------" << endl;
+
+    map<string, forward_list<Movie *>, greater<string>>::iterator it;
+    for (it = moviesOfGen.begin(); it != moviesOfGen.end(); it++)
+    {
+        std::cout << "----------- " << it->first << " -----------"; // string (key)
+        forward_list<Movie *> movies = it->second;
+        for (auto it = movies.begin(); it != movies.end(); ++it)
+            cout << (*it)->getTitle() << endl;
+    }
+}
