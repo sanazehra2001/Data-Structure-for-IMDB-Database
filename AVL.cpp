@@ -164,6 +164,21 @@ bool ActorAVL::isEmpty(){
 	return root == NULL;
 }
 
+void inOrderUtil(AVLNode<Actor *> *node)
+{
+	if (node)
+	{
+		inOrderUtil(node->left);
+		cout << node->key->getName() <<endl ;
+		inOrderUtil(node->right);
+	}
+}
+
+void ActorAVL::traverse()
+{
+	inOrderUtil(root);
+}
+
 void DirectorAVL::insert(Director *key)
 {
 	root = insertNode(root, key);

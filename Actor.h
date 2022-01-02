@@ -50,10 +50,10 @@ public:
     // methods related to actors specified in document provided
     static Actor *searchActor(string, unordered_map<string, ActorAVL>, bool = false);
     static void displayActorProfile(Actor *);
-    void getCoActors(string, unordered_map<string, ActorAVL>);
-    void getUniqueCoActors(string);
-    void getCoActorsOfCoActors(string);
-    bool isCoActor(string, string);
+    forward_list<Actor*> getCoActors(string, unordered_map<string, ActorAVL>);
+    void getUniqueCoActors(string, unordered_map<string, ActorAVL> );
+    void getCoActorsOfCoActors(string, unordered_map<string, ActorAVL>);
+    bool isCoActor(string, string, unordered_map<string, ActorAVL>);
 };
 
 #endif
