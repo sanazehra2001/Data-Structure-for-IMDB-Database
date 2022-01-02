@@ -15,7 +15,7 @@ map<short int, forward_list<Movie *>> moviesByYear;                             
 map<string, forward_list<Movie *>, greater<string>> moviesByRating;                      // keys sorted by rating
 unordered_map<Genre, map<string, forward_list<Movie *>, greater<string>>> moviesByGenre; // nested maps' keys sorted on rating
 
-//map od director
+//map of director
 unordered_map<string, DirectorAVL> allDirectors; //avl sorted on name
 
 //map of actor
@@ -234,6 +234,8 @@ char displayMenu()
 
 int main()
 {
+    readFile();
+
     char choice;
     string name;
     string name2;
