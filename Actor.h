@@ -49,7 +49,7 @@ public:
 
     // methods related to actors specified in document provided
     static Actor *searchActor(string, bool = false);
-    void getCoActors(string);
+    forward_list<Actor *> getCoActors(string);
     void getUniqueCoActors(string);
     void getCoActorsOfCoActors(string);
     bool isCoActor(string, string);

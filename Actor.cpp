@@ -77,9 +77,9 @@ void Actor::displayAllMovies()
     // traversing through the map of movies of given actor (movieList)
     for (it = this->movieList.begin(); it != this->movieList.end(); it++)
     {
-        cout << "----------- " << it->first << " -----------" <<endl;   //  year
-        forward_list<Movie *> movies = it->second;               // all movies of certain year
-        for (auto it = movies.begin(); it != movies.end(); ++it) // traverse thorugh the forward_list of movies
+        cout << "----------- " << it->first << " -----------" << endl; //  year
+        forward_list<Movie *> movies = it->second;                     // all movies of certain year
+        for (auto it = movies.begin(); it != movies.end(); ++it)       // traverse thorugh the forward_list of movies
         {
             Movie *m = (*it);              // pointer to movie
             cout << m->getTitle() << endl; // name of movie
@@ -116,15 +116,16 @@ Actor *Actor::searchActor(string name, bool display)
 }
 
 //second method of the list
-void Actor::getCoActors(string name)
+forward_list<Actor *> Actor::getCoActors(string name)
 {
     Actor *actor = searchActor(name, false); // finding the actor in allActors map
+    forward_list<Actor *> coactorsList;      // list to store coactors
 
     // actor not found
     if (!actor)
     {
         cout << "Actor not found" << endl;
-        return;
+        return coactorsList;
     }
 
     // actor found: traverse thorugh the map of movies and find coactors
@@ -147,17 +148,122 @@ void Actor::getCoActors(string name)
                 if (coAct->getName() != actor->getName()) // coActor is not the one we are searching coactors for
                 {
                     cout << coAct->getName() << endl; //display names of coactor
+                    coactorsList.emplace_front(coAct);
                 }
             }
         }
     }
+
+    return coactorsList;
 }
 
 void Actor::getUniqueCoActors(string name)
 {
-    //create AVL of unique coactors
+    // implementaton using unordered map of coactors having movies as value
+    // 1. find coactors
+    // 2. insert name of coactor in map as a key, if not present
+    // 3. add movie to the forward_list of movies coresponding to this coactor (value of map)
+
+    Actor *actor = searchActor(name, false); // finding the actor in allActors map
+
+    // actor not found
+    if (!actor)
+    {
+        cout << "Actor not found" << endl;
+        return;
+    }
+    // map for storing coactors and corresponsing movies
+    unordered_map<string, forward_list<Movie *>> coactorsMap;
+
+    // actor found: traverse thorugh the map of movies and find coactors
+    map<string, forward_list<Movie *>>::iterator it; //iterator
+
+    // traversing through the map of movies of given actor (movieList)
+    for (it = actor->movieList.begin(); it != actor->movieList.end(); it++)
+    {
+        forward_list<Movie *> movies = it->second;               // all movies of certain year
+        for (auto it = movies.begin(); it != movies.end(); ++it) // traverse thorugh the forward_list of movies
+        {
+            Movie *m = (*it); // pointer to movie
+
+            // finding coactors
+            Actor **coActors = (*it)->getActor();         // all actors of this movie
+            for (Actor **a = coActors; coActors + 3; ++a) //traversing through three actors of every movie
+            {
+                Actor *coAct = (*a);
+                if (coAct->getName() != actor->getName()) // coActor is not the one we are searching coactors for
+                {
+                    forward_list<Movie *> movies = coactorsMap[coAct->getName()]; // get key
+                    movies.emplace_front(m);                          // insert to movies
+                    coactorsMap[coAct->getName()] = movies;                       // insert to map
+                }
+            }
+        }
+    }
+
+    // display
+    unordered_map<string, forward_list<Movie *>>::iterator itCoactors; //iterator
+
+    // traversing through the map of coactors
+    for (itCoactors = coactorsMap.begin(); itCoactors != coactorsMap.end(); itCoactors++)
+    {
+        cout << it->first << endl; // name of coactor
+        cout << "Movies: ";
+        forward_list<Movie *> movies = itCoactors->second;                               // all common movies
+        for (auto itCoactors = movies.begin(); itCoactors != movies.end(); ++itCoactors) // traverse thorugh the forward_list of movies
+        {
+            Movie *m = (*itCoactors); // pointer to movie
+            cout << m->getTitle() << " ";
+        }
+    }
 }
 
-void Actor::getCoActorsOfCoActors(string name) {} // return type has to be decided
+bool inCoactors(forward_list<Actor *> coactors, string name)
+{
+    for (auto it = coactors.begin(); it != coactors.end(); ++it) // traverse thorugh the forward_list of movies
+    {
+        if ((*it)->getName() == name)
+            return true;
+    }
+    return false;
+}
 
-bool Actor::isCoActor(string nameA, string nameB) {}
+void Actor::getCoActorsOfCoActors(string name)
+{
+    // get coactors of actor
+    // get coactors of coactors(subactors)
+    forward_list<Actor *> coactors = getCoActors(name);
+    ActorAVL allCoactor;
+    if (!coactors.empty())
+    {
+        for (auto it1 = coactors.begin(); it1 != coactors.end(); ++it1) // traverse thorugh the forward_list of movies
+        {
+            forward_list<Actor *> subCoactors = getCoActors((*it1)->name);
+            for (auto it2 = subCoactors.begin(); it2 != subCoactors.end(); ++it2) // traverse thorugh the forward_list of movies
+            {
+                Actor *subActor = *it2;
+                // add to avl if subactor is not coactor of actor and actor itself
+                if (subActor->getName() != name && !inCoactors(coactors, subActor->getName()))
+                    allCoactor.insert(subActor);
+            }
+        }
+
+        allCoactor.traverse();
+    }
+
+}
+
+bool Actor::isCoActor(string nameA, string nameB)
+{
+    forward_list<Actor *> coactors = getCoActors(nameA); //coactors of A
+    if (!coactors.empty())
+    {
+        // if b is present in coactors then A and B are coactors
+        for (auto it = coactors.begin(); it != coactors.end(); ++it) // traverse thorugh the forward_list of movies
+        {
+            if ((*it)->getName() == nameB) // B is present in list
+                return true;
+        }
+    }
+    return false;
+}
