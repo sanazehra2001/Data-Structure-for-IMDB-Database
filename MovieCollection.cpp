@@ -306,9 +306,11 @@ int main()
             //insert movie pointers to relevant maps
             setMovieByTitle(m);
             // cout << "after title"<<endl;
-            setMovieByYear(m);
+            if(m->getTitleYear() != 0)
+                setMovieByYear(m);
             // cout << "after year"<<endl;
-            setMovieByRating(m);
+            if(m->getContentRating() != "")
+                setMovieByRating(m);
             // cout << "after rating"<<endl;
 
             // for (auto it = m->getGenre().begin(); it != m->getGenre().end(); ++it)
