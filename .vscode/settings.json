@@ -59,7 +59,8 @@
     "memory_resource": "cpp",
     "numeric": "cpp",
     "fstream": "cpp",
-    "sstream": "cpp"
+    "sstream": "cpp",
+    "typeindex": "cpp"
   },
   "C_Cpp_Runner.warnings": [
     "-Wall",
