@@ -78,7 +78,7 @@ public:
     Director *getDirector();
     int getNumOfCriticReviews();
     int getDuration();
-    Actor **getActor();
+    Actor ** getActor();
     unsigned long int getGross();
     unsigned int getNumOfVotes();
     int getFbLikesForCast();

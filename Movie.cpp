@@ -4,6 +4,7 @@
 // setters
 void Movie::setTitle(string t)
 {
+
     title = t;
 }
 
@@ -238,7 +239,10 @@ void Movie::displayGenre()
 
 void Movie::display()
 {
-    cout << getTitle() << endl;
+    string t = getTitle();
+    t.pop_back();
+    t.pop_back();
+    cout << t << endl;
     displayGenre();
     cout << "Year: " << getTitleYear() << endl;
     cout << "IMDB Score: " << getImdbScore() << endl;
@@ -326,14 +330,14 @@ Movie *Movie::searchMovieByRating(Movie *m, map<string, forward_list<Movie *>, g
     return NULL;
 }
 
-Movie *searchMovieByGenre(Movie* m, Genre g, unordered_map<Genre, map<string, forward_list<Movie *>, greater<string>>>)
+Movie *Movie::searchMovieByGenre(Movie *m, Genre g, unordered_map<Genre, map<string, forward_list<Movie *>, greater<string>>> moviesByGenre)
 {
     map<string, forward_list<Movie *>, greater<string>> moviesOfGen = moviesByGenre[g]; // finding genre
     map<string, forward_list<Movie *>, greater<string>>::iterator it;
 
     for (it = moviesOfGen.begin(); it != moviesOfGen.end(); it++) // iterating over nested map
     {
-        if(it->first == to_string(g))
+        if (it->first == to_string(g))
         {
             forward_list<Movie *> movies = it->second;
             for (auto it = movies.begin(); it != movies.end(); ++it) // printing all movies of given genre
@@ -373,20 +377,26 @@ void Movie::searchMovie(string title, map<string, MovieAVL> moviesByTitle)
     // case3: string of length greater than 2
     else
     {
-        MovieAVL avl = moviesByTitle[title]; // get avl of key
-        if (avl.isEmpty())                   // if key is not present
-            cout << "No matching movie." << endl;
+        cout << "case3"<<endl;
+        MovieAVL avl = moviesByTitle[title.substr(0, 2)]; // get avl of key
+        if (avl.isEmpty())                                // if key is not present
+            cout << "No matching movie1." << endl;
+
         else
         {
+            cout << "inside else"<<endl;
             forward_list<Movie *> moviesOfKey = avl.search(title); // search movies that have title string in their title
+            cout << "after search"<<endl;
             if (moviesOfKey.empty())                               // if no such movie is found
-            {
-                cout << "No matching movie." << endl;
-            }
+                cout << "No matching movie2." << endl;
             else
             { // if movies are found, iterate over list of movies
+            cout << "inside nested else"<<endl;
                 for (auto it = moviesOfKey.begin(); it != moviesOfKey.end(); ++it)
+                {
+                    cout << "for" << endl;
                     (*it)->display();
+                }
             }
         }
     }
@@ -395,6 +405,13 @@ void Movie::searchMovie(string title, map<string, MovieAVL> moviesByTitle)
 void Movie::getMoviesOfYear(short int year, map<short int, forward_list<Movie *>> moviesByYear)
 {
     forward_list<Movie *> movies = moviesByYear[year]; // movies of this year
+
+    if (movies.empty())
+    {
+        cout << "No movies were released in " << year << endl;
+        return;
+    }
+
     cout << "Following movies were released in " << year << ": " << endl;
     for (auto it = movies.begin(); it != movies.end(); ++it) // iterating over movies
         cout << (*it)->getTitle() << endl;                   // title of movies
@@ -410,10 +427,13 @@ void Movie::printMoviesChronologically(bool desc, map<short int, forward_list<Mo
         // rbegin() returns to the last value of map
         for (it = moviesByYear.rbegin(); it != moviesByYear.rend(); it++)
         {
-            std::cout << "----------- " << it->first << " -----------" << endl; // year
-            forward_list<Movie *> movies = it->second;                          // value is forward_list of Movie*
-            for (auto it = movies.begin(); it != movies.end(); ++it)            // iterating over movies
-                cout << (*it)->getTitle() << endl;                              // printing title
+            std::cout << "---------------- " << it->first << " -----------------" << endl
+                      << endl;                                       // year
+            forward_list<Movie *> movies = it->second;               // value is forward_list of Movie*
+            for (auto it = movies.begin(); it != movies.end(); ++it) // iterating over movies
+                cout << (*it)->getTitle() << endl;                   // printing title
+            cout << endl
+                 << endl;
         }
     }
 
@@ -424,10 +444,12 @@ void Movie::printMoviesChronologically(bool desc, map<short int, forward_list<Mo
 
         for (it = moviesByYear.begin(); it != moviesByYear.end(); it++)
         {
-            std::cout << "----------- " << it->first << " -----------" << endl; //year
-            forward_list<Movie *> movies = it->second;                          // value is foward_list of Movie*
-            for (auto it = movies.begin(); it != movies.end(); ++it)            // iterating over movies
-                cout << (*it)->getTitle() << endl;                              // printing title
+            std::cout << "---------------- " << it->first << " ----------------" << endl; //year
+            forward_list<Movie *> movies = it->second;                                    // value is foward_list of Movie*
+            for (auto it = movies.begin(); it != movies.end(); ++it)                      // iterating over movies
+                cout << (*it)->getTitle() << endl;                                        // printing title
+            cout << endl
+                 << endl;
         }
     }
 }
@@ -437,10 +459,13 @@ void Movie::printMoviesByRating(map<string, forward_list<Movie *>, greater<strin
     map<string, forward_list<Movie *>, greater<string>>::iterator it; // iterator
     for (it = moviesByRating.begin(); it != moviesByRating.end(); it++)
     {
-        std::cout << "----------- " << it->first << " -----------" << endl; // rating
-        forward_list<Movie *> movies = it->second;                          // value is foward_list of Movie*
-        for (auto it = movies.begin(); it != movies.end(); ++it)            // iterating over movies
-            cout << (*it)->getTitle() << endl;                              // printing title
+        std::cout << "-------------- " << it->first << " ---------------" << endl
+                  << endl;                                       // rating
+        forward_list<Movie *> movies = it->second;               // value is foward_list of Movie*
+        for (auto it = movies.begin(); it != movies.end(); ++it) // iterating over movies
+            cout << (*it)->getTitle() << endl;                   // printing title
+        cout << endl
+             << endl;
     }
 }
 

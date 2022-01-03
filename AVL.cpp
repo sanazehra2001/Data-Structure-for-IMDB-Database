@@ -56,18 +56,29 @@ AVLNode<Movie *> *MovieAVL::insertNode(AVLNode<Movie *> *node, Movie *key)
 	return node;
 }
 
-forward_list<Movie *> MovieAVL::search(string title)
+forward_list<Movie *> MovieAVL::search(string title) // errors to be fixeds
 {
 	forward_list<Movie *> movies;
 	AVLNode<Movie *> *ptr = root;
+	string mTitle;
+	cout << "before return" << endl;
 	while (ptr)
 	{
-		if (title > ptr->key->getTitle().substr(0, title.length()))
-			ptr = ptr->right;
-		else if (title < ptr->key->getTitle().substr(0, title.length()))
-			ptr = ptr->left;
-		else
-			movies.emplace_front(ptr->key);
+		mTitle = ptr->key->getTitle();
+		if (!(mTitle.length() <= title.length()))
+		{
+			if (title > ptr->key->getTitle().substr(0, title.length()))
+				ptr = ptr->right;
+			else if (title < ptr->key->getTitle().substr(0, title.length()))
+				ptr = ptr->left;
+			else
+				movies.emplace_front(ptr->key);
+		}
+		else{
+			AVLNode<Movie *> *p = ptr;
+
+
+		}
 	}
 	return movies;
 }
@@ -83,7 +94,7 @@ void inOrderUtil(AVLNode<Movie *> *node)
 	if (node)
 	{
 		inOrderUtil(node->left);
-		node->key->display() ;
+		node->key->display();
 		inOrderUtil(node->right);
 	}
 }
@@ -160,7 +171,8 @@ Actor *ActorAVL::search(string name)
 	return NULL;
 }
 
-bool ActorAVL::isEmpty(){
+bool ActorAVL::isEmpty()
+{
 	return root == NULL;
 }
 
@@ -169,7 +181,7 @@ void inOrderUtil(AVLNode<Actor *> *node)
 	if (node)
 	{
 		inOrderUtil(node->left);
-		cout << node->key->getName() <<endl ;
+		cout << node->key->getName() << endl;
 		inOrderUtil(node->right);
 	}
 }
@@ -246,7 +258,7 @@ Director *DirectorAVL::search(string name)
 	return NULL;
 }
 
-bool DirectorAVL::isEmpty(){
+bool DirectorAVL::isEmpty()
+{
 	return root == NULL;
 }
-
