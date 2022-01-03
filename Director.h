@@ -43,7 +43,7 @@ public:
 
     // methods related to director
     static Director *searchDir(string, unordered_map<string, DirectorAVL>);
-    static void getDirectorOfGenre(string );
+    static void getDirectorOfGenre(string,unordered_map<Genre, map<string, forward_list<Movie *>, greater<string>>>);
 
     //utitlity methods
     void displayDirector();
