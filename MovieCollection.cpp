@@ -188,6 +188,7 @@ int main()
                 m->setGenre(word);
                 // cout << word<<endl;
             }
+            // m->displayGenre();
 
             if (colmVals[2] != "")
                 m->setTitleYear(stoi(colmVals[2]));
@@ -288,6 +289,7 @@ int main()
                 {
                     m->setPlotKeywords(word);
                 }
+                // m->displayKeywords();
             }
 
             m->setImdbLink(colmVals[19]);
@@ -345,13 +347,13 @@ int main()
     // Actor::getUniqueCoActors("Jennifer Jason Leigh", allActors); //tested
     // Actor::getCoActorsOfCoActors("Vincent Schiavelli", allActors); //tested
     // cout << Actor::isCoActor("Vincent Schiavelli", "Judge Reinhold", allActors); //tested
- 
+
     // director functions
     // Director::searchDir("Christopher Nolan", allDirectors, true); //tested
     // Director::getDirectorOfGenre("Action", moviesByGenre);
 
     // movie functions
-    // Movie::searchMovie("The", moviesByTitle);
+    Movie::searchMovie("  the ", moviesByTitle); //tested, provided genres are added properly
     // Movie::getMoviesOfYear(20151, moviesByYear); //tested
     // Movie::printMoviesChronologically(true, moviesByYear); //tested
     // Movie::getMoviesOfGenre("Action", moviesByGenre);

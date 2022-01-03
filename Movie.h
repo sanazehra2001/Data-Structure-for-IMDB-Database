@@ -99,6 +99,9 @@ public:
     void displayActors();
     void displayGenre();
     void display();
+    void displayDirector();
+
+
     static Movie *searchMovieByTitle(string , map<string, MovieAVL>);
     static Movie *searchMovieByYear(Movie *, map<short int, forward_list<Movie *>>);
     static Movie *searchMovieByRating(Movie* , map<string, forward_list<Movie *>, greater<string>>);
