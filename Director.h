@@ -8,6 +8,7 @@
 #include "Movie.h"
 #include <unordered_map>
 #include "AVL.h"
+#include "Genre.cpp"
 
 // forward declaration
 class Movie;
@@ -43,11 +44,12 @@ public:
     void static addDirector(Director*);
 
     // methods related to director
-    static Director *searchDir(string, unordered_map<string, DirectorAVL>);
-    //static void getDirectorOfGenre(string,unordered_map<Genre, map<string, forward_list<Movie *>, greater<string>>>);
+    static Director *searchDir(string, unordered_map<string, DirectorAVL>, bool = false);
+    static void getDirectorOfGenre(string,unordered_map<Genre, map<string, forward_list<Movie *>, greater<string>>>);
 
     //utitlity methods
     void displayDirector();
+    void displayMovies();
 };
 
 #endif

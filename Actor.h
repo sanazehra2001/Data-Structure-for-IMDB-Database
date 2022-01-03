@@ -19,7 +19,7 @@ class Actor
 public:
     string name;
     int fbLikesForActor;
-    map<string, forward_list<Movie *>> movieList; //sorted chronologically key is year
+    map<short int, forward_list<Movie *>> movieList; //sorted chronologically key is year
 
     // static unordered_map<string, ActorAVL> allActors; // avl sorted on actor name
 
@@ -36,7 +36,7 @@ public:
     //getters
     string getName();
     int getLikes();
-    map<string, forward_list<Movie *>> getMovie();
+    map<short int, forward_list<Movie *>> getMovie();
     int getCountOfMovies();
 
     // add to main map

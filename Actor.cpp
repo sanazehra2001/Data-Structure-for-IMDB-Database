@@ -29,7 +29,15 @@ void Actor::setLikes(int likes)
 }
 void Actor::addMovie(Movie *m)
 {
-    //to be implemented
+    if (movieList.find(m->getTitleYear()) != movieList.end()) // if key exists, add movie to the existing list of movies
+        movieList.at(m->getTitleYear()).emplace_front(m);
+
+    else // if key does not exists, make forward_list of Movie* and make new key for this year
+    {
+        forward_list<Movie *> moviesOfActor;
+        moviesOfActor.emplace_front(m);
+        movieList[m->getTitleYear()] = moviesOfActor;
+    }
 }
 
 // getters
@@ -43,7 +51,7 @@ int Actor::getLikes()
     return fbLikesForActor;
 }
 
-map<string, forward_list<Movie *>> Actor::getMovie()
+map<short int, forward_list<Movie *>> Actor::getMovie()
 {
     return movieList;
 }
@@ -51,7 +59,7 @@ map<string, forward_list<Movie *>> Actor::getMovie()
 int Actor::getCountOfMovies()
 {
     int count = 0;
-    map<string, forward_list<Movie *>>::iterator it;
+    map<short int, forward_list<Movie *>>::iterator it;
 
     for (it = movieList.begin(); it != movieList.end(); it++)
     {
@@ -67,17 +75,16 @@ void Actor::addActor(Actor *a)
     //allActors.insert(a.name, a);
 }
 
-
-void Actor::displayAllActors(unordered_map<string, ActorAVL> allActors){
+void Actor::displayAllActors(unordered_map<string, ActorAVL> allActors)
+{
     unordered_map<string, ActorAVL>::iterator it; //iterator
 
     for (it = allActors.begin(); it != allActors.end(); it++)
     {
-        cout << "----------- " << it->first << " -----------" << endl; 
-        ActorAVL avl = it->second;                  
+        cout << "----------- " << it->first << " -----------" << endl;
+        ActorAVL avl = it->second;
         avl.traverse();
     }
-
 }
 
 // helper functions
@@ -85,7 +92,7 @@ void Actor::displayAllMovies()
 {
 
     // actor found: traverse thorugh the map of movies and find coactors
-    map<string, forward_list<Movie *>>::iterator it; //iterator
+    map<short int, forward_list<Movie *>>::iterator it; //iterator
 
     // traversing through the map of movies of given actor (movieList)
     for (it = this->movieList.begin(); it != this->movieList.end(); it++)
@@ -98,6 +105,7 @@ void Actor::displayAllMovies()
             cout << m->getTitle() << endl; // name of movie
         }
     }
+    cout << endl;
 }
 
 void Actor::display()
@@ -114,10 +122,7 @@ Actor *Actor::searchActor(string name, unordered_map<string, ActorAVL> allActors
     // finding actor by frst two letters of name in map of allActors, returns an avl of pointers to Actor
 
     if (allActors.find(name.substr(0, 2)) != allActors.end()) // if key exists, search for actor in ActorAVL
-    {
-        ActorAVL actorsOfKey = allActors[name.substr(0, 2)];
-        actor = actorsOfKey.search(name); // find actor in avl
-    }
+        actor= allActors[name.substr(0, 2)].search(name); // find actor in avl
 
     if (display)
     {
@@ -144,7 +149,7 @@ forward_list<Actor *> Actor::getCoActors(string name, unordered_map<string, Acto
     }
 
     // actor found: traverse thorugh the map of movies and find coactors
-    map<string, forward_list<Movie *>>::iterator it; //iterator
+    map<short int, forward_list<Movie *>>::iterator it; //iterator
 
     // traversing through the map of movies of given actor (movieList)
     for (it = actor->movieList.begin(); it != actor->movieList.end(); it++)
@@ -191,7 +196,7 @@ void Actor::getUniqueCoActors(string name, unordered_map<string, ActorAVL> allAc
     unordered_map<string, forward_list<Movie *>> coactorsMap;
 
     // actor found: traverse thorugh the map of movies and find coactors
-    map<string, forward_list<Movie *>>::iterator it; //iterator
+    map<short int, forward_list<Movie *>>::iterator it; //iterator
 
     // traversing through the map of movies of given actor (movieList)
     for (it = actor->movieList.begin(); it != actor->movieList.end(); it++)
