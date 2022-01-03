@@ -106,6 +106,7 @@ class MovieAVL
 public:
 	void insert(Movie *);
 	AVLNode<Movie *> *insertNode(AVLNode<Movie *> *, Movie *);
+	Movie * search(string , AVLNode<Movie *> *, forward_list<Movie *>*);
 	forward_list<Movie *> search(string);
 	bool isEmpty();
 	void traverse();

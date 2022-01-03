@@ -1,5 +1,6 @@
 #include "Movie.h"
 #include <cstring>
+#include <cctype>
 
 // setters
 void Movie::setTitle(string t)
@@ -214,39 +215,65 @@ MovieColor Movie::getColor()
 void Movie::displayKeywords()
 {
     cout << "Keywords: ";
-    for (auto it = getPlotKeywords().begin(); it != getPlotKeywords().end(); ++it)
-        cout << (*it) << ", ";
+    // for (auto it = getPlotKeywords().begin(); it != getPlotKeywords().end(); ++it)
+    //     cout << (*it) << ", ";
+    for (string&a : getPlotKeywords()){
+        cout << a<< ",";
+    }
+    
+    cout << endl;
 }
 
 void Movie::displayActors()
 {
     cout << "Actors: ";
     // finding actors
-    Actor **coActors = getActor();                // all actors of this movie
-    for (Actor **a = coActors; coActors + 3; ++a) //traversing through three actors of every movie
+    Actor **coActors = getActor();                    // all actors of this movie
+    for (Actor **a = coActors; a < coActors + 3; ++a) //traversing through three actors of every movie
     {
         Actor *coAct = (*a);
-        cout << coAct->getName() << ", "; //display names of coactor
+        if (coAct)
+            cout << coAct->getName() << ", "; //display names of coactor
     }
+    cout << endl;
+
+    // for (Actor **i = coActors; i < coActors + 3; i++)
+    // {
+    //     if ((*(i))->getName() != actor->getName())
+    //     {
+    //         cout << (*(i))->getName() << ", ";
+    //         // coactorsList.emplace_front(*(i));
+    //     }
+    // }
 }
 
 void Movie::displayGenre()
 {
     cout << "Genre: ";
-    for (auto it = getGenre().begin(); it != getGenre().end(); ++it) // traversing through
-        cout << (*it) << ", ";
+    // for (auto it = getGenre().begin(); it != getGenre().end(); ++it) // traversing through
+    //     cout << (*it) << ", ";
+    for (Genre&a : getGenre()){
+        cout << a<< ",";
+    }
+    cout << endl;
+}
+
+void Movie::displayDirector()
+{
+    if (getDirector())
+    {
+        cout << "Director: ";
+        cout << getDirector()->getName() << endl;
+    }
 }
 
 void Movie::display()
 {
-    string t = getTitle();
-    t.pop_back();
-    t.pop_back();
-    cout << t << endl;
+    cout << getTitle() << endl;
     displayGenre();
     cout << "Year: " << getTitleYear() << endl;
     cout << "IMDB Score: " << getImdbScore() << endl;
-    cout << "Director: " << getDirector()->name << endl;
+    displayDirector();
     cout << "Critic Reviews: " << getNumOfCriticReviews() << endl;
     cout << "Duration: " << getDuration() << endl;
     displayActors();
@@ -288,13 +315,10 @@ Movie *Movie::searchMovieByTitle(string title, map<string, MovieAVL> moviesByTit
     {
         forward_list<Movie *> moviesOfKey = avl.search(title); // search movies that have title string in their title
         if (moviesOfKey.empty())                               // if no such movie is found
-        {
             return NULL;
-        }
-        else
-        { // if movie is found
+
+        else // if movie is found
             return moviesOfKey.front();
-        }
     }
 }
 
@@ -304,9 +328,7 @@ Movie *Movie::searchMovieByYear(Movie *m, map<short int, forward_list<Movie *>> 
     for (auto it = movies.begin(); it != movies.end(); ++it)        // iterating over movies
     {
         if ((*it)->getTitle() == m->getTitle())
-        {
             return *it;
-        }
     }
     return NULL;
 }
@@ -350,9 +372,34 @@ Movie *Movie::searchMovieByGenre(Movie *m, Genre g, unordered_map<Genre, map<str
     }
 }
 
+string formatStr(string str)
+{
+    while (!str.empty() && std::isspace(*str.begin()))
+        str.erase(str.begin());
+
+    while (!str.empty() && std::isspace(*str.rbegin()))
+        str.erase(str.length() - 1);
+
+    string result;
+    // result.erase(std::find_if(value.rbegin(), value.rend(), std::bind1st(std::not_equal_to<char>(), ' ')).base(), value.end());
+    for (int i = 0; i < str.length(); i++)
+    {
+        result += tolower(str[i]);
+        if (isspace(str[i]))
+        {
+            result += toupper(str[i + 1]);
+            i++;
+        }
+    }
+    result[0] = toupper(result[0]);
+    return result;
+}
+
 // search movie by title not necessarily complete
 void Movie::searchMovie(string title, map<string, MovieAVL> moviesByTitle)
 {
+    title = formatStr(title);
+    // title[0] = toupper(title[0]);
     // case1: string is of length one
     if (title.length() == 1)
     {
@@ -377,25 +424,25 @@ void Movie::searchMovie(string title, map<string, MovieAVL> moviesByTitle)
     // case3: string of length greater than 2
     else
     {
-        cout << "case3"<<endl;
         MovieAVL avl = moviesByTitle[title.substr(0, 2)]; // get avl of key
         if (avl.isEmpty())                                // if key is not present
-            cout << "No matching movie1." << endl;
+            cout << "No matching movie." << endl;
 
         else
         {
-            cout << "inside else"<<endl;
             forward_list<Movie *> moviesOfKey = avl.search(title); // search movies that have title string in their title
-            cout << "after search"<<endl;
             if (moviesOfKey.empty())                               // if no such movie is found
-                cout << "No matching movie2." << endl;
+                cout << "No matching movie." << endl;
             else
             { // if movies are found, iterate over list of movies
-            cout << "inside nested else"<<endl;
                 for (auto it = moviesOfKey.begin(); it != moviesOfKey.end(); ++it)
                 {
-                    cout << "for" << endl;
+                    // cout << "for" << endl;
                     (*it)->display();
+                    // cout << (*it)->getTitle();
+
+                    cout << endl
+                         << endl;
                 }
             }
         }
