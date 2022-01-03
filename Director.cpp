@@ -1,8 +1,4 @@
-#include "Movie.h"
 #include "Director.h"
-#include "Movie.cpp"
-#include <unordered_map>
-
 
 // constructors
 Director::Director()
@@ -76,28 +72,28 @@ Director *Director::searchDir(string name, unordered_map<string, DirectorAVL> al
 
 }
 
-void Director::getDirectorOfGenre(string g,unordered_map<Genre, map<string, forward_list<Movie *>, greater<string>>> moviesByGenre) {
- Genre genre = convert(g);
+// void Director::getDirectorOfGenre(string g, unordered_map<Genre, map<string, forward_list<Movie *>, greater<string>>> moviesByGenre) {
+//  Genre genre = convert(g);
 
-    map<string, forward_list<Movie *>, greater<string>> moviesOfGen = moviesByGenre[genre]; // finding genre
+//     map<string, forward_list<Movie *>, greater<string>> moviesOfGen = moviesByGenre[genre]; // finding genre
 
-    cout << "----------- " << g << " -----------" << endl;
+//     cout << "----------- " << g << " -----------" << endl;
 
 
 
-    map<string, forward_list<Movie *>, greater<string>>::iterator it;
+//     map<string, forward_list<Movie *>, greater<string>>::iterator it;
 
-    for (it = moviesOfGen.begin(); it != moviesOfGen.end(); it++) // iterating over nested map
+//     for (it = moviesOfGen.begin(); it != moviesOfGen.end(); it++) // iterating over nested map
 
-    {
+//     {
 
-        std::cout << "----------- " << it->first << " -----------"; // Rating
+//         std::cout << "----------- " << it->first << " -----------"; // Rating
 
-        forward_list<Movie *> movies = it->second;
+//         forward_list<Movie *> movies = it->second;
 
-        for (auto it = movies.begin(); it != movies.end(); ++it) // printing all movies of given genre
+//         for (auto it = movies.begin(); it != movies.end(); ++it) // printing all movies of given genre
 
-            cout << (*it)->getDirector() << endl;
+//             cout << (*it)->getDirector() << endl;
 
-    }
-}
+//     }
+//}

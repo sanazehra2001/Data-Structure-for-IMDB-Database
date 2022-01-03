@@ -12,6 +12,7 @@
 // forward declaration
 class Movie;
 class DirectorAVL;
+//enum Genre;
 using namespace std;
 
 class Director
@@ -43,7 +44,7 @@ public:
 
     // methods related to director
     static Director *searchDir(string, unordered_map<string, DirectorAVL>);
-    static void getDirectorOfGenre(string,unordered_map<Genre, map<string, forward_list<Movie *>, greater<string>>>);
+    //static void getDirectorOfGenre(string,unordered_map<Genre, map<string, forward_list<Movie *>, greater<string>>>);
 
     //utitlity methods
     void displayDirector();

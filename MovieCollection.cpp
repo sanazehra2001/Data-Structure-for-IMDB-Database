@@ -15,87 +15,42 @@ map<short int, forward_list<Movie *>> moviesByYear;                             
 map<string, forward_list<Movie *>, greater<string>> moviesByRating;                      // keys sorted by rating
 unordered_map<Genre, map<string, forward_list<Movie *>, greater<string>>> moviesByGenre; // nested maps' keys sorted on rating
 
-//map od director
+//map of director
 unordered_map<string, DirectorAVL> allDirectors; //avl sorted on name
 
 //map of actor
 unordered_map<string, ActorAVL> allActors; // avl sorted on actor name
 
-Director *addDirector(string name, int likes, Movie *m)
+
+
+
+char displayMenu()
 {
-    string key = name.substr(0, 2);
-    Director *d;
-
-    if (allDirectors.find(key) == allDirectors.end())
-    {
-        //key is not present, create key-avl pair
-        Director dir(name, likes);       //create a new director
-        DirectorAVL avl;                 //create an AVL for that key
-        avl.insert(&dir);                //add the director to the AVL
-        allDirectors.insert({key, avl}); //finally add this newly created AVL to the map
-
-        d = &dir;
-    }
-    else
-    { // the key already exists
-
-        Director *dir = Director::searchDir(name, allDirectors); // pointer to the found dir or NULL otherwise
-        d = dir;
-
-        if (dir == NULL)
-        { // if director is found
-            Director dir(name, likes);
-            allDirectors.at(key).insert(&dir);
-            d = &dir;
-        }
-    }
-    d->addMovie(m);
-    return d;
+    cout << "----------------------------MAIN MENU----------------------------\n";
+    cout << " 1. Search profile of an actor\n";
+    cout << " 2. Search coactors of an actor\n";
+    cout << " 3. Search unique coactors\n";
+    cout << " 4. All coactors of the coactors of an actor\n";
+    cout << " 5. Check if A and B are coactors\n";
+    cout << " 6. Search director\n";
+    cout << " 7. Directors who have directed movies of a certain genre type\n";
+    cout << " 8. Search a movie\n";
+    cout << " 9. Search movies released in a given year\n";
+    cout << "10. Print movies year-wise\n";
+    cout << "11. Search movies based on genre\n";
+    cout << "12. Print movies rating-wise\n";
+    cout << "13. Print movies of a certain genre rating-wise\n";
+    cout << endl
+         << endl;
+    cout << "Select an option: ";
+    char choice;
+    cin >> choice;
+    cout << endl
+         << endl;
+    return choice;
 }
 
-Actor *addActor(string name, int likes, Movie *m)
-{
-    string key = name.substr(0, 2);
-    Actor *a;
-
-    if (allActors.find(key) == allActors.end())
-    {
-        //key is not present, create key-avl pair
-        Actor actor(name, likes); //create a new actor
-        ActorAVL avl;             //create an AVL for that key
-        avl.insert(&actor);       //add the actor to the AVL
-        allActors.insert({key, avl});
-
-        a = &actor;
-        // ActorAVL av = allActors["Jo"];
-        // // av.traverse();
-        // Actor *actor1 =av.search(name);
-        // cout << actor1->getName()<<endl;
-        // Actor *actor1 = Actor::searchActor(name, allActors);
-        // cout <<actor1->getName()<<endl;
-    }
-
-    else
-    {
-        // cout << name; // the key already exists
-        // cout << key;
-        ActorAVL av = allActors[key];
-        // av.traverse();
-        Actor *actor = Actor::searchActor(name, allActors); // pointer to the found actor or NULL otherwise
-        a = actor;
-
-        if (actor == NULL)
-        { // if actor is found
-            Actor act(name, likes);
-            allActors.at(key).insert(&act);
-            a = &act;
-        }
-    }
-    a->addMovie(m);
-    return a;
-}
-
-void readFile()
+int main()
 {
     int index;
     string line;
@@ -105,6 +60,9 @@ void readFile()
     string colmVals[28];
     ifstream file("IMDB_Top5000-SEECS.csv");
 
+    string name;
+    int likes;
+
     if (file.is_open())
     {
         getline(file, line); // gets the row of column headings
@@ -113,6 +71,8 @@ void readFile()
         {
             index = 0;
             Movie m; // create a new Movie node for each row
+            Director* d;
+            Actor *actors[3];
 
             stringstream s(line); // breaks the line into words
 
@@ -134,46 +94,46 @@ void readFile()
                 m.setImdbScore(stof(colmVals[3]));
 
             cout << m.getTitle();
+            
+            
+            name = colmVals[4];
+            likes = stoi(colmVals[5]);
 
-            // Director* d;
-            // string name = colmVals[4];
-            // int likes = stoi(colmVals[5]);
+            if ((colmVals[4] != "") && (colmVals[5] != "")){
 
-            // if ((colmVals[4] != "") && (colmVals[5] != "")){
+                string key = name.substr(0, 2);
+                d = Director::searchDir(name, allDirectors);
+                if(d == NULL)
+                {    // director not found
 
-            //     string key = name.substr(0, 2);
-            //     d = Director::searchDir(name, allDirectors);
+                     d = new Director(name, likes);
 
-            //     if(d == NULL)
-            //     {    // director not found
-            //         if (allDirectors.find(key) == allDirectors.end())
-            //         {   // if the key is not present in the hashmap
-            //             DirectorAVL dirAVL;
-            //             d = new Director(name, likes);
-            //             dirAVL.insert(d);
-            //             allDirectors.insert({key, dirAVL});
-            //         }
-            //
-            //        else
-            //        {
-            //            allDirectors.at(key).insert(d);
-            //        }
-            //     }
-            //     d->addMovie(&m);
-            //     m.setDirector(d);
-            // }
+                    if (allDirectors.find(key) == allDirectors.end())
+                    {   // if the key is not present in the hashmap
+                        DirectorAVL dirAVL;
+                        dirAVL.insert(d);
+                        allDirectors.insert({key, dirAVL});
+                    }
+                   else
+                   {
+                       allDirectors.at(key).insert(d);
+                   }
+                }
+                d->addMovie(&m);
+                m.setDirector(d);
+            }
 
-            // cout << m.getDirector()->getName();
-
+            cout << m.getDirector()->getName();
+            
             if (colmVals[6] != "")
+            {
                 m.setNumOfCriticReviews(stoi(colmVals[6]));
+            }
 
             if (colmVals[7] != "")
                 m.setDuration(stoi(colmVals[7]));
 
-            Actor *actors[3];
-            string name;
-            int likes;
+            
             int indexActor = 0;
             for (int i = 8; i < 14; i += 2)
             {
@@ -205,7 +165,6 @@ void readFile()
             }
             m.setActor(actors);
 
-            //actors[actorIndex++] = &(actor[i]);
             for (int i = 0; i < 3; i++)
             {
                 actors[i]->display();
@@ -260,44 +219,10 @@ void readFile()
     {
         cout << "Unable to open file";
     }
-}
 
-char displayMenu()
-{
-    cout << "----------------------------MAIN MENU----------------------------\n";
-    cout << " 1. Search profile of an actor\n";
-    cout << " 2. Search coactors of an actor\n";
-    cout << " 3. Search unique coactors\n";
-    cout << " 4. All coactors of the coactors of an actor\n";
-    cout << " 5. Check if A and B are coactors\n";
-    cout << " 6. Search director\n";
-    cout << " 7. Directors who have directed movies of a certain genre type\n";
-    cout << " 8. Search a movie\n";
-    cout << " 9. Search movies released in a given year\n";
-    cout << "10. Print movies year-wise\n";
-    cout << "11. Search movies based on genre\n";
-    cout << "12. Print movies rating-wise\n";
-    cout << "13. Print movies of a certain genre rating-wise\n";
-    cout << endl
-         << endl;
-    cout << "Select an option: ";
-    char choice;
-    cin >> choice;
-    cout << endl
-         << endl;
-    return choice;
-}
-
-int main()
-{
     // char choice;
     // string name;
     // string name2;
-    readFile();
-
-    // Movie::printMoviesChronologically(false ,moviesByYear);
-    // Actor::searchActor("Roland Emmerich", allActors, true);
-    Actor::displayAllActors(allActors);
 
     // choice = displayMenu();
     // switch (choice)
@@ -318,13 +243,13 @@ int main()
     // case 3:
     //     cout << "Enter the name of the actor: ";
     //     cin >> name;
-    //     Actor::getUniqueCoActors(name, allActors);
+    //     Actor::getUniqueCoActors(name);
     //     break;
 
     // case 4:
     //     cout << "Enter the name of the actor: ";
     //     cin >> name;
-    //     Actor::getCoActorsOfCoActors(name, allActors);
+    //     Actor::getCoActorsOfCoActors(name);
     //     break;
 
     // case 5:
@@ -332,7 +257,7 @@ int main()
     //     cin >> name;
     //     cout << "\nEnter the name of the actor B: ";
     //     cin >> name2;
-    //     Actor::isCoActor(name, name2, allActors);
+    //     Actor::isCoActor(name, name2);
     //     break;
 
     //     //methods of Director
@@ -401,5 +326,5 @@ int main()
     //     cout << "Invalid! Please select a correct option.";
     // }
 
-    return 0;
+    // return 0;
 }
