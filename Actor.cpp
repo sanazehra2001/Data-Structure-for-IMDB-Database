@@ -105,6 +105,7 @@ void Actor::displayAllMovies()
             cout << m->getTitle() << endl; // name of movie
         }
     }
+    cout << endl;
 }
 
 void Actor::display()
@@ -121,10 +122,7 @@ Actor *Actor::searchActor(string name, unordered_map<string, ActorAVL> allActors
     // finding actor by frst two letters of name in map of allActors, returns an avl of pointers to Actor
 
     if (allActors.find(name.substr(0, 2)) != allActors.end()) // if key exists, search for actor in ActorAVL
-    {
-        ActorAVL actorsOfKey = allActors[name.substr(0, 2)];
-        actor = actorsOfKey.search(name); // find actor in avl
-    }
+        actor= allActors[name.substr(0, 2)].search(name); // find actor in avl
 
     if (display)
     {
