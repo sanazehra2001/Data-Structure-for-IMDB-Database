@@ -78,7 +78,7 @@ public:
     Director *getDirector();
     int getNumOfCriticReviews();
     int getDuration();
-    Actor **getActor();
+    Actor ** getActor();
     unsigned long int getGross();
     unsigned int getNumOfVotes();
     int getFbLikesForCast();
@@ -99,7 +99,7 @@ public:
     void displayActors();
     void displayGenre();
     void display();
-    static Movie *searchMovieByTitle(string title, map<string, MovieAVL>);
+    static Movie *searchMovieByTitle(string , map<string, MovieAVL>);
     static Movie *searchMovieByYear(Movie *, map<short int, forward_list<Movie *>>);
     static Movie *searchMovieByRating(Movie* , map<string, forward_list<Movie *>, greater<string>>);
     static Movie *searchMovieByGenre(Movie *, Genre, unordered_map<Genre, map<string, forward_list<Movie *>, greater<string>>>);
