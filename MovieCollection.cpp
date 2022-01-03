@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <forward_list>
 
 #include "Movie.cpp"
 #include "Director.cpp"
@@ -21,47 +22,104 @@ unordered_map<string, DirectorAVL> allDirectors; //avl sorted on name
 //map of actor
 unordered_map<string, ActorAVL> allActors; // avl sorted on actor name
 
+
 void setMovieByTitle(Movie *m)
 {
-    // Movie *moviePtr;
-    // string name = m->getTitle();
-    // string key = name.substr(0, 2);
+    Movie *moviePtr;
+    string name = m->getTitle();
+    string key = name.substr(0, 2);
 
-    // moviePtr = Movie::searchMovieByTitle(name, moviesByTitle);
+    moviePtr = Movie::searchMovieByTitle(name, moviesByTitle);
 
-    // if (moviePtr == NULL)
-    // { //movies not found
-    // }
-    // if (d == NULL)
-    // { // director not found
+    if (moviePtr == NULL)
+    { //movies not found
 
-    //     d = new Director(name, likes);
+        if (moviesByTitle.find(key) == moviesByTitle.end())
+        { // if the key is not present in the hashmap
+            MovieAVL movAVL;
+            movAVL.insert(m);
+            moviesByTitle.insert({key, movAVL});
+        }
 
-    //     if (allDirectors.find(key) == allDirectors.end())
-    //     { // if the key is not present in the hashmap
-    //         DirectorAVL dirAVL;
-    //         dirAVL.insert(d);
-    //         allDirectors.insert({key, dirAVL});
-    //     }
-    //     else
-    //     {
-    //         allDirectors.at(key).insert(d);
-    //     }
-    // }
-    // d->addMovie(&m);
-    // m.setDirector(d);
+        else
+        {
+            moviesByTitle.at(key).insert(m);
+        }
+    }
 }
 
-void setMovieByYear(Movie *)
+void setMovieByYear(Movie* m)
 {
+    Movie *moviePtr;
+    short int key = m->getTitleYear();
+
+    moviePtr = Movie::searchMovieByYear(m, moviesByYear);
+
+    if (moviePtr == NULL)
+    { //movies not found
+
+        if (moviesByYear.find(key) == moviesByYear.end())
+        { // if the key is not present in the hashmap
+            forward_list<Movie*> movList;
+            movList.emplace_front(m);
+            moviesByYear.insert({key, movList});
+        }
+
+        else
+        {
+            moviesByYear.at(key).emplace_front(m);
+        }
+    }
 }
 
-void setMovieByRating(Movie *)
+void setMovieByRating(Movie* m)
 {
+    Movie *moviePtr;
+    string key = m->getContentRating();
+
+    moviePtr = Movie::searchMovieByRating(m, moviesByRating);
+
+    if (moviePtr == NULL)
+    { //movies not found
+
+        if (moviesByRating.find(key) == moviesByRating.end())
+        { // if the key is not present in the hashmap
+            forward_list<Movie*> movList;
+            movList.emplace_front(m);
+            moviesByRating.insert({key, movList});
+        }
+
+        else
+        {
+            moviesByRating.at(key).emplace_front(m);
+        }
+    }
 }
 
-void setMovieByGenre(Movie *)
+void setMovieByGenre(Movie* m, Genre g)
 {
+    Movie *moviePtr;
+    Genre key = g;
+
+    moviePtr = Movie::searchMovieByGenre(m, g, moviesByGenre);
+
+    if (moviePtr == NULL)
+    { //movies not found
+
+        if (moviesByGenre.find(key) == moviesByGenre.end())
+        { // if the key is not present in the hashmap
+            forward_list<Movie*> movList;
+            movList.emplace_front(m);
+            map<string, forward_list<Movie *>, greater<string>> sortedOnRating;
+            sortedOnRating.insert({m->getContentRating(), movList});
+            moviesByGenre.insert({g, sortedOnRating});
+        }
+
+        else
+        {
+            moviesByGenre.at(key).at(m->getContentRating()).emplace_front(m);
+        }
+    }
 }
 
 char displayMenu()
@@ -110,7 +168,7 @@ int main()
         while (getline(file, line)) // reads an entire row and stores it in line
         {
             index = 0;
-            Movie m = *(new Movie()); // create a new Movie node for each row
+            Movie* m = new Movie(); // create a new Movie node for each row
             Director *d;
             Actor *actors[3];
 
@@ -120,18 +178,19 @@ int main()
                 colmVals[index++] = word;
 
             // setting attributes of each Movie
-            m.setTitle(colmVals[0]);
+            colmVals[0].pop_back();
+            m->setTitle(colmVals[0]);
 
             stringstream genres(colmVals[1]);
             while (getline(genres, word, '|')) // add genres to the list
-                m.setGenre(word);
+                m->setGenre(word);
 
             if (colmVals[2] != "")
-                m.setTitleYear(stoi(colmVals[2]));
+                m->setTitleYear(stoi(colmVals[2]));
             if (colmVals[3] != "")
-                m.setImdbScore(stof(colmVals[3]));
+                m->setImdbScore(stof(colmVals[3]));
 
-            // cout << m.getTitle();
+            // cout << m->getTitle();
 
             if ((colmVals[4] != "") && (colmVals[5] != ""))
             {
@@ -155,17 +214,17 @@ int main()
                         allDirectors.at(key).insert(d);
                     }
                 }
-                d->addMovie(&m);
-                m.setDirector(d);
+                d->addMovie(m);
+                m->setDirector(d);
             }
 
             // cout << m.getDirector()->getName();
 
             if (colmVals[6] != "")
-                m.setNumOfCriticReviews(stoi(colmVals[6]));
+                m->setNumOfCriticReviews(stoi(colmVals[6]));
 
             if (colmVals[7] != "")
-                m.setDuration(stoi(colmVals[7]));
+                m->setDuration(stoi(colmVals[7]));
 
             int indexActor = 0;
             for (int i = 8; i < 14; i += 2)
@@ -192,54 +251,64 @@ int main()
                             allActors.at(key).insert(actors[indexActor]);
                         }
                     }
-                    actors[indexActor]->addMovie(&m);
+                    actors[indexActor]->addMovie(m);
                     indexActor++;
                 }
             }
-            m.setActor(actors);
+            m->setActor(actors);
 
             if (colmVals[14] != "")
-                m.setGross(stoul(colmVals[14]));
+                m->setGross(stoul(colmVals[14]));
 
             if (colmVals[15] != "")
-                m.setNumOfVotes(stoi(colmVals[15]));
+                m->setNumOfVotes(stoi(colmVals[15]));
 
             if (colmVals[16] != "")
-                m.setFbLikesForCast(stoi(colmVals[16]));
+                m->setFbLikesForCast(stoi(colmVals[16]));
 
             if (colmVals[17] != "")
-                m.setFaceNumInPoster(stoi(colmVals[17]));
+                m->setFaceNumInPoster(stoi(colmVals[17]));
 
             if (colmVals[18] != "")
             {
                 stringstream keywords(colmVals[18]);
                 while (getline(keywords, word, '|')) // | separated keywords are added to the list
                 {
-                    m.setPlotKeywords(word);
+                    m->setPlotKeywords(word);
                 }
             }
 
-            m.setImdbLink(colmVals[19]);
+            m->setImdbLink(colmVals[19]);
 
             if (colmVals[20] != "")
-                m.setNumOfReviews(stoi(colmVals[20]));
+                m->setNumOfReviews(stoi(colmVals[20]));
 
-            m.setLanguage(colmVals[21]);
-            m.setCountry(colmVals[22]);
-            m.setContentRating(colmVals[23]);
+            m->setLanguage(colmVals[21]);
+            m->setCountry(colmVals[22]);
+            m->setContentRating(colmVals[23]);
 
             if (colmVals[24] != "")
-                m.setBudget(stoll(colmVals[24]));
+                m->setBudget(stoll(colmVals[24]));
 
             if (colmVals[25] != "")
-                m.setAspectRatio(stof(colmVals[25]));
+                m->setAspectRatio(stof(colmVals[25]));
 
             if (colmVals[26] != "")
-                m.setFbLikesForMovie(stoi(colmVals[26]));
+                m->setFbLikesForMovie(stoi(colmVals[26]));
 
-            m.setColor(colmVals[27]);
-            // actors[0]->display();
+            m->setColor(colmVals[27]);
+
+            //insert movie pointers to relevant maps
+            setMovieByTitle(m);
+            setMovieByYear(m);
+            setMovieByRating(m);
+
+            for (auto it = m->getGenre().begin(); it != m->getGenre().end(); ++it)
+            {
+                setMovieByGenre(m, (*it));
+            }   
         }
+
         file.close();
         cout << "insertion completed" << endl;
     }
