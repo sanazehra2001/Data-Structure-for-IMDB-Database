@@ -221,6 +221,10 @@ int main()
                 d->addMovie(m);
                 m->setDirector(d);
             }
+            else
+            {
+                m->setDirector(NULL);
+            }
 
             // cout << m.getDirector()->getName();
 
@@ -256,8 +260,12 @@ int main()
                         }
                     }
                     actors[indexActor]->addMovie(m);
-                    indexActor++;
                 }
+                else
+                {
+                    actors[indexActor] = NULL;
+                }
+                 indexActor++;
             }
             m->setActor(actors);
 
