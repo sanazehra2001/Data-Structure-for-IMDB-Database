@@ -53,20 +53,17 @@ void Director::addDirector(Director *d)
 
 void Director::displayDirector() // display the details of director
 {
-cout <<"Director: "<< getName() << endl;
-cout<<"Fb Likes: "<<getLikes()<<endl;
-displayMovies();
-   
+    cout << "Director: " << getName() << endl;
+    cout << "Fb Likes: " << getLikes() << endl;
+    displayMovies();
 }
-
 
 void Director::displayMovies() // display the movie list the director has directed
 {
     cout << "Movies Directed: ";
-    for (auto it = getMovies().begin(); it != getMovies().end(); ++it) // traversing through forward list 
-        cout << (*it) << ", ";
+    for (auto it = getMovies().begin(); it != getMovies().end(); ++it) // traversing through forward list
+        cout << (*it)->getTitle() << ", ";
 }
-
 
 Director *Director::searchDir(string name, unordered_map<string, DirectorAVL> allDirectors, bool display)
 {

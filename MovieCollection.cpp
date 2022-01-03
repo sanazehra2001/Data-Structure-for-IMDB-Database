@@ -23,33 +23,33 @@ unordered_map<string, ActorAVL> allActors; // avl sorted on actor name
 
 void setMovieByTitle(Movie *m)
 {
-    Movie *moviePtr;
-    string name = m->getTitle();
-    string key = name.substr(0, 2);
+    // Movie *moviePtr;
+    // string name = m->getTitle();
+    // string key = name.substr(0, 2);
 
-    moviePtr = Movie::searchMovieByTitle(name, moviesByTitle);
+    // moviePtr = Movie::searchMovieByTitle(name, moviesByTitle);
 
-    if (moviePtr == NULL)
-    { //movies not found
-    }
-    if (d == NULL)
-    { // director not found
+    // if (moviePtr == NULL)
+    // { //movies not found
+    // }
+    // if (d == NULL)
+    // { // director not found
 
-        d = new Director(name, likes);
+    //     d = new Director(name, likes);
 
-        if (allDirectors.find(key) == allDirectors.end())
-        { // if the key is not present in the hashmap
-            DirectorAVL dirAVL;
-            dirAVL.insert(d);
-            allDirectors.insert({key, dirAVL});
-        }
-        else
-        {
-            allDirectors.at(key).insert(d);
-        }
-    }
-    d->addMovie(&m);
-    m.setDirector(d);
+    //     if (allDirectors.find(key) == allDirectors.end())
+    //     { // if the key is not present in the hashmap
+    //         DirectorAVL dirAVL;
+    //         dirAVL.insert(d);
+    //         allDirectors.insert({key, dirAVL});
+    //     }
+    //     else
+    //     {
+    //         allDirectors.at(key).insert(d);
+    //     }
+    // }
+    // d->addMovie(&m);
+    // m.setDirector(d);
 }
 
 void setMovieByYear(Movie *)
@@ -110,7 +110,7 @@ int main()
         while (getline(file, line)) // reads an entire row and stores it in line
         {
             index = 0;
-            Movie m; // create a new Movie node for each row
+            Movie m = *(new Movie()); // create a new Movie node for each row
             Director *d;
             Actor *actors[3];
 
@@ -131,7 +131,7 @@ int main()
             if (colmVals[3] != "")
                 m.setImdbScore(stof(colmVals[3]));
 
-            cout << m.getTitle();
+            // cout << m.getTitle();
 
             if ((colmVals[4] != "") && (colmVals[5] != ""))
             {
@@ -159,7 +159,7 @@ int main()
                 m.setDirector(d);
             }
 
-            cout << m.getDirector()->getName();
+            // cout << m.getDirector()->getName();
 
             if (colmVals[6] != "")
                 m.setNumOfCriticReviews(stoi(colmVals[6]));
@@ -238,6 +238,7 @@ int main()
                 m.setFbLikesForMovie(stoi(colmVals[26]));
 
             m.setColor(colmVals[27]);
+            // actors[0]->display();
         }
         file.close();
         cout << "insertion completed" << endl;
@@ -247,6 +248,27 @@ int main()
     {
         cout << "Unable to open file";
     }
+
+    // actor functions
+    // Actor::displayAllActors(allActors); // tested 
+    // Actor::searchActor("Vincent Schiavelli", allActors, true); // tested, assuming pointer to movie stores new Movie obj
+    // Actor::getCoActors("Shelley Conn", allActors);
+    // Actor::getCoActors("Vincent Schiavelli", allActors);
+    // Actor::getCoActorsOfCoActors("Vincent Schiavelli", allActors);
+    // Actor::isCoActor("Vincent Schiavelli","Shelley Conn", allActors );
+
+    // director functions
+    // Director::searchDir("Christopher Nolan", allDirectors, true); //tested, assuming pointer to movie stores new Moview Obj
+    // Director::getDirectorOfGenre("Action", moviesByGenre);
+
+    // movie functions
+    // Movie::searchMovie("The", moviesByTitle);
+    // Movie::getMoviesOfYear(2015, moviesByYear);
+    // Movie::printMoviesChronologically(false, moviesByYear);
+    // Movie::getMoviesOfGenre("Action", moviesByGenre);
+    // Movie::printMoviesByRating(moviesByRating);
+
+
 
     // char choice;
     // string name;
