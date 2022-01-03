@@ -21,8 +21,48 @@ unordered_map<string, DirectorAVL> allDirectors; //avl sorted on name
 //map of actor
 unordered_map<string, ActorAVL> allActors; // avl sorted on actor name
 
+void setMovieByTitle(Movie *m)
+{
+    Movie *moviePtr;
+    string name = m->getTitle();
+    string key = name.substr(0, 2);
 
+    moviePtr = Movie::searchMovieByTitle(name, moviesByTitle);
 
+    if (moviePtr == NULL)
+    { //movies not found
+    }
+    if (d == NULL)
+    { // director not found
+
+        d = new Director(name, likes);
+
+        if (allDirectors.find(key) == allDirectors.end())
+        { // if the key is not present in the hashmap
+            DirectorAVL dirAVL;
+            dirAVL.insert(d);
+            allDirectors.insert({key, dirAVL});
+        }
+        else
+        {
+            allDirectors.at(key).insert(d);
+        }
+    }
+    d->addMovie(&m);
+    m.setDirector(d);
+}
+
+void setMovieByYear(Movie *)
+{
+}
+
+void setMovieByRating(Movie *)
+{
+}
+
+void setMovieByGenre(Movie *)
+{
+}
 
 char displayMenu()
 {
@@ -71,15 +111,13 @@ int main()
         {
             index = 0;
             Movie m; // create a new Movie node for each row
-            Director* d;
+            Director *d;
             Actor *actors[3];
 
             stringstream s(line); // breaks the line into words
 
             while (getline(s, word, ',')) // the comma separated values are stored at consecutive array index
-            {
                 colmVals[index++] = word;
-            }
 
             // setting attributes of each Movie
             m.setTitle(colmVals[0]);
@@ -94,46 +132,41 @@ int main()
                 m.setImdbScore(stof(colmVals[3]));
 
             cout << m.getTitle();
-            
-            
-            name = colmVals[4];
-            likes = stoi(colmVals[5]);
 
-            if ((colmVals[4] != "") && (colmVals[5] != "")){
-
+            if ((colmVals[4] != "") && (colmVals[5] != ""))
+            {
+                name = colmVals[4];
+                likes = stoi(colmVals[5]);
                 string key = name.substr(0, 2);
                 d = Director::searchDir(name, allDirectors);
-                if(d == NULL)
-                {    // director not found
+                if (d == NULL)
+                { // director not found
 
-                     d = new Director(name, likes);
+                    d = new Director(name, likes);
 
                     if (allDirectors.find(key) == allDirectors.end())
-                    {   // if the key is not present in the hashmap
+                    { // if the key is not present in the hashmap
                         DirectorAVL dirAVL;
                         dirAVL.insert(d);
                         allDirectors.insert({key, dirAVL});
                     }
-                   else
-                   {
-                       allDirectors.at(key).insert(d);
-                   }
+                    else
+                    {
+                        allDirectors.at(key).insert(d);
+                    }
                 }
                 d->addMovie(&m);
                 m.setDirector(d);
             }
 
             cout << m.getDirector()->getName();
-            
+
             if (colmVals[6] != "")
-            {
                 m.setNumOfCriticReviews(stoi(colmVals[6]));
-            }
 
             if (colmVals[7] != "")
                 m.setDuration(stoi(colmVals[7]));
 
-            
             int indexActor = 0;
             for (int i = 8; i < 14; i += 2)
             {
@@ -164,11 +197,6 @@ int main()
                 }
             }
             m.setActor(actors);
-
-            for (int i = 0; i < 3; i++)
-            {
-                actors[i]->display();
-            }
 
             if (colmVals[14] != "")
                 m.setGross(stoul(colmVals[14]));

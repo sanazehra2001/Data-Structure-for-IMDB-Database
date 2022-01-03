@@ -99,6 +99,7 @@ public:
     void displayActors();
     void displayGenre();
     void display();
+    static Movie* Movie::searchMovieByTitle(string title, map<string, MovieAVL>);
     static void searchMovie(string, map<string, MovieAVL>); //not necessarily complete
     static void getMoviesOfYear(short int, map<short int, forward_list<Movie *>>);
     static void printMoviesChronologically(bool, map<short int, forward_list<Movie *>>);

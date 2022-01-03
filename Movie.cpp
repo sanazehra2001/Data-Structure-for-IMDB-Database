@@ -278,6 +278,25 @@ string getNextLetter(char letter)
     return nextChar;
 }
 
+Movie* Movie::searchMovieByTitle(string title, map<string, MovieAVL> moviesByTitle)
+{
+    MovieAVL avl = moviesByTitle[title]; // get avl of key
+        if (avl.isEmpty())                   // if key is not present
+            return NULL;
+        else
+        {
+            forward_list<Movie *> moviesOfKey = avl.search(title); // search movies that have title string in their title
+            if (moviesOfKey.empty())                               // if no such movie is found
+            {
+                return NULL;
+            }
+            else
+            { // if movie is found
+                return moviesOfKey.front();
+            }
+        }
+}
+
 // search movie by title not necessarily complete
 void Movie::searchMovie(string title, map<string, MovieAVL> moviesByTitle)
 {
