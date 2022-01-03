@@ -26,10 +26,10 @@ void setMovieByTitle(Movie *m)
 {
     Movie *moviePtr;
     string name = m->getTitle();
-    
+
     while (name.length() < 2)
         name.append(" ");
-    
+
     string key = name.substr(0, 2);
 
     moviePtr = Movie::searchMovieByTitle(name, moviesByTitle);
@@ -264,7 +264,7 @@ int main()
                 {
                     actors[indexActor] = NULL;
                 }
-                 indexActor++;
+                indexActor++;
             }
             m->setActor(actors);
 
@@ -316,15 +316,20 @@ int main()
             //insert movie pointers to relevant maps
             setMovieByTitle(m);
             // cout << "after title"<<endl;
-            if(m->getTitleYear() != 0)
+            if (m->getTitleYear() != 0)
                 setMovieByYear(m);
             // cout << "after year"<<endl;
-            if(m->getContentRating() != "")
+            if (m->getContentRating() != "")
                 setMovieByRating(m);
             // cout << "after rating"<<endl;
 
-            forward_list<Genre> genreList = m->getGenre();
-            cout << to_string(genreList.front());
+            for (Genre &a : m->getGenre())
+            {
+                setMovieByGenre(m, a);
+            }
+
+            // forward_list<Genre> genreList = m->getGenre();
+            // cout << to_string(genreList.front());
             // for (auto it = genreList.begin(); it != genreList.end(); ++it)
             // {
             //     setMovieByGenre(m, (*it));

@@ -253,7 +253,7 @@ void Movie::displayGenre()
     // for (auto it = getGenre().begin(); it != getGenre().end(); ++it) // traversing through
     //     cout << (*it) << ", ";
     for (Genre&a : getGenre()){
-        cout << a<< ",";
+        cout << toString(a) << ",";
     }
     cout << endl;
 }

@@ -68,4 +68,30 @@ Genre convert(string g)
     else if (g.compare("War"))
         return War;
 }
+
+string toString(Genre g){
+    switch (g)
+    {
+    case Action: return "Action";
+    case Adventure: return "Adventure";
+    case Animation: return "Animation";
+    case Biography: return "Biography";
+    case Comedy: return "Comedy;";
+    case Documentary: return "Documentary"; 
+    case Drama: return "Drama";
+    case Fantasy: return "Fantasy";
+    case Family: return "Family";
+    case History: return "History";
+    case Horror: return "Horror";
+    case Musical: return "Musical";
+    case Mystery: return "Mystery";
+    case Romance: return "Romance";
+    case SciFi: return "Sci-Fi";
+    case Sport: return "Sport";
+    case Thriller: return "Thriller";
+    case Western: return "Western";
+    case War: return "War";
+    }
+}
+
 #endif

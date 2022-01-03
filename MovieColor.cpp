@@ -12,3 +12,13 @@ MovieColor convertColor(string s){
     else if (s.compare("Black and White")) return Black;
     else if (s.compare("")) return Unspecified;
 }
+
+string toStringForColor(MovieColor c)
+{
+    switch (c)
+    {
+        case Color: return "Color";
+        case Black: return "Black and White";
+        case Unspecified: return "Unspecified";
+    }
+}
