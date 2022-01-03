@@ -161,98 +161,83 @@ int main()
             if (colmVals[3] != "")
                 m.setImdbScore(stof(colmVals[3]));
 
+            cout << m.getTitle();
 
-            Director* d;
-            string name = colmVals[4];
-            int likes = stoi(colmVals[5]);
+            // Director* d;
+            // string name = colmVals[4];
+            // int likes = stoi(colmVals[5]);
 
-            if ((colmVals[4] != "") && (colmVals[5] != "")){
-                
-                string key = name.substr(0, 2);
-                d = Director::searchDir(name, allDirectors);
-                
-                if(d)
-                {   // if director is found
-                    allDirectors.at(key).insert(d);
-                }
-                else
-                {
-                    if (allDirectors.find(key) == allDirectors.end())
-                    {   // if the key is not present in the hashmap
-                        DirectorAVL dirAVL;
-                        d = new Director(name, likes);
-                        dirAVL.insert(d);
-                        allDirectors.insert({key, dirAVL});
-                    }
-                }
-                d->addMovie(&m);
-                m.setDirector(d);
-            }
+            // if ((colmVals[4] != "") && (colmVals[5] != "")){
 
-            
-            cout << m.getDirector()->getName();
+            //     string key = name.substr(0, 2);
+            //     d = Director::searchDir(name, allDirectors);
 
-            
-            
-            
-            
-            
-            
-            
+            //     if(d == NULL)
+            //     {    // director not found
+            //         if (allDirectors.find(key) == allDirectors.end())
+            //         {   // if the key is not present in the hashmap
+            //             DirectorAVL dirAVL;
+            //             d = new Director(name, likes);
+            //             dirAVL.insert(d);
+            //             allDirectors.insert({key, dirAVL});
+            //         }
+            //
+            //        else
+            //        {
+            //            allDirectors.at(key).insert(d);
+            //        }
+            //     }
+            //     d->addMovie(&m);
+            //     m.setDirector(d);
+            // }
+
+            // cout << m.getDirector()->getName();
+
             if (colmVals[6] != "")
-            {
                 m.setNumOfCriticReviews(stoi(colmVals[6]));
-            }
 
             if (colmVals[7] != "")
                 m.setDuration(stoi(colmVals[7]));
 
-            // Actor *actors[3];
-            // //Actor actor[3];
-            // string name;
-            // int likes;
+            Actor *actors[3];
+            string name;
+            int likes;
+            int indexActor = 0;
+            for (int i = 8; i < 14; i += 2)
+            {
+                if ((colmVals[i] != "") && (colmVals[i + 1] != ""))
+                {
+                    name = colmVals[i];
+                    likes = stoi(colmVals[i + 1]);
+                    string key = name.substr(0, 2);
+                    actors[indexActor] = Actor::searchActor(name, allActors);
 
-            // int actorIndex = 0;
-            // for (int i = 8; i < 14; i += 2) // add actors to the array
-            // {
-            //     if (colmVals[i] != "")
-            //     {
-            //         name = colmVals[i];
-            //         likes = stoi(colmVals[i+1]);
-            //         string key = colmVals[i].substr(0, 2);
-            //         Actor actor(name, likes);
-            //         actor.addMovie(&m);
+                    if (actors[indexActor] == NULL)
+                    { // if actor is not found
+                        actors[indexActor] = new Actor(name, likes);
 
-            //         if (allActors.find(key) == allActors.end())
-            //         {
-            //             //key is not present, create key-avl pair
-            //             ActorAVL avl;             //create an AVL for that key
-            //             avl.insert(&actor);       //add the actor to the AVL
-            //             allActors.insert({key, avl});
-            //             actors[i] = &actor;
-            //         }
-
-            //         else
-            //         {
-            //             Actor* actorPtr = Actor::searchActor(name, allActors); // pointer to the found actor or NULL otherwise
-            //             actors[i] = actorPtr;
-
-            //             if (actorPtr != NULL)
-            //             { // if actor is found
-            //                 allActors.at(key).insert(&actor);
-            //                 actors[i] = &actor;
-            //             }
-            //         }
-            //     }
-            // }
+                        if (allActors.find(key) == allActors.end())
+                        { // if key is not present in the hashmap
+                            ActorAVL actAVL;
+                            actAVL.insert(actors[indexActor]);
+                            allActors.insert({key, actAVL});
+                        }
+                        else
+                        {
+                            allActors.at(key).insert(actors[indexActor]);
+                        }
+                    }
+                    actors[indexActor]->addMovie(&m);
+                    indexActor++;
+                }
+            }
+            m.setActor(actors);
 
             //actors[actorIndex++] = &(actor[i]);
-            // for (int i = 0; i < 3; i++)
-            // {
-            //     actors[i]->display();
-            // }
-
-            // m.setActor(actors);
+            for (int i = 0; i < 3; i++)
+            {
+                actors[i]->display();
+            }
 
             if (colmVals[14] != "")
                 m.setGross(stoul(colmVals[14]));
