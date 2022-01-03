@@ -26,6 +26,10 @@ void setMovieByTitle(Movie *m)
 {
     Movie *moviePtr;
     string name = m->getTitle();
+    
+    while (name.length() < 2)
+        name.append(" ");
+    
     string key = name.substr(0, 2);
 
     moviePtr = Movie::searchMovieByTitle(name, moviesByTitle);
@@ -184,9 +188,7 @@ int main()
             stringstream genres(colmVals[1]);
             while (getline(genres, word, '|')) // add genres to the list
             {
-
                 m->setGenre(word);
-                // cout << word<<endl;
             }
             // m->displayGenre();
 
@@ -194,8 +196,6 @@ int main()
                 m->setTitleYear(stoi(colmVals[2]));
             if (colmVals[3] != "")
                 m->setImdbScore(stof(colmVals[3]));
-
-            // cout << m->getTitle()<<", ";
 
             if ((colmVals[4] != "") && (colmVals[5] != ""))
             {
@@ -226,8 +226,6 @@ int main()
             {
                 m->setDirector(NULL);
             }
-
-            // cout << m.getDirector()->getName();
 
             if (colmVals[6] != "")
                 m->setNumOfCriticReviews(stoi(colmVals[6]));
@@ -292,6 +290,8 @@ int main()
                 // m->displayKeywords();
             }
 
+            cout << endl;
+
             m->setImdbLink(colmVals[19]);
 
             if (colmVals[20] != "")
@@ -323,10 +323,12 @@ int main()
                 setMovieByRating(m);
             // cout << "after rating"<<endl;
 
-            // for (auto it = m->getGenre().begin(); it != m->getGenre().end(); ++it)
+            forward_list<Genre> genreList = m->getGenre();
+            cout << to_string(genreList.front());
+            // for (auto it = genreList.begin(); it != genreList.end(); ++it)
             // {
             //     setMovieByGenre(m, (*it));
-            //     cout << "genre"<<endl;
+            //     cout << (*it) <<endl;
             // }
         }
 
