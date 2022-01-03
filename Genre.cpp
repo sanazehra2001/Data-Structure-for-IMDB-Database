@@ -1,3 +1,6 @@
+#ifndef GENRE_CPP
+#define GENRE_CPP
+
 #include <string>
 using namespace std;
 
@@ -65,3 +68,4 @@ Genre convert(string g)
     else if (g.compare("War"))
         return War;
 }
+#endif
