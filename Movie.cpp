@@ -504,79 +504,9 @@ void Movie::getMoviesOfGenre(string g, unordered_map<Genre, map<string, forward_
     {
         std::cout << "----------- " << it->first << " -----------" << endl; // Rating
         forward_list<Movie *> movies = it->second;
-        // for (auto itMovies = movies.begin(); itMovies != movies.end(); ++itMovies) // printing all movies of given genre
-        //     cout << (*itMovies)->getTitle() << endl;
-
         for (Movie* &a : movies)
             cout << a->getTitle() << endl;
         cout << endl;
     }
     cout << endl;
-}
-
-// Helper methods for insertion in maps in main
-Movie *Movie::searchMovieByTitle(string title, map<string, MovieAVL> moviesByTitle)
-{
-    MovieAVL avl = moviesByTitle[title]; // get avl of key
-    if (avl.isEmpty())                   // if key is not present
-        return NULL;
-    else
-    {
-        forward_list<Movie *> moviesOfKey = avl.search(title); // search movies that have title string in their title
-        if (moviesOfKey.empty())                               // if no such movie is found
-            return NULL;
-
-        else // if movie is found
-            return moviesOfKey.front();
-    }
-}
-
-Movie *Movie::searchMovieByYear(Movie *m, map<short int, forward_list<Movie *>> moviesByYear)
-{
-    forward_list<Movie *> movies = moviesByYear[m->getTitleYear()]; // movies of this year
-    for (auto it = movies.begin(); it != movies.end(); ++it)        // iterating over movies
-    {
-        if ((*it)->getTitle() == m->getTitle())
-            return *it;
-    }
-    return NULL;
-}
-
-Movie *Movie::searchMovieByRating(Movie *m, map<string, forward_list<Movie *>, greater<string>> moviesByRating)
-{
-    map<string, forward_list<Movie *>, greater<string>>::iterator it; // iterator
-
-    for (it = moviesByRating.begin(); it != moviesByRating.end(); it++)
-    {
-        if (it->first == m->getContentRating())
-        {
-            forward_list<Movie *> movies = it->second;               // value is foward_list of Movie*
-            for (auto it = movies.begin(); it != movies.end(); ++it) // iterating over movies
-                if ((*it)->getTitle() == m->getTitle())
-                {
-                    return *it;
-                }
-        }
-    }
-    return NULL;
-}
-
-Movie *Movie::searchMovieByGenre(Movie *m, Genre g, unordered_map<Genre, map<string, forward_list<Movie *>, greater<string>>> moviesByGenre)
-{
-    map<string, forward_list<Movie *>, greater<string>> moviesOfGen = moviesByGenre[g]; // finding genre
-    map<string, forward_list<Movie *>, greater<string>>::iterator it;
-
-    for (it = moviesOfGen.begin(); it != moviesOfGen.end(); it++) // iterating over nested map
-    {
-        if (it->first == to_string(g))
-        {
-            forward_list<Movie *> movies = it->second;
-            for (auto it = movies.begin(); it != movies.end(); ++it) // printing all movies of given genre
-                if ((*it)->getTitle() == m->getTitle())
-                {
-                    return *it;
-                }
-        }
-        return NULL;
-    }
 }
