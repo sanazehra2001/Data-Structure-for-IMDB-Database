@@ -381,28 +381,6 @@ int main()
         cout << "Unable to open file";
     }
 
-    // actor functions
-    // Actor::displayAllActors(allActors); // tested
-    // Actor::searchActor("Robert Downey Jr.", allActors, true); // tested
-    // Actor::displayCoActors("Demi Moore", allActors); //tested
-    // Actor::displayCoActors("David Keith", allActors); //tested
-    // Actor::getUniqueCoActors("Jennifer Jason Leigh", allActors); //tested
-    // Actor::getCoActorsOfCoActors("Vincent Schiavelli", allActors); //tested
-    // cout << Actor::isCoActor("Vincent Schiavelli", "Judge Reinhold", allActors); //tested
-
-    // director functions
-    // Director::searchDir("Christopher Nolan", allDirectors, true); //tested
-    // Director::getDirectorOfGenre("Action", moviesByGenre);
-
-    // movie functions
-    // Movie::searchMovie("Star Wars: Episode VII - The Force Awakens", moviesByTitle); //tested, provided genres are added properly
-    // Movie::searchMovie("Iron Man 3", moviesByTitle); //tested, provided genres are added properly
-    // Movie::getMoviesOfYear(20151, moviesByYear); //tested
-    // Movie::printMoviesChronologically(true, moviesByYear); //tested
-    // Movie::getMoviesOfGenre("Short", moviesByGenre);    //tested, to be tested for invalid genre
-    // Movie::printMoviesByRating(moviesByRating); //tested
-    //cout << "after" << endl;
-
     int choice = 0;
     while (choice != 14)
     {

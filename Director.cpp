@@ -122,10 +122,12 @@ void Director::getDirectorOfGenre(string g, unordered_map<Genre, map<string, for
     {
         std::cout << "----------- " << it->first << " -----------" << endl; // Rating
         forward_list<Movie *> movies = it->second;
-         for (Movie *&a : movies)                                            // iterating over forward_list of movies
-            cout << a->getDirector()->getName() << endl;
-            cout << endl;
+        for (Movie *&a : movies) // iterating over forward_list of movies
+            if (a->getDirector() != NULL)
+            {
+                cout << a->getDirector()->getName() << endl;
+                cout << endl;
+            }
     }
     cout << endl;
-
 }
