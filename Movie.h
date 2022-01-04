@@ -101,6 +101,8 @@ public:
     void display();
     void displayDirector();
 
+    //helper
+    static string formatStr(string);
 
     static Movie *searchMovieByTitle(string , map<string, MovieAVL>);
     static Movie *searchMovieByYear(Movie *, map<short int, forward_list<Movie *>>);
