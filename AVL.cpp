@@ -66,7 +66,6 @@ forward_list<Movie *> MovieAVL::search(string title)
 Movie *MovieAVL::search(string title, AVLNode<Movie *> *ptr, forward_list<Movie *> *movies) // errors to be fixeds
 {
 	string avlTitle;
-	// cout << "before return" << endl;
 	while (ptr)
 	{
 		avlTitle = ptr->key->getTitle();
@@ -78,7 +77,6 @@ Movie *MovieAVL::search(string title, AVLNode<Movie *> *ptr, forward_list<Movie 
 				ptr = ptr->left;
 			else
 			{
-				// cout << avlTitle<<endl;
 				(*movies).emplace_front(ptr->key);
 				search(title, ptr->right, movies);
 				search(title, ptr->left, movies);
@@ -86,13 +84,8 @@ Movie *MovieAVL::search(string title, AVLNode<Movie *> *ptr, forward_list<Movie 
 			}
 		}
 		else
-		{
-			// if (title > ptr->key->getTitle())
+		{	
 			ptr = ptr->right;
-			// else if (title < ptr->key->getTitle())
-			// ptr = ptr->left;
-			// else
-			// 	movies.emplace_front(ptr->key);
 		}
 	}
 	return NULL;
