@@ -24,48 +24,69 @@ unordered_map<string, ActorAVL> allActors; // avl sorted on actor name
 
 void setMovieByTitle(Movie *m)
 {
-    Movie *moviePtr;
-    string name = m->getTitle();
-    bool duplicate = false;
+    /*
+        Inserts the pointers of all non-duplicate movies to the map "moviesByTitle"
+    */
 
+    string name = m->getTitle();
+
+    // key of the map contains two alphabets;
+    // if length of the title is less than that, it is corrected
     while (name.length() < 2)
         name.append(" ");
 
+    //two-alphabet key has been taken to avoid clustering/traffic
     string key = name.substr(0, 2);
 
     if (moviesByTitle.find(key) == moviesByTitle.end())
-    { // if the key is not present in the hashmap
+    { // if the key is not present in the map
+        // insert the movie pointer in a new AVL and store that AVL in the map
         MovieAVL movAVL;
         movAVL.insert(m);
         moviesByTitle.insert({key, movAVL});
     }
     else
+        // insert the movie pointer in the AVL of relevant key
         moviesByTitle.at(key).insert(m);
 }
 
 void setMovieByYear(Movie *m)
 {
-    Movie *moviePtr;
+    /*
+        Inserts the pointers of all movies that have their year specified to the map "moviesByYear"
+    */
+
+    // the key of the map is release year
     short int key = m->getTitleYear();
+
     if (moviesByYear.find(key) == moviesByYear.end())
-    { // if the key is not present in the hashmap
+    {
+        // if the key is not present in the map
+        // insert the movie pointer in a new linkedList and store that linkedList in the map
         forward_list<Movie *> movList;
         movList.emplace_front(m);
         moviesByYear.insert({key, movList});
     }
     else
     {
+        // insert the movie pointer in the linkedList of relevant key
         moviesByYear.at(key).emplace_front(m);
     }
 }
 
 void setMovieByRating(Movie *m)
 {
-    Movie *moviePtr;
+    /*
+        Inserts the pointers of all movies that have their rating specified to the map "moviesByRating"
+    */
+
+    // the key of the map is content rating
     string key = m->getContentRating();
 
     if (moviesByRating.find(key) == moviesByRating.end())
-    { // if the key is not present in the hashmap
+    {
+        // if the key is not present in the map
+        // insert the movie pointer in a new linkedList and store that linkedList in the map
         forward_list<Movie *> movList;
         movList.emplace_front(m);
         moviesByRating.insert({key, movList});
@@ -73,17 +94,25 @@ void setMovieByRating(Movie *m)
 
     else
     {
+        // insert the movie pointer in the linkedList of relevant key
         moviesByRating.at(key).emplace_front(m);
     }
 }
 
 void setMovieByGenre(Movie *m, Genre g)
 {
-    Movie *moviePtr;
+    /*
+        Inserts the pointers of all movies that have their genre specified to the map "moviesByGenre"
+    */
+
+    // key of the map is genre
     Genre key = g;
 
     if (moviesByGenre.find(key) == moviesByGenre.end())
-    { // if the key is not present in the hashmap
+    {
+        // if the key is not present in the unordered map
+        // insert the movie pointer in a new linkedList and store that linkedList in the map sorted on rating
+        // then store that map in the map for genre
         forward_list<Movie *> movList;
         movList.emplace_front(m);
         map<string, forward_list<Movie *>, greater<string>> sortedOnRating;
@@ -92,6 +121,7 @@ void setMovieByGenre(Movie *m, Genre g)
     }
     else
     {
+        // insert the movie at appropriate key
         map<string, forward_list<Movie *>, greater<string>> map = moviesByGenre[key];
         forward_list<Movie *> list = map[m->getContentRating()];
         list.emplace_front(m);
@@ -102,6 +132,9 @@ void setMovieByGenre(Movie *m, Genre g)
 
 char displayMenu()
 {
+    /*
+        Repetitively allows the user to perform from one of the methods listed below
+    */
     cout << "----------------------------MAIN MENU----------------------------\n";
     cout << " 1. Search profile of an actor\n";
     cout << " 2. Search coactors of an actor\n";
@@ -116,10 +149,12 @@ char displayMenu()
     cout << "11. Search movies based on genre\n";
     cout << "12. Print movies rating-wise\n";
     cout << "13. Print movies of a certain genre rating-wise\n";
+    cout << endl;
+    cout << "14. Exit\n";
     cout << endl
          << endl;
     cout << "Select an option: ";
-    char choice;
+    int choice;
     cin >> choice;
     cout << endl
          << endl;
@@ -133,103 +168,139 @@ int main()
     string word;
     float val;
     short int year;
-    string colmVals[28];
     ifstream file("IMDB_Top5000-SEECS.csv");
 
+    // to store 28 colms of each record
+    string colmVals[28];
+
+    // temp variables for director and actors
     string name;
     int likes;
 
     if (file.is_open())
     {
-        getline(file, line); // gets the row of column headings
+        // gets the row of column headings
+        getline(file, line);
 
-        while (getline(file, line)) // reads an entire row and stores it in line
+        // reads an entire row from file and stores it in line
+        while (getline(file, line))
         {
-            index = 0;
-            Movie *m = new Movie(); // create a new Movie node for each row
+            // create a new Movie, Director and array of Actors for each record
+            Movie *m = new Movie();
             Director *d;
             Actor *actors[3];
 
-            stringstream s(line); // breaks the line into words
+            index = 0;
+            int indexActor = 0;
 
-            while (getline(s, word, ',')) // the comma separated values are stored at consecutive array index
+            // breaks the line into words
+            stringstream s(line);
+
+            // the comma separated values are stored in the array
+            while (getline(s, word, ','))
                 colmVals[index++] = word;
 
             // setting attributes of each Movie
-            colmVals[0].pop_back(); //remove special character at the end
+
+            // remove special character at the end of each title
+            colmVals[0].pop_back();
             colmVals[0].pop_back();
             m->setTitle(Movie::formatStr(colmVals[0]));
 
+            // get '|' separated genres and store them in a linked list
             stringstream genres(colmVals[1]);
-            while (getline(genres, word, '|')) // add genres to the list
+            while (getline(genres, word, '|'))
                 m->setGenre(word);
 
+            // store the numerical values only if not blank
             if (colmVals[2] != "")
                 m->setTitleYear(stoi(colmVals[2]));
             if (colmVals[3] != "")
                 m->setImdbScore(stof(colmVals[3]));
 
+            // if the Director has been specified in the dataset
             if ((colmVals[4] != "") && (colmVals[5] != ""))
             {
                 name = colmVals[4];
                 likes = stoi(colmVals[5]);
-                string key = name.substr(0, 2);
-                d = Director::searchDir(name, allDirectors);
-                if (d == NULL)
-                { // director not found
 
+                // the key of the Director map is the first two alphabets of the name
+                string key = name.substr(0, 2);
+
+                // find if the director has already been added to the map
+                d = Director::searchDir(name, allDirectors);
+
+                if (d == NULL)
+                {
+                    // if director not found
+                    // create a new director
                     d = new Director(name, likes);
 
                     if (allDirectors.find(key) == allDirectors.end())
-                    { // if the key is not present in the hashmap
+                    {
+                        // if the key is not present in the map
+                        // create an AVL, store director pointer in the new AVL, and store this AVL in the map
                         DirectorAVL dirAVL;
                         dirAVL.insert(d);
                         allDirectors.insert({key, dirAVL});
                     }
                     else
                     {
+                        // insert director pointer in the AVL of appropriate key
                         allDirectors.at(key).insert(d);
                     }
                 }
+                // set director of the movie
+                // and add movie to list of directed movies of the Director
                 d->addMovie(m);
                 m->setDirector(d);
             }
             else
-            {
                 m->setDirector(NULL);
-            }
 
+            // store the numerical values only if not blank
             if (colmVals[6] != "")
                 m->setNumOfCriticReviews(stoi(colmVals[6]));
 
             if (colmVals[7] != "")
                 m->setDuration(stoi(colmVals[7]));
 
-            int indexActor = 0;
+            // for the three actors in the dataset
+            // step is set to 2 to skip the colm of likes
             for (int i = 8; i < 14; i += 2)
             {
+                // if the actor has been specified
                 if ((colmVals[i] != "") && (colmVals[i + 1] != ""))
                 {
                     name = colmVals[i];
                     likes = stoi(colmVals[i + 1]);
+
+                    // the key of the map is the first two alphabets of Actor name
                     string key = name.substr(0, 2);
+
+                    // search if the actor is already part of Actor map
                     actors[indexActor] = Actor::searchActor(name, allActors);
 
                     if (actors[indexActor] == NULL)
-                    { // if actor is not found
+                    {
+                        // if actor is not found
                         actors[indexActor] = new Actor(name, likes);
 
                         if (allActors.find(key) == allActors.end())
-                        { // if key is not present in the hashmap
+                        {
+                            // if the key is not present in the map
+                            // create an AVL, store actor pointer in the new AVL, and store this AVL in the map
                             ActorAVL actAVL;
                             actAVL.insert(actors[indexActor]);
                             allActors.insert({key, actAVL});
                         }
                         else
                         {
+                            // insert actor pointer in the AVL of appropriate key
                             allActors.at(key).insert(actors[indexActor]);
                         }
                     }
+                    // add movie to the movie list of actor
                     actors[indexActor]->addMovie(m);
                 }
                 else
@@ -238,8 +309,10 @@ int main()
                 }
                 indexActor++;
             }
+
             m->setActor(actors);
 
+            // store the numerical values only if not blank
             if (colmVals[14] != "")
                 m->setGross(stoul(colmVals[14]));
 
@@ -252,10 +325,11 @@ int main()
             if (colmVals[17] != "")
                 m->setFaceNumInPoster(stoi(colmVals[17]));
 
+            // get '|' separated keywords and store them in a linked list
             if (colmVals[18] != "")
             {
                 stringstream keywords(colmVals[18]);
-                while (getline(keywords, word, '|')) // | separated keywords are added to the list
+                while (getline(keywords, word, '|'))
                     m->setPlotKeywords(word);
             }
 
@@ -268,13 +342,9 @@ int main()
             m->setCountry(colmVals[22]);
 
             if (colmVals[23] != "")
-            {
                 m->setContentRating(colmVals[23]);
-            }
             else
-            {
                 m->setContentRating("Unrated");
-            }
 
             if (colmVals[24] != "")
                 m->setBudget(stoll(colmVals[24]));
@@ -287,8 +357,9 @@ int main()
 
             m->setColor(colmVals[27]);
 
-            //insert movie pointers to relevant maps
+            // insert movie pointers to relevant maps
             setMovieByTitle(m);
+
             if (m->getTitleYear() != 0)
                 setMovieByYear(m);
 
@@ -309,7 +380,7 @@ int main()
     {
         cout << "Unable to open file";
     }
-    cout << "File read" << endl;
+
     // actor functions
     // Actor::displayAllActors(allActors); // tested
     // Actor::searchActor("Robert Downey Jr.", allActors, true); // tested
@@ -330,113 +401,137 @@ int main()
     // Movie::printMoviesChronologically(true, moviesByYear); //tested
     // Movie::getMoviesOfGenre("Short", moviesByGenre);    //tested, to be tested for invalid genre
     // Movie::printMoviesByRating(moviesByRating); //tested
-    cout << "after" << endl;
+    //cout << "after" << endl;
 
-    // char choice;
-    // string name;
-    // string name2;
+    int choice = 0;
+    while (choice != 14)
+    {
+        choice = displayMenu();
+        string n;
+        string name2;
+        bool isCoactor;
+        switch (choice)
+        {
+            // methods of Actor
+        case 1:
+            cout << "Enter the name of the actor: " << endl;
+            cin.ignore();
+            getline(cin, n);
+            Actor::searchActor(n, allActors, true);
+            break;
 
-    // choice = displayMenu();
-    // switch (choice)
-    // {
-    //     // methods of Actor
-    // case 1:
-    //     cout << "Enter the name of the actor: ";
-    //     cin >> name;
-    //     Actor::searchActor(name, allActors, true);
-    //     break;
+        case 2:
+            cout << "Enter the name of the actor: " << endl;
+            cin.ignore();
+            getline(cin, n);
+            Actor::displayCoActors(n, allActors);
+            break;
 
-    // case 2:
-    //     cout << "Enter the name of the actor: ";
-    //     cin >> name;
-    //     Actor::getCoActors(name, allActors);
-    //     break;
+        case 3:
+            cout << "Enter the name of the actor: " << endl;
+            cin.ignore();
+            getline(cin, n);
+            Actor::getUniqueCoActors(n, allActors);
+            break;
 
-    // case 3:
-    //     cout << "Enter the name of the actor: ";
-    //     cin >> name;
-    //     Actor::getUniqueCoActors(name);
-    //     break;
+        case 4:
+            cout << "Enter the name of the actor: " << endl;
+            cin.ignore();
+            getline(cin, n);
+            Actor::getCoActorsOfCoActors(n, allActors);
+            break;
 
-    // case 4:
-    //     cout << "Enter the name of the actor: ";
-    //     cin >> name;
-    //     Actor::getCoActorsOfCoActors(name);
-    //     break;
+        case 5:
+            cout << "Enter the name of the actor A: " << endl;
+            cin.ignore();
+            getline(cin, n);
+            cout << "\nEnter the name of the actor B: " << endl;
+            //cin.ignore();
+            getline(cin, name2);
+            cout << endl;
+            isCoactor = Actor::isCoActor(n, name2, allActors);
+            if (isCoactor)
+                cout << n << " and " << name2 << " are coactors\n\n";
+            else
+                cout << n << " and " << name2 << " are not coactors\n\n";
+            break;
 
-    // case 5:
-    //     cout << "Enter the name of the actor A: ";
-    //     cin >> name;
-    //     cout << "\nEnter the name of the actor B: ";
-    //     cin >> name2;
-    //     Actor::isCoActor(name, name2);
-    //     break;
+            //methods of Director
+        case 6:
+            cout << "Enter the name of the director: " << endl;
+            cin.ignore();
+            getline(cin, n);
+            Director::searchDir(n, allDirectors, true);
+            cout << endl << endl;
+            break;
 
-    //     //methods of Director
-    // case 6:
-    //     cout << "Enter the name of the director: ";
-    //     cin >> name;
-    //     Director::searchDir(name, allDirectors);
-    //     break;
+        case 7:
+            cout << "Enter genre: " << endl;
+            cin.ignore();
+            getline(cin, n);
+            Director::getDirectorOfGenre(n, moviesByGenre);
+            cout << endl << endl;
+            break;
 
-    // case 7:
-    //     cout << "Enter genre: ";
-    //     cin >> name;
-    //     Director::getDirectorOfGenre(name);
-    //     break;
+            //Methods of Movie
+        case 8:
+            cout << "Enter movie name: " << endl;
+            cin.ignore();
+            getline(cin, n);
+            Movie::searchMovie(n, moviesByTitle);
+            break;
 
-    //     //Methods of Movie
-    // case 8:
-    //     cout << "Enter movie name: ";
-    //     cin >> name;
-    //     Movie::searchMovie(name, moviesByTitle);
-    //     break;
+        case 9:
+            cout << "Enter year: " << endl;
+            cin.ignore();
+            getline(cin, n);
+            Movie::getMoviesOfYear(stoi(n), moviesByYear);
+            break;
 
-    // case 9:
-    //     cout << "Enter year: ";
-    //     cin >> name;
-    //     Movie::getMoviesOfYear(stoi(name), moviesByYear);
-    //     break;
+        case 10:
+            cout << "a. Ascending order\n";
+            cout << "b. Descending order\n";
+            cout << endl
+                 << endl;
 
-    // case 10:
-    //     cout << "a. Ascending order\n";
-    //     cout << "b. Descending order\n";
-    //     cout << endl
-    //          << endl;
+            char opt;
+            cin >> opt;
 
-    //     char opt;
-    //     cin >> opt;
+            if (opt == 'a')
+                Movie::printMoviesChronologically(false, moviesByYear);
+            else if (opt == 'b')
+                Movie::printMoviesChronologically(true, moviesByYear);
+            else
+            {
+                cout << "Invalid! Please select a correct option." << endl << endl;
+                choice = 10;
+            }
+            break;
 
-    //     if (opt == 'a')
-    //         Movie::printMoviesChronologically(false, moviesByYear);
-    //     else if (opt == 'b')
-    //         Movie::printMoviesChronologically(true, moviesByYear);
-    //     else
-    //     {
-    //         cout << "Invalid! Please select a correct option.";
-    //         choice = 10;
-    //     }
-    //     break;
+        case 11:
+            cout << "Enter genre: " << endl;
+            cin.ignore();
+            getline(cin, n);
+            Movie::getMoviesOfGenre(n, moviesByGenre);
+            break;
 
-    // case 11:
-    //     cout << "Enter genre: ";
-    //     cin >> name;
-    //     Movie::getMoviesOfGenre(name, moviesByGenre);
-    //     break;
+        case 12:
+            Movie::printMoviesByRating(moviesByRating);
+            break;
 
-    // case 12:
-    //     Movie::printMoviesByRating(moviesByRating);
-    //     break;
+        case 13:
+            cout << "Enter genre: " << endl;
+            cin.ignore();
+            getline(cin, n);
+            Movie::getMoviesOfGenre(n, moviesByGenre);
+            break;
 
-    // case 13:
-    //     cout << "Enter genre: ";
-    //     cin >> name;
-    //     Movie::getMoviesOfGenre(name, moviesByGenre);
-    //     break;
+        case 14:
+            exit(0);
 
-    // default:
-    //     cout << "Invalid! Please select a correct option.";
-    // }
-
-    // return 0;
+        default:
+            cout << "Invalid! Please select a correct option." << endl << endl;
+        }
+    }
+    return 0;
 }

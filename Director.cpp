@@ -46,19 +46,18 @@ forward_list<Movie *> Director::getMovies()
     return movieList;
 }
 
-
 void Director::displayDirector() // display the details of director
 {
     /*
     Method that will display the details of director such as name of director,facebook likes 
     and names of movies he has directed ( call displayMovies method)
     */
-    cout << "Director: " << getName() << endl;  
-    cout << "Fb Likes: " << getLikes() << endl; 
-    displayMovies(); 
+    cout << "Director: " << getName() << endl;
+    cout << "Fb Likes: " << getLikes() << endl;
+    displayMovies();
 }
 
-void Director::displayMovies() 
+void Director::displayMovies()
 {
     /*
     Method that will traverse and display the movies in the forward list of movies directed by each director
@@ -81,7 +80,7 @@ Director *Director::searchDir(string name, unordered_map<string, DirectorAVL> al
 
     Director *director = NULL;
 
-    if (allDirectors.find(name.substr(0, 2)) != allDirectors.end()) // search for key 
+    if (allDirectors.find(name.substr(0, 2)) != allDirectors.end()) // search for key
         director = allDirectors[name.substr(0, 2)].search(name);    // search in avl
 
     if (display)
@@ -97,9 +96,9 @@ Director *Director::searchDir(string name, unordered_map<string, DirectorAVL> al
 
 void Director::getDirectorOfGenre(string g, unordered_map<Genre, map<string, forward_list<Movie *>, greater<string>>> moviesByGenre)
 {
-     /*
+    /*
     The method will search for the director in the unordered map,'moviesByGenre', with key as genre
-   and value contain another map with key as rating and value as a forward list of pointers to movie node
+    and value contain another map with key as rating and value as a forward list of pointers to movie node
 
     this method will take the genre and convert this string into object then search for it in 
     the key of outer map and  will  iterating over inner map and display the movies 
@@ -107,16 +106,13 @@ void Director::getDirectorOfGenre(string g, unordered_map<Genre, map<string, for
     rating and contain a forward list of movie * as value
     */
 
-
-
     Genre genre = convert(g);
-    // if (genre == Genre::Invalid) // if string is not a valud genre
-    // {
-    //     cout << "Invalid Genre" << endl;
-    //     return;
-    // }
 
-    // for valid genre
+    if (genre == Genre::Invalid) // if string is not a valud genre
+    {
+        cout << "Invalid Genre" << endl;
+        return;
+    }
     map<string, forward_list<Movie *>, greater<string>> moviesOfGen = moviesByGenre[genre]; // finding genre
     cout << "----------- " << g << " -----------" << endl;
     map<string, forward_list<Movie *>, greater<string>>::iterator it;
