@@ -31,7 +31,8 @@ enum Genre
     Sport,
     Thriller,
     Western,
-    War
+    War,
+    Invalid
 };
 
 Genre convert(string g)
@@ -88,6 +89,8 @@ Genre convert(string g)
         return Western;
     else if (g == "War")
         return War;
+    else
+        return Invalid;
 }
 
 string toString(Genre g)
@@ -146,6 +149,8 @@ string toString(Genre g)
         return "Western";
     case War:
         return "War";
+    default:
+        return "Invalid";
     }
 }
 
