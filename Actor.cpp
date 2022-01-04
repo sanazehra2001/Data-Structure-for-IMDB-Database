@@ -27,17 +27,12 @@ void Actor::setLikes(int likes)
 {
     fbLikesForActor = likes;
 }
+
 void Actor::addMovie(Movie *m)
 {
-    if (movieList.find(m->getTitleYear()) != movieList.end()) // if key exists, add movie to the existing list of movies
-        movieList.at(m->getTitleYear()).emplace_front(m);
-
-    else // if key does not exists, make forward_list of Movie* and make new key for this year
-    {
-        forward_list<Movie *> moviesOfActor;
-        moviesOfActor.emplace_front(m);
-        movieList[m->getTitleYear()] = moviesOfActor;
-    }
+    forward_list<Movie*> mov = movieList[m->getTitleYear()];
+    mov.emplace_front(m);
+    movieList[m->getTitleYear()] = mov;
 }
 
 // getters
@@ -69,12 +64,7 @@ int Actor::getCountOfMovies()
     return count;
 }
 
-// add to main map
-void Actor::addActor(Actor *a)
-{
-    //allActors.insert(a.name, a);
-}
-
+// helper method to display all actors
 void Actor::displayAllActors(unordered_map<string, ActorAVL> allActors)
 {
     unordered_map<string, ActorAVL>::iterator it; //iterator
@@ -104,6 +94,7 @@ void Actor::displayAllMovies()
             Movie *m = (*it);              // pointer to movie
             cout << m->getTitle() << endl; // name of movie
         }
+        cout << endl;
     }
     cout << endl;
 }
@@ -112,7 +103,7 @@ void Actor::display()
 {
     cout << "Name: " << name << endl;
     cout << "FB Likes: " << getLikes() << endl;
-    cout << "Total Movies: " << getCountOfMovies() << endl;
+    cout << "Total Movies: " << getCountOfMovies() << endl <<endl;
     displayAllMovies();
 }
 

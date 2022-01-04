@@ -342,7 +342,7 @@ int main()
     // Director::getDirectorOfGenre("Action", moviesByGenre);
 
     // movie functions
-    // Movie::searchMovie("  the ", moviesByTitle); //tested, provided genres are added properly
+    Movie::searchMovie("  the ", moviesByTitle); //tested, provided genres are added properly
     // Movie::getMoviesOfYear(20151, moviesByYear); //tested
     // Movie::printMoviesChronologically(true, moviesByYear); //tested
     // Movie::getMoviesOfGenre("Short", moviesByGenre);    //tested
