@@ -26,6 +26,7 @@ void setMovieByTitle(Movie *m)
 {
     Movie *moviePtr;
     string name = m->getTitle();
+    bool duplicate = false;
 
     while (name.length() < 2)
         name.append(" ");
@@ -46,22 +47,15 @@ void setMovieByYear(Movie *m)
 {
     Movie *moviePtr;
     short int key = m->getTitleYear();
-
-    moviePtr = Movie::searchMovieByYear(m, moviesByYear);
-
-    if (moviePtr == NULL)
-    { //movies not found
-
-        if (moviesByYear.find(key) == moviesByYear.end())
-        { // if the key is not present in the hashmap
-            forward_list<Movie *> movList;
-            movList.emplace_front(m);
-            moviesByYear.insert({key, movList});
-        }
-        else
-        {
-            moviesByYear.at(key).emplace_front(m);
-        }
+    if (moviesByYear.find(key) == moviesByYear.end())
+    { // if the key is not present in the hashmap
+        forward_list<Movie *> movList;
+        movList.emplace_front(m);
+        moviesByYear.insert({key, movList});
+    }
+    else
+    {
+        moviesByYear.at(key).emplace_front(m);
     }
 }
 
@@ -70,22 +64,16 @@ void setMovieByRating(Movie *m)
     Movie *moviePtr;
     string key = m->getContentRating();
 
-    moviePtr = Movie::searchMovieByRating(m, moviesByRating);
+    if (moviesByRating.find(key) == moviesByRating.end())
+    { // if the key is not present in the hashmap
+        forward_list<Movie *> movList;
+        movList.emplace_front(m);
+        moviesByRating.insert({key, movList});
+    }
 
-    if (moviePtr == NULL)
-    { //movies not found
-
-        if (moviesByRating.find(key) == moviesByRating.end())
-        { // if the key is not present in the hashmap
-            forward_list<Movie *> movList;
-            movList.emplace_front(m);
-            moviesByRating.insert({key, movList});
-        }
-
-        else
-        {
-            moviesByRating.at(key).emplace_front(m);
-        }
+    else
+    {
+        moviesByRating.at(key).emplace_front(m);
     }
 }
 
@@ -93,10 +81,9 @@ void setMovieByGenre(Movie *m, Genre g)
 {
     Movie *moviePtr;
     Genre key = g;
-    
+
     if (moviesByGenre.find(key) == moviesByGenre.end())
     { // if the key is not present in the hashmap
-        //cout << m->getTitle();
         forward_list<Movie *> movList;
         movList.emplace_front(m);
         map<string, forward_list<Movie *>, greater<string>> sortedOnRating;
@@ -110,10 +97,7 @@ void setMovieByGenre(Movie *m, Genre g)
         list.emplace_front(m);
         map[m->getContentRating()] = list;
         moviesByGenre[key] = map;
-        // for (Movie* &a : list)
-        //     cout << a->getTitle();
     }
-    // cout << endl;
 }
 
 char displayMenu()
@@ -165,7 +149,6 @@ int main()
             Movie *m = new Movie(); // create a new Movie node for each row
             Director *d;
             Actor *actors[3];
-            bool isDuplicate;
 
             stringstream s(line); // breaks the line into words
 
@@ -283,14 +266,15 @@ int main()
 
             m->setLanguage(colmVals[21]);
             m->setCountry(colmVals[22]);
-            
-            if (colmVals[23] != ""){
+
+            if (colmVals[23] != "")
+            {
                 m->setContentRating(colmVals[23]);
             }
-            else{
+            else
+            {
                 m->setContentRating("Unrated");
             }
-            
 
             if (colmVals[24] != "")
                 m->setBudget(stoll(colmVals[24]));
@@ -305,7 +289,6 @@ int main()
 
             //insert movie pointers to relevant maps
             setMovieByTitle(m);
-
             if (m->getTitleYear() != 0)
                 setMovieByYear(m);
 
