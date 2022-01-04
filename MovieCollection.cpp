@@ -503,7 +503,7 @@ int main()
                 Movie::printMoviesChronologically(true, moviesByYear);
             else
             {
-                cout << "Invalid! Please select a correct option." << endl;
+                cout << "Invalid! Please select a correct option." << endl << endl;
                 choice = 10;
             }
             break;
@@ -530,7 +530,7 @@ int main()
             exit(0);
 
         default:
-            cout << "Invalid! Please select a correct option." << endl;
+            cout << "Invalid! Please select a correct option." << endl << endl;
         }
     }
     return 0;
