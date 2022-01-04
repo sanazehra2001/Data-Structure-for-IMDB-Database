@@ -212,7 +212,7 @@ void Movie::displayKeywords()
 {
     cout << "Keywords: ";
     for (string &a : getPlotKeywords())
-        cout << a << ",";
+        cout << a << ", ";
     cout << endl;
 }
 
@@ -335,6 +335,9 @@ void Movie::searchMovie(string title, map<string, MovieAVL> moviesByTitle)
 
     */
 
+
+    title = formatStr(title); // format input string
+
     // case1: string is of length one
     if (title.length() == 1)
     {
@@ -352,7 +355,6 @@ void Movie::searchMovie(string title, map<string, MovieAVL> moviesByTitle)
     // case2: string of length two
     else if (title.length() == 2)
     {
-        title = formatStr(title);            //format input string
         MovieAVL avl = moviesByTitle[title]; // searching for key
         if (avl.isEmpty())                   // if avl is empty then no movie with this key exists
             cout << "No matching movie" << endl;
@@ -363,7 +365,6 @@ void Movie::searchMovie(string title, map<string, MovieAVL> moviesByTitle)
     // case3: string of length greater than 2
     else
     {
-        title = formatStr(title);                         // format string
         MovieAVL avl = moviesByTitle[title.substr(0, 2)]; // get avl of key
         if (avl.isEmpty())                                // if key is not present
             cout << "No matching movie." << endl;
@@ -495,17 +496,33 @@ void Movie::printMoviesByRating(map<string, forward_list<Movie *>, greater<strin
 
 void Movie::getMoviesOfGenre(string g, unordered_map<Genre, map<string, forward_list<Movie *>, greater<string>>> moviesByGenre)
 {
-    Genre genre = convert(g);
-    map<string, forward_list<Movie *>, greater<string>> moviesOfGen = moviesByGenre[genre]; // finding genre
-    cout << "----------- " << g << " -----------" << endl;
+    /*
+        Note: This Method will be implemented using unordered_map<Genre, map<string, forward_list<Movie *>, greater<string>>> moviesByGenre,
+        that has Genre as a key and nested map of rating with value of forward_list of pointer to Movie as value.
 
-    map<string, forward_list<Movie *>, greater<string>>::iterator it;
-    for (it = moviesOfGen.begin(); it != moviesOfGen.end(); it++) // iterating over nested map
+        Methodology:
+        1. Traverse through the outer map, find genre
+        2. If genre is valid, traverse through the nested map and print titles of all movies against each rating
+    */
+
+    Genre genre = convert(g); //convert string to Genre
+    // if (genre == Genre::Invalid) // if string is not a valud genre
+    // {
+    //     cout << "Invalid Genre" << endl;
+    //     return;
+    // }
+
+    // for valid genre
+    map<string, forward_list<Movie *>, greater<string>> moviesOfGen = moviesByGenre[genre]; // finding genre
+    cout << "----------- " << g << " -----------" << endl;                                  // print genre
+
+    map<string, forward_list<Movie *>, greater<string>>::iterator it; // iterator for nested map
+    for (it = moviesOfGen.begin(); it != moviesOfGen.end(); it++)     // iterating over nested map
     {
         std::cout << "----------- " << it->first << " -----------" << endl; // Rating
-        forward_list<Movie *> movies = it->second;
-        for (Movie* &a : movies)
-            cout << a->getTitle() << endl;
+        forward_list<Movie *> movies = it->second;                          // forward_list of rating
+        for (Movie *&a : movies)                                            // iterating over forward_list of movies
+            cout << a->getTitle() << endl;                                  // printing title
         cout << endl;
     }
     cout << endl;
