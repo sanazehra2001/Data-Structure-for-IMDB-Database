@@ -59,18 +59,21 @@ AVLNode<Movie *> *MovieAVL::insertNode(AVLNode<Movie *> *node, Movie *key)
 forward_list<Movie *> MovieAVL::search(string title)
 {
 	forward_list<Movie *> movies;
-	search(title, root,&movies);
+	search(title, root, &movies);
 	return movies;
 }
 
+/* 
+	searches the title in the avl (not necessarily complete title)
+   	return a list of movies having matching title
+*/
 Movie *MovieAVL::search(string title, AVLNode<Movie *> *ptr, forward_list<Movie *> *movies) // errors to be fixeds
 {
 	string avlTitle;
-	// cout << "before return" << endl;
 	while (ptr)
 	{
-		avlTitle = ptr->key->getTitle();
-		if (avlTitle.length() >= title.length())
+		avlTitle = ptr->key->getTitle();		 // title in avl node
+		if (avlTitle.length() >= title.length()) // searching substring
 		{
 			if (title > avlTitle.substr(0, title.length()))
 				ptr = ptr->right;
@@ -78,7 +81,6 @@ Movie *MovieAVL::search(string title, AVLNode<Movie *> *ptr, forward_list<Movie 
 				ptr = ptr->left;
 			else
 			{
-				// cout << avlTitle<<endl;
 				(*movies).emplace_front(ptr->key);
 				search(title, ptr->right, movies);
 				search(title, ptr->left, movies);
@@ -86,13 +88,12 @@ Movie *MovieAVL::search(string title, AVLNode<Movie *> *ptr, forward_list<Movie 
 			}
 		}
 		else
-		{
-			// if (title > ptr->key->getTitle())
-			ptr = ptr->right;
-			// else if (title < ptr->key->getTitle())
-			// ptr = ptr->left;
-			// else
-			// 	movies.emplace_front(ptr->key);
+		{ // normal avl search
+			if (title > avlTitle)
+				ptr = ptr->right;
+
+			else if (title < avlTitle)
+				ptr = ptr->left;
 		}
 	}
 	return NULL;
@@ -110,7 +111,8 @@ void inOrderUtil(AVLNode<Movie *> *node)
 	{
 		inOrderUtil(node->left);
 		node->key->display();
-		cout <<endl<<endl;
+		cout << endl
+			 << endl;
 		inOrderUtil(node->right);
 	}
 }

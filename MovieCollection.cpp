@@ -383,9 +383,9 @@ int main()
 
     // actor functions
     // Actor::displayAllActors(allActors); // tested
-    // Actor::searchActor("Vincent Schiavelli", allActors, true); // tested
+    // Actor::searchActor("Robert Downey Jr.", allActors, true); // tested
     // Actor::displayCoActors("Demi Moore", allActors); //tested
-    // Actor::displayCoActors("Jennifer Jason Leigh", allActors); //tested
+    // Actor::displayCoActors("David Keith", allActors); //tested
     // Actor::getUniqueCoActors("Jennifer Jason Leigh", allActors); //tested
     // Actor::getCoActorsOfCoActors("Vincent Schiavelli", allActors); //tested
     // cout << Actor::isCoActor("Vincent Schiavelli", "Judge Reinhold", allActors); //tested
@@ -395,10 +395,11 @@ int main()
     // Director::getDirectorOfGenre("Action", moviesByGenre);
 
     // movie functions
-    //Movie::searchMovie("  XX ", moviesByTitle); //tested, provided genres are added properly
+    // Movie::searchMovie("Star Wars: Episode VII - The Force Awakens", moviesByTitle); //tested, provided genres are added properly
+    // Movie::searchMovie("Iron Man 3", moviesByTitle); //tested, provided genres are added properly
     // Movie::getMoviesOfYear(20151, moviesByYear); //tested
     // Movie::printMoviesChronologically(true, moviesByYear); //tested
-    // Movie::getMoviesOfGenre("Short", moviesByGenre);    //tested
+    // Movie::getMoviesOfGenre("Short", moviesByGenre);    //tested, to be tested for invalid genre
     // Movie::printMoviesByRating(moviesByRating); //tested
     //cout << "after" << endl;
 
