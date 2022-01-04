@@ -110,6 +110,13 @@ void Director::getDirectorOfGenre(string g, unordered_map<Genre, map<string, for
 
 
     Genre genre = convert(g);
+    // if (genre == Genre::Invalid) // if string is not a valud genre
+    // {
+    //     cout << "Invalid Genre" << endl;
+    //     return;
+    // }
+
+    // for valid genre
     map<string, forward_list<Movie *>, greater<string>> moviesOfGen = moviesByGenre[genre]; // finding genre
     cout << "----------- " << g << " -----------" << endl;
     map<string, forward_list<Movie *>, greater<string>>::iterator it;
@@ -119,7 +126,10 @@ void Director::getDirectorOfGenre(string g, unordered_map<Genre, map<string, for
     {
         std::cout << "----------- " << it->first << " -----------" << endl; // Rating
         forward_list<Movie *> movies = it->second;
-        for (auto it = movies.begin(); it != movies.end(); ++it) // printing all movies of given genre
-            cout << (*it)->getDirector()->getName() << endl;
+         for (Movie *&a : movies)                                            // iterating over forward_list of movies
+            cout << a->getDirector()->getName() << endl;
+            cout << endl;
     }
+    cout << endl;
+
 }
