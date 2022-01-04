@@ -46,20 +46,23 @@ forward_list<Movie *> Director::getMovies()
     return movieList;
 }
 
-// add to main map of directors
-void Director::addDirector(Director *d)
-{
-}
 
 void Director::displayDirector() // display the details of director
 {
-    cout << "Director: " << getName() << endl;
-    cout << "Fb Likes: " << getLikes() << endl;
-    displayMovies();
+    /*
+    Method that will display the details of director such as name of director,facebook likes 
+    and names of movies he has directed ( call displayMovies method)
+    */
+    cout << "Director: " << getName() << endl;  
+    cout << "Fb Likes: " << getLikes() << endl; 
+    displayMovies(); 
 }
 
-void Director::displayMovies() // display the movie list the director has directed
+void Director::displayMovies() 
 {
+    /*
+    Method that will traverse and display the movies in the forward list of movies directed by each director
+    */
     cout << "Movies Directed: ";
     for (auto it = getMovies().begin(); it != getMovies().end(); ++it) // traversing through forward list
         cout << (*it)->getTitle() << ", ";
@@ -67,10 +70,19 @@ void Director::displayMovies() // display the movie list the director has direct
 
 Director *Director::searchDir(string name, unordered_map<string, DirectorAVL> allDirectors, bool display)
 {
+    /*
+    The method will search for the director in the unordered map,'allDirectors', with key as the first two alphabets of name
+    of the director and value contain an avl of pointers to director nodes named as 'DirectorAVL'.
+
+    this method will search for the input director name by searching the first two alphabets of the name 
+    in key if the key exist it will find the director in the avl . if the director is found the details 
+    of director will be display. 
+    */
+
     Director *director = NULL;
 
-    if (allDirectors.find(name.substr(0, 2)) != allDirectors.end()) // if key exists, search for director in ActorAVL
-        director = allDirectors[name.substr(0, 2)].search(name);    // find director in avl
+    if (allDirectors.find(name.substr(0, 2)) != allDirectors.end()) // search for key 
+        director = allDirectors[name.substr(0, 2)].search(name);    // search in avl
 
     if (display)
     {
@@ -85,6 +97,18 @@ Director *Director::searchDir(string name, unordered_map<string, DirectorAVL> al
 
 void Director::getDirectorOfGenre(string g, unordered_map<Genre, map<string, forward_list<Movie *>, greater<string>>> moviesByGenre)
 {
+     /*
+    The method will search for the director in the unordered map,'moviesByGenre', with key as genre
+   and value contain another map with key as rating and value as a forward list of pointers to movie node
+
+    this method will take the genre and convert this string into object then search for it in 
+    the key of outer map and  will  iterating over inner map and display the movies 
+    names of the given genre and the display of movies name will be sorted on rating as the key is 
+    rating and contain a forward list of movie * as value
+    */
+
+
+
     Genre genre = convert(g);
     map<string, forward_list<Movie *>, greater<string>> moviesOfGen = moviesByGenre[genre]; // finding genre
     cout << "----------- " << g << " -----------" << endl;
