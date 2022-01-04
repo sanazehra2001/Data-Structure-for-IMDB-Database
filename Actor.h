@@ -39,9 +39,6 @@ public:
     map<short int, forward_list<Movie *>> getMovie();
     int getCountOfMovies();
 
-    // add to main map
-    void addActor(Actor *);
-
     // helper functions
     void displayAllMovies();
     void display();
