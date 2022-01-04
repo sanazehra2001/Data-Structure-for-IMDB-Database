@@ -204,9 +204,9 @@ int Movie::getFbLikesForMovie()
 {
     return fbLikesForMovie;
 }
-MovieColor Movie::getColor()
+string Movie::getColor()
 {
-    return color;
+    return toStringForColor(color);
 }
 
 // display methods
@@ -302,7 +302,7 @@ string getNextLetter(char letter)
         nextChar += 'A';
     else
         nextChar = (char)(((int)letter) + 1);
-    nextChar += tolower(nextChar[0]);
+    nextChar[0] = tolower(nextChar[0]);
     return nextChar;
 }
 
@@ -399,13 +399,17 @@ string formatStr(string str)
 void Movie::searchMovie(string title, map<string, MovieAVL> moviesByTitle)
 {
     int count = 0;
-    title = formatStr(title);
+    
     // title[0] = toupper(title[0]);
     // case1: string is of length one
     if (title.length() == 1)
     {
-        for (auto it = moviesByTitle.lower_bound(string(1, toupper(title[0])));
-             it != moviesByTitle.upper_bound(getNextLetter(title[0])); it++) //seaching for keys string with the given alphabet
+        title = string(1, toupper(title[0]));
+        string upperB = title + "z";
+        // cout << string(1, toupper(title[0]))<<"iniital" <<endl;
+        // cout << getNextLetter(title[0])<<"next letter"<<endl;
+        for (auto it = moviesByTitle.lower_bound(title);
+             it != moviesByTitle.upper_bound(upperB); it++) //seaching for keys string with the given alphabet
         {
             MovieAVL avl = it->second; // avl of key
             avl.traverse();            // printing all movie title present in avl
@@ -416,6 +420,7 @@ void Movie::searchMovie(string title, map<string, MovieAVL> moviesByTitle)
     // case2: string of length two
     else if (title.length() == 2)
     {
+        title = formatStr(title);
         MovieAVL avl = moviesByTitle[title]; // searching for key
         if (avl.isEmpty())                   // if avl is empty then no movie with this key exists
             cout << "No matching movie" << endl;
@@ -428,6 +433,7 @@ void Movie::searchMovie(string title, map<string, MovieAVL> moviesByTitle)
     // case3: string of length greater than 2
     else
     {
+        title = formatStr(title);
         MovieAVL avl = moviesByTitle[title.substr(0, 2)]; // get avl of key
         if (avl.isEmpty())                                // if key is not present
             cout << "No matching movie." << endl;

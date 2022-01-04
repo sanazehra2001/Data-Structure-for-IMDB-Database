@@ -331,7 +331,7 @@ int main()
     // actor functions
     // Actor::displayAllActors(allActors); // tested
     // Actor::searchActor("Vincent Schiavelli", allActors, true); // tested
-    // Actor::displayCoActors("Demi Moore", allActors); //tested
+    // Actor::displayCoActors("Jennifer Jason Leigh", allActors); //tested
     // Actor::displayCoActors("Jennifer Jason Leig", allActors);                // to be tested again
     // Actor::getUniqueCoActors("Jennifer Jason Leigh", allActors); //tested
     // Actor::getCoActorsOfCoActors("Vincent Schiavelli", allActors); //tested
@@ -342,7 +342,7 @@ int main()
     // Director::getDirectorOfGenre("Action", moviesByGenre);
 
     // movie functions
-     Movie::searchMovie("  the ", moviesByTitle); //tested, provided genres are added properly
+     Movie::searchMovie("Avatar", moviesByTitle); //to be tested again for formatted names and genre
     // Movie::getMoviesOfYear(20151, moviesByYear); //tested
     // Movie::printMoviesChronologically(true, moviesByYear); //tested
     // Movie::getMoviesOfGenre("Action", moviesByGenre);

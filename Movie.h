@@ -92,7 +92,7 @@ public:
     unsigned long long int getBudget();
     float getAspectRatio();
     int getFbLikesForMovie();
-    MovieColor getColor();
+    string getColor();
 
     //display functions
     void displayKeywords();
