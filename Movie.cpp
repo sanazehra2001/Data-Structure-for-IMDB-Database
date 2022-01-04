@@ -506,11 +506,11 @@ void Movie::getMoviesOfGenre(string g, unordered_map<Genre, map<string, forward_
     */
 
     Genre genre = convert(g); //convert string to Genre
-    // if (genre == Genre::Invalid) // if string is not a valud genre
-    // {
-    //     cout << "Invalid Genre" << endl;
-    //     return;
-    // }
+    if (genre == Genre::Invalid) // if string is not a valud genre
+    {
+        cout << "Invalid Genre" << endl;
+        return;
+    }
 
     // for valid genre
     map<string, forward_list<Movie *>, greater<string>> moviesOfGen = moviesByGenre[genre]; // finding genre
