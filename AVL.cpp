@@ -59,7 +59,7 @@ AVLNode<Movie *> *MovieAVL::insertNode(AVLNode<Movie *> *node, Movie *key)
 forward_list<Movie *> MovieAVL::search(string title)
 {
 	forward_list<Movie *> movies;
-	search(title, root,&movies);
+	search(title, root, &movies);
 	return movies;
 }
 
@@ -69,12 +69,17 @@ Movie *MovieAVL::search(string title, AVLNode<Movie *> *ptr, forward_list<Movie 
 	while (ptr)
 	{
 		avlTitle = ptr->key->getTitle();
+		// cout << avlTitle << ", ";
 		if (avlTitle.length() >= title.length())
 		{
 			if (title > avlTitle.substr(0, title.length()))
+			{
 				ptr = ptr->right;
+			}
 			else if (title < avlTitle.substr(0, title.length()))
+			{
 				ptr = ptr->left;
+			}
 			else
 			{
 				(*movies).emplace_front(ptr->key);
@@ -84,8 +89,16 @@ Movie *MovieAVL::search(string title, AVLNode<Movie *> *ptr, forward_list<Movie 
 			}
 		}
 		else
-		{	
-			ptr = ptr->right;
+		{
+	
+			if (title > avlTitle)
+			{
+				ptr = ptr->right;
+			}
+			else if (title < avlTitle)
+			{
+				ptr = ptr->left;
+			}
 		}
 	}
 	return NULL;
@@ -103,7 +116,8 @@ void inOrderUtil(AVLNode<Movie *> *node)
 	{
 		inOrderUtil(node->left);
 		node->key->display();
-		cout <<endl<<endl;
+		cout << endl
+			 << endl;
 		inOrderUtil(node->right);
 	}
 }
