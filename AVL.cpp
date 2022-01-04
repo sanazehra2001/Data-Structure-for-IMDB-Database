@@ -63,23 +63,22 @@ forward_list<Movie *> MovieAVL::search(string title)
 	return movies;
 }
 
+/* 
+	searches the title in the avl (not necessarily complete title)
+   	return a list of movies having matching title
+*/
 Movie *MovieAVL::search(string title, AVLNode<Movie *> *ptr, forward_list<Movie *> *movies) // errors to be fixeds
 {
 	string avlTitle;
 	while (ptr)
 	{
-		avlTitle = ptr->key->getTitle();
-		// cout << avlTitle << ", ";
-		if (avlTitle.length() >= title.length())
+		avlTitle = ptr->key->getTitle();		 // title in avl node
+		if (avlTitle.length() >= title.length()) // searching substring
 		{
 			if (title > avlTitle.substr(0, title.length()))
-			{
 				ptr = ptr->right;
-			}
 			else if (title < avlTitle.substr(0, title.length()))
-			{
 				ptr = ptr->left;
-			}
 			else
 			{
 				(*movies).emplace_front(ptr->key);
@@ -89,16 +88,12 @@ Movie *MovieAVL::search(string title, AVLNode<Movie *> *ptr, forward_list<Movie 
 			}
 		}
 		else
-		{
-	
+		{ // normal avl search
 			if (title > avlTitle)
-			{
 				ptr = ptr->right;
-			}
+
 			else if (title < avlTitle)
-			{
 				ptr = ptr->left;
-			}
 		}
 	}
 	return NULL;
