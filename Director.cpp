@@ -93,9 +93,9 @@ void Director::getDirectorOfGenre(string g, unordered_map<Genre, map<string, for
     for (it = moviesOfGen.begin(); it != moviesOfGen.end(); it++) // iterating over nested map
 
     {
-        std::cout << "----------- " << it->first << " -----------"; // Rating
+        std::cout << "----------- " << it->first << " -----------" << endl; // Rating
         forward_list<Movie *> movies = it->second;
         for (auto it = movies.begin(); it != movies.end(); ++it) // printing all movies of given genre
-            cout << (*it)->getDirector() << endl;
+            cout << (*it)->getDirector()->getName() << endl;
     }
 }

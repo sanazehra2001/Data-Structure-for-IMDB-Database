@@ -11,7 +11,8 @@ void Movie::setTitle(string t)
 
 void Movie::setGenre(string g)
 {
-    genre.emplace_front(convert(g));
+    Genre gen = convert(g);
+    genre.emplace_front(gen);
 }
 
 void Movie::setTitleYear(short int year)
@@ -217,10 +218,11 @@ void Movie::displayKeywords()
     cout << "Keywords: ";
     // for (auto it = getPlotKeywords().begin(); it != getPlotKeywords().end(); ++it)
     //     cout << (*it) << ", ";
-    for (string&a : getPlotKeywords()){
-        cout << a<< ",";
+    for (string &a : getPlotKeywords())
+    {
+        cout << a << ",";
     }
-    
+
     cout << endl;
 }
 
@@ -252,7 +254,8 @@ void Movie::displayGenre()
     cout << "Genre: ";
     // for (auto it = getGenre().begin(); it != getGenre().end(); ++it) // traversing through
     //     cout << (*it) << ", ";
-    for (Genre&a : getGenre()){
+    for (Genre &a : getGenre())
+    {
         cout << toString(a) << ",";
     }
     cout << endl;
@@ -359,10 +362,10 @@ Movie *Movie::searchMovieByGenre(Movie *m, Genre g, unordered_map<Genre, map<str
 
     for (it = moviesOfGen.begin(); it != moviesOfGen.end(); it++) // iterating over nested map
     {
-        if (it->first == to_string(g))
+        if (it->first == m->getContentRating())
         {
             forward_list<Movie *> movies = it->second;
-            for (auto it = movies.begin(); it != movies.end(); ++it) // printing all movies of given genre
+            for (auto it = movies.begin(); it != movies.end(); ++it) // iterating over all movies of given genre
                 if ((*it)->getTitle() == m->getTitle())
                 {
                     return *it;
@@ -419,7 +422,8 @@ void Movie::searchMovie(string title, map<string, MovieAVL> moviesByTitle)
         MovieAVL avl = moviesByTitle[title]; // searching for key
         if (avl.isEmpty())                   // if avl is empty then no movie with this key exists
             cout << "No matching movie" << endl;
-        else{
+        else
+        {
             avl.traverse(); // printing all movie title present in avl
             count++;
         }
@@ -531,9 +535,14 @@ void Movie::getMoviesOfGenre(string g, unordered_map<Genre, map<string, forward_
     map<string, forward_list<Movie *>, greater<string>>::iterator it;
     for (it = moviesOfGen.begin(); it != moviesOfGen.end(); it++) // iterating over nested map
     {
-        std::cout << "----------- " << it->first << " -----------"; // Rating
+        std::cout << "----------- " << it->first << " -----------" << endl; // Rating
         forward_list<Movie *> movies = it->second;
-        for (auto it = movies.begin(); it != movies.end(); ++it) // printing all movies of given genre
-            cout << (*it)->getTitle() << endl;
+        // for (auto itMovies = movies.begin(); itMovies != movies.end(); ++itMovies) // printing all movies of given genre
+        //     cout << (*itMovies)->getTitle() << endl;
+
+        for (Movie* &a : movies)
+            cout << a->getTitle() << endl;
+        cout << endl;
     }
+    cout << endl;
 }
