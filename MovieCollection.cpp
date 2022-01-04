@@ -158,7 +158,7 @@ int main()
             // setting attributes of each Movie
             colmVals[0].pop_back(); //remove special character at the end
             colmVals[0].pop_back();
-            m->setTitle(colmVals[0]);
+            m->setTitle(Movie::formatStr(colmVals[0]));
 
             stringstream genres(colmVals[1]);
             while (getline(genres, word, '|')) // add genres to the list
@@ -303,7 +303,6 @@ int main()
         }
 
         file.close();
-        cout << "insertion completed" << endl;
     }
 
     else
@@ -325,7 +324,7 @@ int main()
     // Director::getDirectorOfGenre("Action", moviesByGenre);
 
     // movie functions
-    Movie::searchMovie("  the ", moviesByTitle); //tested, provided genres are added properly
+    Movie::searchMovie("  XX ", moviesByTitle); //tested, provided genres are added properly
     // Movie::getMoviesOfYear(20151, moviesByYear); //tested
     // Movie::printMoviesChronologically(true, moviesByYear); //tested
     // Movie::getMoviesOfGenre("Short", moviesByGenre);    //tested
