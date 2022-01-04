@@ -398,6 +398,7 @@ string formatStr(string str)
 // search movie by title not necessarily complete
 void Movie::searchMovie(string title, map<string, MovieAVL> moviesByTitle)
 {
+    int count = 0;
     title = formatStr(title);
     // title[0] = toupper(title[0]);
     // case1: string is of length one
@@ -408,6 +409,7 @@ void Movie::searchMovie(string title, map<string, MovieAVL> moviesByTitle)
         {
             MovieAVL avl = it->second; // avl of key
             avl.traverse();            // printing all movie title present in avl
+            count++;
         }
     }
 
@@ -417,8 +419,10 @@ void Movie::searchMovie(string title, map<string, MovieAVL> moviesByTitle)
         MovieAVL avl = moviesByTitle[title]; // searching for key
         if (avl.isEmpty())                   // if avl is empty then no movie with this key exists
             cout << "No matching movie" << endl;
-        else
+        else{
             avl.traverse(); // printing all movie title present in avl
+            count++;
+        }
     }
 
     // case3: string of length greater than 2
@@ -437,6 +441,7 @@ void Movie::searchMovie(string title, map<string, MovieAVL> moviesByTitle)
             { // if movies are found, iterate over list of movies
                 for (auto it = moviesOfKey.begin(); it != moviesOfKey.end(); ++it)
                 {
+                    count++;
                     // cout << "for" << endl;
                     (*it)->display();
                     // cout << (*it)->getTitle();
@@ -447,6 +452,7 @@ void Movie::searchMovie(string title, map<string, MovieAVL> moviesByTitle)
             }
         }
     }
+    cout << count;
 }
 
 void Movie::getMoviesOfYear(short int year, map<short int, forward_list<Movie *>> moviesByYear)

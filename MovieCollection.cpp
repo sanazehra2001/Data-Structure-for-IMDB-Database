@@ -181,16 +181,13 @@ int main()
                 colmVals[index++] = word;
 
             // setting attributes of each Movie
-            colmVals[0].pop_back();
+            colmVals[0].pop_back();     //remove special character at the end
             colmVals[0].pop_back();
             m->setTitle(colmVals[0]);
 
             stringstream genres(colmVals[1]);
             while (getline(genres, word, '|')) // add genres to the list
-            {
                 m->setGenre(word);
-            }
-            // m->displayGenre();
 
             if (colmVals[2] != "")
                 m->setTitleYear(stoi(colmVals[2]));
@@ -284,13 +281,8 @@ int main()
             {
                 stringstream keywords(colmVals[18]);
                 while (getline(keywords, word, '|')) // | separated keywords are added to the list
-                {
                     m->setPlotKeywords(word);
-                }
-                // m->displayKeywords();
             }
-
-            cout << endl;
 
             m->setImdbLink(colmVals[19]);
 
@@ -312,45 +304,35 @@ int main()
 
             m->setColor(colmVals[27]);
 
-            // cout << "before isnertion"<<endl;
             //insert movie pointers to relevant maps
             setMovieByTitle(m);
-            // cout << "after title"<<endl;
+
             if (m->getTitleYear() != 0)
                 setMovieByYear(m);
-            // cout << "after year"<<endl;
+            
             if (m->getContentRating() != "")
                 setMovieByRating(m);
-            // cout << "after rating"<<endl;
 
             for (Genre &a : m->getGenre())
             {
-                setMovieByGenre(m, a);
+                 setMovieByGenre(m, a);
             }
-
-            // forward_list<Genre> genreList = m->getGenre();
-            // cout << to_string(genreList.front());
-            // for (auto it = genreList.begin(); it != genreList.end(); ++it)
-            // {
-            //     setMovieByGenre(m, (*it));
-            //     cout << (*it) <<endl;
-            // }
         }
 
         file.close();
-        cout << "insertion completed" << endl;
+        //cout << "insertion completed" << endl;
     }
 
     else
     {
         cout << "Unable to open file";
     }
-
+    cout << "File read" << endl;
     // actor functions
     // Actor::displayAllActors(allActors); // tested
     // Actor::searchActor("Vincent Schiavelli", allActors, true); // tested
     // Actor::displayCoActors("Demi Moore", allActors); //tested
-    // Actor::displayCoActors("Jennifer Jason Leig", allActors); //tested
+    // Actor::displayCoActors("Jennifer Jason Leig", allActors);                // to be tested again
     // Actor::getUniqueCoActors("Jennifer Jason Leigh", allActors); //tested
     // Actor::getCoActorsOfCoActors("Vincent Schiavelli", allActors); //tested
     // cout << Actor::isCoActor("Vincent Schiavelli", "Judge Reinhold", allActors); //tested
@@ -360,7 +342,7 @@ int main()
     // Director::getDirectorOfGenre("Action", moviesByGenre);
 
     // movie functions
-    Movie::searchMovie("  the ", moviesByTitle); //tested, provided genres are added properly
+     Movie::searchMovie("  the ", moviesByTitle); //tested, provided genres are added properly
     // Movie::getMoviesOfYear(20151, moviesByYear); //tested
     // Movie::printMoviesChronologically(true, moviesByYear); //tested
     // Movie::getMoviesOfGenre("Action", moviesByGenre);
