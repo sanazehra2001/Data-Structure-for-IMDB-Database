@@ -121,6 +121,10 @@ Actor *Actor::searchActor(string name, unordered_map<string, ActorAVL> allActors
     this method will search for the input actor name by searching the first two alphabets of the name 
     in map if the key exist it will find the actor in the avl  and return the actor pointer if found 
     otherwise it will return null. if display parameter is true it will print the details of the actor.
+
+    Time Complexity:
+        Best Case: O(1)
+        Worst Case: O(nlog(n))
     */
 
     Actor *actor = NULL;
@@ -157,6 +161,10 @@ forward_list<Actor *> Actor::getCoActors(string name, unordered_map<string, Acto
         2. For each movie traverse through the array of actors, these are the coactors.
         3. Add coactors to list of coactors
         4. Return the list of coactors 
+
+    Time Complexity:
+        Best Case: O(n)
+        Worst Case: O(n^2)
 
     */
 
@@ -211,6 +219,10 @@ void Actor::displayCoActors(string name, unordered_map<string, ActorAVL> allActo
         2. For each movie traverse through the array of actors, these are the coactors.
         3. Print the name of coactors
 
+    Time Complexity:
+        Best Case: O(n)
+        Worst Case: O(n^2)
+
     */
 
     Actor *actor = searchActor(name, allActors, false); // finding the actor in allActors map
@@ -256,12 +268,15 @@ void Actor::getUniqueCoActors(string name, unordered_map<string, ActorAVL> allAc
         Print the name of all co-actors of an actor only once. For each co-actor,
         print title of the movies in which both acted in.
 
-    Methodology:
-    Implementaton using unordered map of Actor having movies as value
+        Methodology:
+        Implementaton using unordered map of Actor having movies as value
         1. find coactors
         2. insert name of coactor in map as a key, if not present
         3. add movie title to the forward_list of movies coresponding to this coactor (value of map)
 
+        Time Complexity:
+        Best Case: O(n)
+        Worst Case: O(n^2)
     */
 
     Actor *actor = searchActor(name, allActors, false); // finding the actor in allActors map
@@ -339,7 +354,11 @@ void Actor::getCoActorsOfCoActors(string name, unordered_map<string, ActorAVL> a
         2) Traverse the list and find the coactors of each coactor (subactors)
         3) Add to avl,'allCoactors', if subactor is not coactor of actor and actor itself
         4) Impelmentation of AVL is such that it does not take duplicates
-        4) Traverse and print allCoactors  
+        4) Traverse and print allCoactors 
+
+        Time Complexity:
+        Best Case: O(n^2)
+        Worst Case: O(n^2) 
     */
 
     forward_list<Actor *> coactors = getCoActors(name, allActors); // coactors of actor
@@ -368,6 +387,9 @@ bool Actor::isCoActor(string nameA, string nameB, unordered_map<string, ActorAVL
     /* check if the two actors( A & B) are coactors or not 
         1)find the coactors of A 
         2)if B is in list of coactors of A then both are coactors 
+
+        Best Case: O(n)
+        Worst Case: O(n^2)
     */
 
     forward_list<Actor *> coactors = getCoActors(nameA, allActors); //coactors of A

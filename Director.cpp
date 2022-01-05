@@ -76,6 +76,10 @@ Director *Director::searchDir(string name, unordered_map<string, DirectorAVL> al
     this method will search for the input director name by searching the first two alphabets of the name 
     in key if the key exist it will find the director in the avl . if the director is found the details 
     of director will be display. 
+
+    Time Complexity:
+        Best Case: O(1)
+        Worst Case: O(nlog(n))
     */
 
     Director *director = NULL;
@@ -86,7 +90,7 @@ Director *Director::searchDir(string name, unordered_map<string, DirectorAVL> al
     if (display)
     {
         if (!director) //if director is not in the records
-            cout << "Actor not found. Try Again" << endl;
+            cout << "Director not found. Try Again" << endl;
         else // if director is present, print the details of director
             director->displayDirector();
     }
@@ -104,6 +108,10 @@ void Director::getDirectorOfGenre(string g, unordered_map<Genre, map<string, for
     the key of outer map and  will  iterating over inner map and display the movies 
     names of the given genre and the display of movies name will be sorted on rating as the key is 
     rating and contain a forward list of movie * as value
+
+    Time Complexity:
+        Best Case: O(n)
+        Worst Case: O(n^2)
     */
 
     Genre genre = convert(g);

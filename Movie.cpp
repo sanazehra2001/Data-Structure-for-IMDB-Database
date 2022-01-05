@@ -333,6 +333,9 @@ void Movie::searchMovie(string title, map<string, MovieAVL> moviesByTitle)
             The MovieAVL's search method is implemented such that it returns list of movies starting with input string.
             4. If movies of given title are found, traverse thorugh this list of movies and display them.
 
+            Time Complexity:
+                Best Case: O(nlog(n))
+                Worst Case: O(nlog(n))
     */
 
 
@@ -398,6 +401,10 @@ void Movie::getMoviesOfYear(short int year, map<short int, forward_list<Movie *>
         1. Search for the given year in map.
         2. If key is present, it returns a forward_list of pointer to movies.
         3. Traverse through this list and print the title of each movie.
+
+        Time Complexity:
+            Best Case: O(nlog(n))
+            Worst Case: O(nlog(n))
     */
 
     forward_list<Movie *> movies = moviesByYear[year]; // movies of this year
@@ -431,7 +438,11 @@ void Movie::printMoviesChronologically(bool desc, map<short int, forward_list<Mo
         Case 2: desc is false (Years in increasing order) 
          Methodology:
             1. Traverse through moviesByYear.
-            2. Traverse the lists of pointer to Movie corresponding to each key an print the title of movie.                
+            2. Traverse the lists of pointer to Movie corresponding to each key an print the title of movie.  
+
+        Time Complexity:
+            Best Case: O(n)
+            Worst Case: O(n)              
     */
 
     // printing reverse chronological order
@@ -479,6 +490,10 @@ void Movie::printMoviesByRating(map<string, forward_list<Movie *>, greater<strin
         Methodology:
         1. Traverse through the map, print key (Rating)
         2. For each key (Rating), traverse thorugh the forward_list of pointer to Movie and print the title
+
+        Time Complexity:
+            Best Case: O(n)
+            Worst Case: O(n)
     */
 
     map<string, forward_list<Movie *>, greater<string>>::iterator it; // iterator
@@ -503,6 +518,10 @@ void Movie::getMoviesOfGenre(string g, unordered_map<Genre, map<string, forward_
         Methodology:
         1. Traverse through the outer map, find genre
         2. If genre is valid, traverse through the nested map and print titles of all movies against each rating
+        
+        Time Complexity:
+            Best Case: O(n)
+            Worst Case: O(n^2)
     */
 
     Genre genre = convert(g); //convert string to Genre
