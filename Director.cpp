@@ -121,6 +121,7 @@ void Director::getDirectorOfGenre(string g, unordered_map<Genre, map<string, for
         cout << "Invalid Genre" << endl;
         return;
     }
+    
     map<string, forward_list<Movie *>, greater<string>> moviesOfGen = moviesByGenre[genre]; // finding genre
     cout << "----------- " << g << " -----------" << endl;
     map<string, forward_list<Movie *>, greater<string>>::iterator it;

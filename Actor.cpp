@@ -23,6 +23,7 @@ void Actor::setName(string n)
 {
     name = n;
 }
+
 void Actor::setLikes(int likes)
 {
     fbLikesForActor = likes;
@@ -304,7 +305,7 @@ void Actor::getUniqueCoActors(string name, unordered_map<string, ActorAVL> allAc
 
             // finding coactors
             Actor **coActors = (*it)->getActor();             // all actors of this movie
-            for (Actor **a = coActors; a < coActors + 3; a++) //traversing through three actors of every movie
+            for (Actor **a = coActors; a < coActors + 3; a++) // traversing through three actors of every movie
             {
                 Actor *coAct = (*a);
                 if (coAct->getName() != actor->getName()) // coActor is not the one we are searching coactors for
