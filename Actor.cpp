@@ -144,7 +144,7 @@ Actor *Actor::searchActor(string name, unordered_map<string, ActorAVL> allActors
     return actor;
 }
 
-//second method of the list
+
 forward_list<Actor *> Actor::getCoActors(string name, unordered_map<string, ActorAVL> allActors)
 {
 
@@ -202,7 +202,7 @@ forward_list<Actor *> Actor::getCoActors(string name, unordered_map<string, Acto
     return coactorsList;
 }
 
-//second method of the list
+
 void Actor::displayCoActors(string name, unordered_map<string, ActorAVL> allActors)
 {
 
